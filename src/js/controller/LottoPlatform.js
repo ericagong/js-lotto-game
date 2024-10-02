@@ -1,8 +1,8 @@
-import createLottoMachine from '../models/LottoMachine/createLottoMachine.js';
-import Lotto from '../models/Lotto/index.js';
-import WinningLotto from '../models/WinningLotto/index.js';
-import createStatistics from '../models/createStatistics.js';
-import View from '../../UI/View.js';
+import createLottoMachine from '../domain/models/LottoMachine/createLottoMachine.js';
+import Lotto from '../domain/models/Lotto/index.js';
+import WinningLotto from '../domain/models/WinningLotto/index.js';
+import createStatistics from '../domain/models/createStatistics.js';
+import View from '../UI/View.js';
 import { RetryError } from './errors.js';
 
 export default class LottoPlatform {
