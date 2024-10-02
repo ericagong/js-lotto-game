@@ -6,6 +6,8 @@
   "author": "Erica Gong",
   "license": "ISC",
   "scripts": {
+    "start-step1": "node ./src/js/step1-index.js",
+    "start-step2": "node ./src/js/step2-index.js",
     "test": "jest --coverage --no-cache",
     "build-step-console": "webpack --config step-console.config.js",
     "start-step-console": "npm run build-step-console && node dist/step-console-bundle.js",
