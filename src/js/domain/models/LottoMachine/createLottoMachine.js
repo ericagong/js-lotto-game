@@ -10,7 +10,7 @@ import {
     LOTTO_LOWER_BOUND,
     LOTTO_UPPER_BOUND,
 } from '../../constants.js';
-import Lotto from '../Lotto/index.js';
+import Lotto from '../Lotto/Lotto.js';
 
 const createLottoMachine = () => {
     const ZERO = 0;

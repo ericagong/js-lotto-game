@@ -1,6 +1,6 @@
 import createLottoMachine from '../domain/models/LottoMachine/createLottoMachine.js';
-import Lotto from '../domain/models/Lotto/index.js';
-import WinningLotto from '../domain/models/WinningLotto/index.js';
+import Lotto from '../domain/models/Lotto/Lotto.js';
+import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
 import createStatistics from '../domain/models/createStatistics.js';
 import View from '../UI/View.js';
 import { RetryError } from './errors.js';

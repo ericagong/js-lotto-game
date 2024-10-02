@@ -1,4 +1,4 @@
-import Lotto from '../Lotto/index.js';
+import Lotto from '../Lotto/Lotto.js';
 import {
     LottoIsNotLottoInstanceError,
     BonusNumberNotNumberError,
@@ -10,7 +10,7 @@ import {
     LOTTO_UPPER_BOUND,
     RANKS,
 } from '../../constants.js';
-import Rank from '../Rank/index.js';
+import Rank from '../Rank/Rank.js';
 
 export default class WinningLotto {
     #lotto;

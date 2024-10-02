@@ -1,4 +1,4 @@
-import Rank from '../src/js/domain/models/Rank/index.js';
+import Rank from '../src/js/domain/models/Rank/Rank.js';
 import {
     RankNotNumberError,
     RankOutOfRangeError,

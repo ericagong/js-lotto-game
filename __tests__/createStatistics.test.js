@@ -1,5 +1,5 @@
-import createStatistics from '../src/js/domain/models/createStatistics';
-import Rank from '../src/js/domain/models/Rank';
+import createStatistics from '../src/js/domain/models/createStatistics.js';
+import Rank from '../src/js/domain/models/Rank/Rank.js';
 
 const { countRanks, calculateRevenue } = createStatistics();
 

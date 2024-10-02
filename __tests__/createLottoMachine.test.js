@@ -1,11 +1,11 @@
-import createLottoMachine from '../src/js/domain/models/LottoMachine/createLottoMachine';
+import createLottoMachine from '../src/js/domain/models/LottoMachine/createLottoMachine.js';
 import {
     PurchasingPriceNotNumberError,
     PurchasingPriceIsNegativeError,
     PurchasingPriceLessLowerBoundError,
     PurchasingPriceAboveUpperBoundError,
-} from '../src/js/domain/models/LottoMachine/errors';
-import Lotto from '../src/js/domain/models/Lotto';
+} from '../src/js/domain/models/LottoMachine/errors.js';
+import Lotto from '../src/js/domain/models/Lotto/Lotto.js';
 
 describe('purchasingPrice 내에서 구매할 수 있는 최대 개수의 Lotto를 발행한다.', () => {
     const { issueLottoOf } = createLottoMachine();
