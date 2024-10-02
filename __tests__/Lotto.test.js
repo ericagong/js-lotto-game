@@ -1,11 +1,11 @@
-import Lotto from '../src/js/domain/models/Lotto/index.js';
+import Lotto from '../src/js/domain/models/Lotto';
 import {
     LottoNumbersNotArrayError,
     LottoNumbersLengthNotSixError,
     LottoNumberNotNumberError,
     LottoNumberOutOfRangeError,
     LottoNumberDuplicatedError,
-} from '../src/js/domain/models/Lotto/errors.js';
+} from '../src/js/domain/models/Lotto/errors';
 
 describe('Lotto 생성자 테스트', () => {
     describe('LottoNumbers 유효성 검사 테스트', () => {
@@ -96,5 +96,10 @@ describe('display() 테스트', () => {
     it('lottoNumbers를 반환한다.', () => {
         const lotto = new Lotto([1, 2, 3, 4, 5, 6]);
         expect(lotto.display()).toEqual([1, 2, 3, 4, 5, 6]);
+    });
+
+    it('lottoNumbers는 오름차순으로 정렬된다.', () => {
+        const lotto = new Lotto([30, 29, 28, 27, 26, 1]);
+        expect(lotto.display()).toEqual([1, 26, 27, 28, 29, 30]);
     });
 });
