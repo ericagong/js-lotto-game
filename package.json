@@ -13,7 +13,7 @@
     "coverage": "jest --coverage",
     "prepare": "husky",
     "lint": "eslint --cache ./src",
-    "format": "prettier --cache --write --loglevel warn ./src",
+    "format": "prettier --cache --write --log-level warn ./src",
     "commitlint": "commitlint --edit"
   },
   "devDependencies": {
