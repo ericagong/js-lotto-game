@@ -24,26 +24,10 @@ export class LottoNumbersLengthNotSixError extends LottoNumbersError {
     }
 }
 
-export class LottoNumberNotNumberError extends LottoNumbersError {
-    static MESSAGE = '로또 번호는 모두 숫자여야합니다.';
-
-    constructor() {
-        super(LottoNumberNotNumberError.MESSAGE);
-    }
-}
-
-export class LottoNumberOutOfRangeError extends LottoNumbersError {
-    static MESSAGE = '로또 번호는 모두 [1, 45] 사이의 숫자여야합니다.';
-
-    constructor() {
-        super(LottoNumberOutOfRangeError.MESSAGE);
-    }
-}
-
-export class LottoNumberDuplicatedError extends LottoNumbersError {
+export class LottoNumbersDuplicatedError extends LottoNumbersError {
     static MESSAGE = '로또 번호는 모두 중복되지 않아야합니다.';
 
     constructor() {
-        super(LottoNumberDuplicatedError.MESSAGE);
+        super(LottoNumbersDuplicatedError.MESSAGE);
     }
 }

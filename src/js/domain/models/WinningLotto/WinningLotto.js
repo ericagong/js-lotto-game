@@ -24,7 +24,7 @@ export default class WinningLotto {
         this.#validateLottoInstance(lotto);
         this.#lotto = lotto;
 
-        const winningLottoNumbers = lotto.display();
+        const winningLottoNumbers = lotto.getLottoNumbers();
         this.#validateBonusNumber(winningLottoNumbers, bonusNumber);
         this.#bonusNumber = bonusNumber;
     }
@@ -59,8 +59,8 @@ export default class WinningLotto {
     }
 
     getRank(targetLotto) {
-        const winningLottoNumbers = this.#lotto.display();
-        const targetLottoNumbers = targetLotto.display();
+        const winningLottoNumbers = this.#lotto.getLottoNumbers();
+        const targetLottoNumbers = targetLotto.getLottoNumbers();
 
         const matchCount = winningLottoNumbers.filter((number) =>
             targetLottoNumbers.includes(number),

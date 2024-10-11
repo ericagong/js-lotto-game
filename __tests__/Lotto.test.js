@@ -2,8 +2,6 @@ import Lotto from '../src/js/domain/models/Lotto/Lotto.js';
 import {
     LottoNumbersNotArrayError,
     LottoNumbersLengthNotSixError,
-    LottoNumberNotNumberError,
-    LottoNumberOutOfRangeError,
     LottoNumberDuplicatedError,
 } from '../src/js/domain/models/Lotto/errors.js';
 
@@ -32,36 +30,6 @@ describe('Lotto 생성자 테스트', () => {
             });
         });
 
-        describe('요소가 숫자가 아니면 에러를 발생시킨다.', () => {
-            it.each([
-                { lottoNumbers: ['erica', 1, 1, 1, 1, 1] },
-                { lottoNumbers: [' ', 1, 1, 1, 1, 1] },
-                { lottoNumbers: ['', 1, 1, 1, 1, 1] },
-                { lottoNumbers: ['1', 1, 1, 1, 1, 1] },
-                { lottoNumbers: [true, 1, 1, 1, 1, 1] },
-                { lottoNumbers: [null, 1, 1, 1, 1, 1] },
-                { lottoNumbers: [undefined, 1, 1, 1, 1, 1] },
-                { lottoNumbers: [function () {}, 1, 1, 1, 1, 1] },
-                { lottoNumbers: [{}, 1, 1, 1, 1, 1] },
-            ])('$lottoNumbers', ({ lottoNumbers }) => {
-                expect(() => new Lotto(lottoNumbers)).toThrow(
-                    LottoNumberNotNumberError,
-                );
-            });
-        });
-
-        describe('요소 중 [1, 45]를 벗어난 숫자가 있다면, 에러를 발생시킨다.', () => {
-            it.each([
-                { lottoNumbers: [-1, 2, 3, 4, 5, 6] },
-                { lottoNumbers: [0, 2, 3, 4, 5, 6] },
-                { lottoNumbers: [1, 2, 3, 4, 5, 46] },
-            ])('$lottoNumbers', ({ lottoNumbers }) => {
-                expect(() => new Lotto(lottoNumbers)).toThrow(
-                    LottoNumberOutOfRangeError,
-                );
-            });
-        });
-
         describe('요소 중 중복된 숫자가 있다면, 에러를 발생시킨다.', () => {
             it.each([
                 { lottoNumbers: [1, 1, 1, 1, 1, 1] },
@@ -83,6 +51,20 @@ describe('Lotto 생성자 테스트', () => {
             });
         });
     });
+
+    describe('LottoNumbers 정렬 테스트', () => {
+        it.each([
+            { lottoNumbers: [6, 5, 4, 3, 2, 1], expected: [1, 2, 3, 4, 5, 6] },
+            { lottoNumbers: [6, 1, 5, 3, 2, 4], expected: [1, 2, 3, 4, 5, 6] },
+            {
+                lottoNumbers: [45, 11, 21, 30, 22, 44],
+                expected: [11, 21, 22, 30, 44, 45],
+            },
+        ])('$lottoNumbers', ({ lottoNumbers, expected }) => {
+            const lotto = new Lotto(lottoNumbers);
+            expect(lotto.getLottoNumbers()).toEqual(expected);
+        });
+    });
 });
 
 describe('of() 테스트', () => {
@@ -92,14 +74,19 @@ describe('of() 테스트', () => {
     });
 });
 
-describe('display() 테스트', () => {
-    it('lottoNumbers를 반환한다.', () => {
-        const lotto = new Lotto([1, 2, 3, 4, 5, 6]);
-        expect(lotto.display()).toEqual([1, 2, 3, 4, 5, 6]);
-    });
-
-    it('lottoNumbers는 오름차순으로 정렬된다.', () => {
-        const lotto = new Lotto([30, 29, 28, 27, 26, 1]);
-        expect(lotto.display()).toEqual([1, 26, 27, 28, 29, 30]);
+// TODO 중복된 테스트 코드
+describe('getLottoNumbers() 테스트', () => {
+    describe('lottoNumbers를 오름차순 정렬 숫자 배열 형태로 반환한다.', () => {
+        it.each([
+            { lottoNumbers: [6, 5, 4, 3, 2, 1], expected: [1, 2, 3, 4, 5, 6] },
+            { lottoNumbers: [6, 1, 5, 3, 2, 4], expected: [1, 2, 3, 4, 5, 6] },
+            {
+                lottoNumbers: [45, 11, 21, 30, 22, 44],
+                expected: [11, 21, 22, 30, 44, 45],
+            },
+        ])('$lottoNumbers', ({ lottoNumbers, expected }) => {
+            const lotto = new Lotto(lottoNumbers);
+            expect(lotto.getLottoNumbers()).toEqual(expected);
+        });
     });
 });

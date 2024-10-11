@@ -12,7 +12,7 @@ import {
 } from '../../constants.js';
 import Lotto from '../Lotto/Lotto.js';
 
-const createLottoMachine = () => {
+export default function createLottoMachine() {
     const ZERO = 0;
     const MIN_ISSUE_AMOUNT = 1;
     const MAX_ISSUE_AMOUNT = 100;
@@ -56,6 +56,4 @@ const createLottoMachine = () => {
     return {
         issueLottoOf,
     };
-};
-
-export default createLottoMachine;
+}

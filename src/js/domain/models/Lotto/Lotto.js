@@ -1,63 +1,47 @@
+import LottoNumber from '../LottoNumber/LottoNumber.js';
 import {
     LottoNumbersNotArrayError,
     LottoNumbersLengthNotSixError,
-    LottoNumberNotNumberError,
-    LottoNumberOutOfRangeError,
-    LottoNumberDuplicatedError,
+    LottoNumbersDuplicatedError,
 } from './errors.js';
-import {
-    LOTTO_DIGITS,
-    LOTTO_LOWER_BOUND,
-    LOTTO_UPPER_BOUND,
-} from '../../constants.js';
+import { LOTTO_DIGITS } from '../../constants.js';
 
 export default class Lotto {
     #lottoNumbers;
 
-    static of(lottoNumbers) {
-        return new Lotto(lottoNumbers);
+    static of(numbers) {
+        return new Lotto(numbers);
     }
 
-    constructor(lottoNumbers) {
-        this.#validateLottoNumbers(lottoNumbers);
+    constructor(numbers) {
+        this.#validate(numbers);
 
-        this.#lottoNumbers = lottoNumbers;
+        numbers = this.#sortNumbersAscending(numbers);
+
+        this.#lottoNumbers = numbers.map(LottoNumber.of);
     }
 
-    #validateLottoNumbers(lottoNumbers) {
-        if (!Array.isArray(lottoNumbers)) throw new LottoNumbersNotArrayError();
-        if (lottoNumbers.length !== LOTTO_DIGITS)
+    #validate(numbers) {
+        if (!this.#isArray(numbers)) throw new LottoNumbersNotArrayError();
+        if (numbers.length !== LOTTO_DIGITS)
             throw new LottoNumbersLengthNotSixError();
-        if (this.#hasNotNumberLottoNumbers(lottoNumbers))
-            throw new LottoNumberNotNumberError();
-        if (this.#hasOutOfRangeLottoNumbers(lottoNumbers))
-            throw new LottoNumberOutOfRangeError();
-        if (this.#hasDuplicatedLottoNumbers(lottoNumbers))
-            throw new LottoNumberDuplicatedError();
+        if (this.#isDuplicated(numbers))
+            throw new LottoNumbersDuplicatedError();
     }
 
-    #hasNotNumberLottoNumbers(lottoNumbers) {
-        return lottoNumbers.some(
-            (lottoNumber) => typeof lottoNumber !== 'number',
-        );
+    #isArray(numbers) {
+        return Array.isArray(numbers);
     }
 
-    #hasOutOfRangeLottoNumbers(lottoNumbers) {
-        return lottoNumbers.some(
-            (lottoNumber) =>
-                lottoNumber < LOTTO_LOWER_BOUND ||
-                lottoNumber > LOTTO_UPPER_BOUND,
-        );
+    #isDuplicated(numbers) {
+        return new Set(numbers).size !== numbers.length;
     }
 
-    #hasDuplicatedLottoNumbers(lottoNumbers) {
-        return new Set(lottoNumbers).size !== lottoNumbers.length;
+    #sortNumbersAscending(numbers) {
+        return numbers.sort((a, b) => Number(a) - Number(b));
     }
 
-    display() {
-        const sortedLottoNumbers = this.#lottoNumbers.sort(
-            (a, b) => Number(a) - Number(b),
-        );
-        return sortedLottoNumbers;
+    getLottoNumbers() {
+        return this.#lottoNumbers.map((lottoNumber) => lottoNumber.getNumber());
     }
 }

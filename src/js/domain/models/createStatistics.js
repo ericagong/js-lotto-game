@@ -1,6 +1,6 @@
 import { RANKS, LOTTO_UNIT_PRICE } from '../constants.js';
 
-const createStatistics = () => {
+export default function createStatistics() {
     const countRanks = (ranks) => {
         const rankCounts = new Map([
             [RANKS.FIRST, 0],
@@ -46,6 +46,4 @@ const createStatistics = () => {
         countRanks,
         calculateRevenue,
     };
-};
-
-export default createStatistics;
+}

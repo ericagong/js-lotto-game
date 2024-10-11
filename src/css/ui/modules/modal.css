@@ -1,7 +1,7 @@
 .modal {
     opacity: 0;
     visibility: hidden;
-    display: flex;
+    getlottonumbers: flex;
     position: fixed;
     top: 0;
     right: 0;
@@ -37,7 +37,7 @@
 }
 
 svg {
-    display: block;
+    getlottonumbers: block;
 }
 
 .close-x {

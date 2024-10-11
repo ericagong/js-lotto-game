@@ -11,21 +11,21 @@
     position: fixed;
 }
 
-/* Layout - Display */
+/* Layout - getLottoNumbers */
 .d-flex {
-    display: flex;
+    getlottonumbers: flex;
 }
 
 .d-block {
-    display: block;
+    getlottonumbers: block;
 }
 
 .d-inline {
-    display: inline;
+    getlottonumbers: inline;
 }
 
 .d-inline-block {
-    display: inline-block;
+    getlottonumbers: inline-block;
 }
 
 /* Layout - Top / Right / Bottom / Left */

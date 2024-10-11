@@ -11,7 +11,7 @@
     position: absolute;
     right: 6px;
     top: -8px;
-    display: block;
+    getlottonumbers: block;
     margin: 0;
     border-radius: 50%;
     width: 40px;
@@ -27,7 +27,7 @@
 
 /* Span */
 .switch > span {
-    display: inline-block;
+    getlottonumbers: inline-block;
     width: 100%;
     cursor: pointer;
 }
@@ -36,7 +36,7 @@
 .switch > span::before {
     content: '';
     float: right;
-    display: inline-block;
+    getlottonumbers: inline-block;
     margin: 5px 0 5px 10px;
     border-radius: 7px;
     width: 36px;

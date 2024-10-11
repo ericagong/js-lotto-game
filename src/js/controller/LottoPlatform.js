@@ -21,9 +21,9 @@ export default class LottoPlatform {
         this.#view.printLine(`${this.#lottos.length}개를 구매했습니다.`);
     }
 
-    #displayLottos() {
+    #getLottoNumbersLottos() {
         this.#lottos.forEach((targetLotto) =>
-            this.#view.printLine(targetLotto.display()),
+            this.#view.printLine(targetLotto.getLottoNumbers()),
         );
         this.#view.printLine('');
     }
@@ -42,7 +42,7 @@ export default class LottoPlatform {
         });
     }
 
-    #displayLottoStatistics() {
+    #getLottoNumbersLottoStatistics() {
         const { countRanks, calculateRevenue } = createStatistics();
         const rankCount = countRanks(this.#ranks);
         const revenueRate = calculateRevenue(this.#ranks);
@@ -54,7 +54,7 @@ export default class LottoPlatform {
             await this.#view.addPurchasingPriceHandler((purchasingPrice) =>
                 this.#issueLottos(purchasingPrice),
             );
-            this.#displayLottos();
+            this.#getLottoNumbersLottos();
 
             await this.#view.addWinningNumberHandler((winningNumbers) =>
                 this.#validateWinningNumbers(winningNumbers),
@@ -63,7 +63,7 @@ export default class LottoPlatform {
             await this.#view.addBonusNumberHandler((bonusNumber) =>
                 this.#checkLottoResult(bonusNumber),
             );
-            this.#displayLottoStatistics();
+            this.#getLottoNumbersLottoStatistics();
         } catch (error) {
             this.#view.printLine(error.message);
         } finally {
@@ -80,7 +80,7 @@ export default class LottoPlatform {
                     await this.#view.addPurchasingPriceHandler(
                         (purchasingPrice) => this.#issueLottos(purchasingPrice),
                     );
-                    this.#displayLottos();
+                    this.#getLottoNumbersLottos();
                     goToFlag = 2;
                 }
 
@@ -95,7 +95,7 @@ export default class LottoPlatform {
                     await this.#view.addBonusNumberHandler((bonusNumber) =>
                         this.#checkLottoResult(bonusNumber),
                     );
-                    this.#displayLottoStatistics();
+                    this.#getLottoNumbersLottoStatistics();
                     goToFlag = 4;
                 }
 
