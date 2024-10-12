@@ -22,23 +22,27 @@ export default class Lotto {
     }
 
     #validate(numbers) {
-        if (!this.#isArray(numbers)) throw new LottoNumbersNotArrayError();
-        if (numbers.length !== LOTTO_DIGITS)
+        if (this.#isNotArray(numbers)) throw new LottoNumbersNotArrayError();
+        if (this.#isLottoDigitLength(numbers))
             throw new LottoNumbersLengthNotSixError();
-        if (this.#isDuplicated(numbers))
+        if (this.#hasDuplicated(numbers))
             throw new LottoNumbersDuplicatedError();
     }
 
-    #isArray(numbers) {
-        return Array.isArray(numbers);
+    #isNotArray(target) {
+        return !Array.isArray(target);
     }
 
-    #isDuplicated(numbers) {
-        return new Set(numbers).size !== numbers.length;
+    #isLottoDigitLength(target) {
+        return target.length !== LOTTO_DIGITS;
     }
 
-    #sortNumbersAscending(numbers) {
-        return numbers.sort((a, b) => Number(a) - Number(b));
+    #hasDuplicated(target) {
+        return new Set(target).size !== target.length;
+    }
+
+    #sortNumbersAscending(target) {
+        return target.sort((a, b) => Number(a) - Number(b));
     }
 
     getLottoNumbers() {

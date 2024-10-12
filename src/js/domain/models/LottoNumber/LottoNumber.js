@@ -1,4 +1,4 @@
-import { LOTTO_LOWER_BOUND, LOTTO_UPPER_BOUND } from '../../constants';
+import { LOTTO_LOWER_BOUND, LOTTO_UPPER_BOUND } from '../../constants.js';
 import {
     LottoNumberNotNumberError,
     LottoNumberNotIntegerError,
@@ -17,16 +17,16 @@ export default class LottoNumber {
         this.#number = number;
     }
 
-    #isNumber(number) {
-        return typeof number === 'number';
+    #isNumber(target) {
+        return typeof target === 'number';
     }
 
-    #isInteger(number) {
-        return Number.isInteger(number);
+    #isInteger(target) {
+        return Number.isInteger(target);
     }
 
-    #isInRange(number) {
-        return LOTTO_LOWER_BOUND <= number && number <= LOTTO_UPPER_BOUND;
+    #isInRange(target) {
+        return LOTTO_LOWER_BOUND <= target && target <= LOTTO_UPPER_BOUND;
     }
 
     #validate(number) {

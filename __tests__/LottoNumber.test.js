@@ -52,10 +52,11 @@ describe('LottoNumber 생성자 테스트', () => {
     });
 });
 
-describe('of() 테스트', () => {
+describe('static of() 테스트', () => {
     it('LottoNumber 인스턴스를 반환한다.', () => {
         const lottoNumber = LottoNumber.of(1);
         expect(lottoNumber).toBeInstanceOf(LottoNumber);
+        expect(lottoNumber.getNumber()).toBe(1);
     });
 });
 

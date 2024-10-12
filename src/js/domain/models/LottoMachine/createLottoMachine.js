@@ -12,8 +12,9 @@ import {
 } from '../../constants.js';
 import Lotto from '../Lotto/Lotto.js';
 
+// TODO 한 번 더 function createLottoMachine으로 wrapping하는 목적?
 export default function createLottoMachine() {
-    const ZERO = 0;
+    const MIN_PURCHASING_PRICE = 0;
     const MIN_ISSUE_AMOUNT = 1;
     const MAX_ISSUE_AMOUNT = 100;
 
@@ -30,7 +31,8 @@ export default function createLottoMachine() {
     const validatePurchasingPrice = (purchasingPrice) => {
         if (typeof purchasingPrice !== 'number')
             throw new PurchasingPriceNotNumberError();
-        if (purchasingPrice < ZERO) throw new PurchasingPriceIsNegativeError();
+        if (purchasingPrice < MIN_PURCHASING_PRICE)
+            throw new PurchasingPriceIsNegativeError();
         if (purchasingPrice < LOTTO_UNIT_PRICE * MIN_ISSUE_AMOUNT)
             throw new PurchasingPriceLessLowerBoundError();
         if (purchasingPrice > LOTTO_UNIT_PRICE * MAX_ISSUE_AMOUNT)

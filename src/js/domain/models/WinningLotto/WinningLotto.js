@@ -1,15 +1,10 @@
 import Lotto from '../Lotto/Lotto.js';
+import BonusNumber from '../BonusNumber/BonusNumber.js';
 import {
-    LottoIsNotLottoInstanceError,
-    BonusNumberNotNumberError,
-    BonusNumberOutOfRangeError,
-    BonusNumberDuplicatedError,
+    NotLottoInstanceError,
+    NotBonusNumberInstanceError,
 } from './errors.js';
-import {
-    LOTTO_LOWER_BOUND,
-    LOTTO_UPPER_BOUND,
-    RANKS,
-} from '../../constants.js';
+import { RANKS } from '../../constants.js';
 import Rank from '../Rank/Rank.js';
 
 export default class WinningLotto {
@@ -21,25 +16,28 @@ export default class WinningLotto {
     }
 
     constructor(lotto, bonusNumber) {
-        this.#validateLottoInstance(lotto);
+        this.#validateLotto(lotto);
         this.#lotto = lotto;
 
-        const winningLottoNumbers = lotto.getLottoNumbers();
-        this.#validateBonusNumber(winningLottoNumbers, bonusNumber);
+        this.#validateBonusNumber(bonusNumber);
         this.#bonusNumber = bonusNumber;
     }
 
-    #validateLottoInstance(lotto) {
-        if (!(lotto instanceof Lotto)) throw new LottoIsNotLottoInstanceError();
+    #isNotLottoInstance(target) {
+        return !(target instanceof Lotto);
     }
 
-    #validateBonusNumber(lottoNumbers, bonusNumber) {
-        if (typeof bonusNumber !== 'number')
-            throw new BonusNumberNotNumberError();
-        if (bonusNumber < LOTTO_LOWER_BOUND || bonusNumber > LOTTO_UPPER_BOUND)
-            throw new BonusNumberOutOfRangeError();
-        if (lottoNumbers.includes(bonusNumber))
-            throw new BonusNumberDuplicatedError();
+    #isNotBonusNumberInstance(target) {
+        return !(target instanceof BonusNumber);
+    }
+
+    #validateLotto(lotto) {
+        if (this.#isNotLottoInstance(lotto)) throw new NotLottoInstanceError();
+    }
+
+    #validateBonusNumber(bonusNumber) {
+        if (this.#isNotBonusNumberInstance(bonusNumber))
+            throw new NotBonusNumberInstanceError();
     }
 
     #getRankFromMatchInfo(matchCount, isBonusMatch) {
