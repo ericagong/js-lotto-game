@@ -5,6 +5,7 @@ const readlineInterface = readline.createInterface({
     output: process.stdout,
 });
 
+// TODO view에서 모델 로직 걷어내기
 export default class View {
     #convertToMatchingDataType(input) {
         if (input === 'null') {

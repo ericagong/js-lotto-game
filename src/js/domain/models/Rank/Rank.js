@@ -2,6 +2,7 @@ import { RankNotNumberError, RankOutOfRangeError } from './errors.js';
 import { RANKS } from '../../constants.js';
 
 export default class Rank {
+    // TODO 변수 선언 위치 : utils, 클래스 외부, 내부 static, non-static, private
     PRIZES = {
         [RANKS.FIRST]: 2_000_000_000,
         [RANKS.SECOND]: 30_000_000,

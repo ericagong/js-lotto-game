@@ -40,7 +40,39 @@ export default class WinningLotto {
             throw new NotBonusNumberInstanceError();
     }
 
-    #getRankFromMatchInfo(matchCount, isBonusMatch) {
+    #getMatchCount(winningNumbers, targetNumbers) {
+        return winningNumbers.filter((number) => targetNumbers.includes(number))
+            .length;
+    }
+
+    // TODO 메소드를 클래스 내부에 포함하는 기준을 무엇으로 해야하는지?
+    // util 함수, class 외부, static, non-static 인스턴스 메소드(prototype), private 메소드,
+    #isBonusMatch(bonusNumber, targetNumbers) {
+        return targetNumbers.includes(bonusNumber);
+    }
+
+    #getMatchResult(targetLotto) {
+        const winningLottoNumbers = this.#lotto.getLottoNumbers();
+        const targetLottoNumbers = targetLotto.getLottoNumbers();
+
+        const matchCount = this.#getMatchCount(
+            winningLottoNumbers,
+            targetLottoNumbers,
+        );
+
+        const bonusNumber = this.#bonusNumber.getNumber();
+        const isBonusMatch = this.#isBonusMatch(
+            bonusNumber,
+            targetLottoNumbers,
+        );
+
+        return {
+            matchCount,
+            isBonusMatch,
+        };
+    }
+
+    #getRankFromMatchResult(matchCount, isBonusMatch) {
         switch (matchCount) {
             case 6:
                 return RANKS.FIRST;
@@ -57,15 +89,8 @@ export default class WinningLotto {
     }
 
     getRank(targetLotto) {
-        const winningLottoNumbers = this.#lotto.getLottoNumbers();
-        const targetLottoNumbers = targetLotto.getLottoNumbers();
-
-        const matchCount = winningLottoNumbers.filter((number) =>
-            targetLottoNumbers.includes(number),
-        ).length;
-        const isBonusMatch = targetLottoNumbers.includes(this.#bonusNumber);
-
-        const rank = this.#getRankFromMatchInfo(matchCount, isBonusMatch);
+        const { matchCount, isBonusMatch } = this.#getMatchResult(targetLotto);
+        const rank = this.#getRankFromMatchResult(matchCount, isBonusMatch);
         return Rank.of(rank);
     }
 }
