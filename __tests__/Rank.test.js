@@ -43,15 +43,15 @@ describe('static of() 테스트', () => {
     });
 });
 
-describe('getRank() 테스트', () => {
+describe('get rank 테스트', () => {
     describe('순위에 맞는 올바른 rank를 반환한다.', () => {
         it.each([1, 2, 3, 4, 5, 6])('rank: %p', (rank) => {
-            expect(new Rank(rank).getRank()).toBe(rank);
+            expect(new Rank(rank).rank).toBe(rank);
         });
     });
 });
 
-describe('getPrize() 테스트', () => {
+describe('get prize 테스트', () => {
     describe('순위에 맞는 올바른 prize를 반환한다.', () => {
         const testCases = [
             { rank: 1, prize: 2_000_000_000 },
@@ -63,7 +63,7 @@ describe('getPrize() 테스트', () => {
         ];
 
         it.each(testCases)('rank: %rank, prize: $prize', ({ rank, prize }) => {
-            expect(new Rank(rank).getPrize()).toBe(prize);
+            expect(new Rank(rank).prize).toBe(prize);
         });
     });
 });

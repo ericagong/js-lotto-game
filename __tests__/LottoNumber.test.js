@@ -18,7 +18,7 @@ describe('LottoNumber 생성자 테스트', () => {
                 undefined,
                 function () {},
                 {},
-            ])('$lottoNumber', (lottoNumber) => {
+            ])('%p', (lottoNumber) => {
                 expect(() => new LottoNumber(lottoNumber)).toThrow(
                     LottoNumberNotNumberError,
                 );
@@ -27,7 +27,7 @@ describe('LottoNumber 생성자 테스트', () => {
 
         describe('정수가 아니면 에러를 발생시킨다.', () => {
             it.each([0.1, 0.9, 1.1, 1.9, 44.1, 44.9, 45.1, 45.9])(
-                '$lottoNumber',
+                '%p',
                 (lottoNumber) => {
                     expect(() => new LottoNumber(lottoNumber)).toThrow(
                         LottoNumberNotIntegerError,
@@ -37,7 +37,7 @@ describe('LottoNumber 생성자 테스트', () => {
         });
 
         describe('[1, 45]를 벗어나면, 에러를 발생시킨다.', () => {
-            it.each([-1, 0, 46])('$lottoNumber', (lottoNumber) => {
+            it.each([-1, 0, 46])('%p', (lottoNumber) => {
                 expect(() => new LottoNumber(lottoNumber)).toThrow(
                     LottoNumberOutOfRangeError,
                 );
@@ -45,7 +45,7 @@ describe('LottoNumber 생성자 테스트', () => {
         });
 
         describe('[1, 45] 사이 정수라면, 에러를 발생시키지 않는다.', () => {
-            it.each([1, 1.0, 45, 45.0, 45.0])('$lottoNumber', (lottoNumber) => {
+            it.each([1, 1.0, 45, 45.0, 45.0])('%p', (lottoNumber) => {
                 expect(() => new LottoNumber(lottoNumber)).not.toThrow();
             });
         });
@@ -56,15 +56,15 @@ describe('static of() 테스트', () => {
     it('LottoNumber 인스턴스를 반환한다.', () => {
         const lottoNumber = LottoNumber.of(1);
         expect(lottoNumber).toBeInstanceOf(LottoNumber);
-        expect(lottoNumber.getNumber()).toBe(1);
+        expect(lottoNumber.number).toBe(1);
     });
 });
 
-describe('getNumber() 테스트', () => {
+describe('get number 테스트', () => {
     describe('LottoNumber를 숫자 형태로 반환한다.', () => {
-        it.each([1, 45])('$lottoNumber', (lottoNumber) => {
+        it.each([1, 45])('%p', (lottoNumber) => {
             const lottoNumberInstance = LottoNumber.of(lottoNumber);
-            expect(lottoNumberInstance.getNumber()).toBe(lottoNumber);
+            expect(lottoNumberInstance.number).toBe(lottoNumber);
         });
     });
 });

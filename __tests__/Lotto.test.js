@@ -74,7 +74,6 @@ describe('static of() 테스트', () => {
     });
 });
 
-// TODO 중복된 테스트 코드
 describe('getLottoNumbers() 테스트', () => {
     describe('lottoNumbers를 오름차순 정렬 숫자 배열 형태로 반환한다.', () => {
         it.each([

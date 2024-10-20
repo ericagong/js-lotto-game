@@ -10,9 +10,9 @@ import {
     NotLottoInstanceError,
 } from '../src/js/domain/models/BonusNumber/errors.js';
 
+// QUESTION(TODO) 필요한 테스트인지? 이미 LottoNumber에서 테스트가 완료된 부분을 중복 검사하는건 아닌지? 테스트 검증의 필요성이 있는지?
 describe('BonusNumber 생성자 테스트', () => {
     describe('BonusNumber 유효성 검사 테스트', () => {
-        // TODO 필요한 테스트인지? 이미 LottoNumber에서 테스트가 완료된 부분을 중복 검사하는건 아닌지?
         describe('LottoNumber 유효성 검사', () => {
             const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
 
@@ -117,15 +117,14 @@ describe('static of() 테스트', () => {
         const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
         const bonusNumber = BonusNumber.from(45, lotto);
         expect(bonusNumber).toBeInstanceOf(BonusNumber);
-        expect(bonusNumber.getNumber()).toBe(45);
+        expect(bonusNumber.number).toBe(45);
     });
 });
 
-// TODO 이미 앞선 단계에서 검증된 사항은 아닌지?
-describe('getNumber() 테스트', () => {
+describe('get number 테스트', () => {
     it('BonusNumber를 숫자 형태로 반환한다.', () => {
         const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
         const bonusNumberInstance = BonusNumber.from(45, lotto);
-        expect(bonusNumberInstance.getNumber()).toBe(45);
+        expect(bonusNumberInstance.number).toBe(45);
     });
 });

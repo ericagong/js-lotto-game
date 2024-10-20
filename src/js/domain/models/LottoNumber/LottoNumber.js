@@ -1,3 +1,4 @@
+import { isNumber, isInteger } from '../../utils/utils';
 import {
     LottoNumberNotNumberError,
     LottoNumberNotIntegerError,
@@ -14,33 +15,26 @@ export default class LottoNumber {
         return new LottoNumber(number);
     }
 
-    constructor(number) {
-        this.#validate(number);
-        this.#number = number;
-    }
-
-    #isNumber(target) {
-        return typeof target === 'number';
-    }
-
-    #isInteger(target) {
-        return Number.isInteger(target);
-    }
-
-    #isInRange(target) {
+    static #isInRange(target) {
         return (
             LottoNumber.LOWER_BOUND <= target &&
             target <= LottoNumber.UPPER_BOUND
         );
     }
 
-    #validate(number) {
-        if (!this.#isNumber(number)) throw new LottoNumberNotNumberError();
-        if (!this.#isInteger(number)) throw new LottoNumberNotIntegerError();
-        if (!this.#isInRange(number)) throw new LottoNumberOutOfRangeError();
+    static #validate(number) {
+        if (!isNumber(number)) throw new LottoNumberNotNumberError();
+        if (!isInteger(number)) throw new LottoNumberNotIntegerError();
+        if (!LottoNumber.#isInRange(number))
+            throw new LottoNumberOutOfRangeError();
     }
 
-    getNumber() {
+    constructor(number) {
+        LottoNumber.#validate(number);
+        this.#number = number;
+    }
+
+    get number() {
         return this.#number;
     }
 }

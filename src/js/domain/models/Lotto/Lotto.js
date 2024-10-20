@@ -1,9 +1,14 @@
-import LottoNumber from '../LottoNumber/LottoNumber.js';
+import {
+    isArray,
+    hasDuplicated,
+    sortNumbersAscending,
+} from '../../utils/utils.js';
 import {
     LottoNumbersNotArrayError,
     LottoNumbersLengthNotSixError,
     LottoNumbersDuplicatedError,
 } from './errors.js';
+import LottoNumber from '../LottoNumber/LottoNumber.js';
 
 export default class Lotto {
     #lottoNumbers;
@@ -14,39 +19,25 @@ export default class Lotto {
         return new Lotto(numbers);
     }
 
-    constructor(numbers) {
-        this.#validate(numbers);
+    static #hasDigit(target) {
+        return target.length !== Lotto.DIGITS;
+    }
 
-        numbers = this.#sortNumbersAscending(numbers);
+    static #validate(numbers) {
+        if (!isArray(numbers)) throw new LottoNumbersNotArrayError();
+        if (Lotto.#hasDigit(numbers)) throw new LottoNumbersLengthNotSixError();
+        if (hasDuplicated(numbers)) throw new LottoNumbersDuplicatedError();
+    }
+
+    constructor(numbers) {
+        Lotto.#validate(numbers);
+
+        numbers = sortNumbersAscending(numbers);
 
         this.#lottoNumbers = numbers.map(LottoNumber.of);
     }
 
-    #validate(numbers) {
-        if (this.#isNotArray(numbers)) throw new LottoNumbersNotArrayError();
-        if (this.#isLottoDigitLength(numbers))
-            throw new LottoNumbersLengthNotSixError();
-        if (this.#hasDuplicated(numbers))
-            throw new LottoNumbersDuplicatedError();
-    }
-
-    #isNotArray(target) {
-        return !Array.isArray(target);
-    }
-
-    #isLottoDigitLength(target) {
-        return target.length !== Lotto.DIGITS;
-    }
-
-    #hasDuplicated(target) {
-        return new Set(target).size !== target.length;
-    }
-
-    #sortNumbersAscending(target) {
-        return target.sort((a, b) => Number(a) - Number(b));
-    }
-
     getLottoNumbers() {
-        return this.#lottoNumbers.map((lottoNumber) => lottoNumber.getNumber());
+        return this.#lottoNumbers.map((lottoNumber) => lottoNumber.number);
     }
 }

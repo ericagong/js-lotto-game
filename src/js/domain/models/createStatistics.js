@@ -13,7 +13,7 @@ export default function createStatistics() {
         ]);
 
         ranks.forEach((rank) => {
-            const key = rank.getRank();
+            const key = rank.rank;
             rankCounts.set(key, rankCounts.get(key) + 1);
         });
 
@@ -36,7 +36,7 @@ export default function createStatistics() {
         const totalPurchased = LOTTO_UNIT_PRICE * ranks.length;
 
         ranks.forEach((rank) => {
-            totalRevenue += rank.getPrize();
+            totalRevenue += rank.prize;
         });
 
         const revenueRate = (totalRevenue / totalPurchased) * 100;

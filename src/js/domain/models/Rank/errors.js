@@ -8,6 +8,7 @@ export class RankNotNumberError extends ValidationError {
     }
 }
 
+// TODO 순환참조 문제 해결
 export class RankOutOfRangeError extends ValidationError {
     static MESSAGE = '순위는 [1, 6] 사이 범위여야합니다.';
 

@@ -1,5 +1,10 @@
-import Lotto from '../Lotto/Lotto.js';
+// TODO 순환 참조 문제 해결
+// import {
+//     isInstanceOfLotto,
+//     isInstanceOfBonusNumber,
+// } from '../../utils/utils.js';
 import BonusNumber from '../BonusNumber/BonusNumber.js';
+import Lotto from '../Lotto/Lotto.js';
 import {
     NotLottoInstanceError,
     NotBonusNumberInstanceError,
@@ -7,6 +12,7 @@ import {
 
 import Rank, { RANKS } from '../Rank/Rank.js';
 
+// TODO match 관련 함수 WinningLotto 외부의 당첨 확인 객체로 분리
 export default class WinningLotto {
     #lotto;
     #bonusNumber;
@@ -15,56 +21,51 @@ export default class WinningLotto {
         return new WinningLotto(lotto, bonusNumber);
     }
 
-    constructor(lotto, bonusNumber) {
-        this.#validateLotto(lotto);
-        this.#lotto = lotto;
-
-        this.#validateBonusNumber(bonusNumber);
-        this.#bonusNumber = bonusNumber;
+    static #isInstanceOfBonusNumber(bonusNumber) {
+        return bonusNumber instanceof BonusNumber;
     }
 
-    #isNotLottoInstance(target) {
-        return !(target instanceof Lotto);
+    static #isInstanceOfLotto(lotto) {
+        return lotto instanceof Lotto;
     }
 
-    #isNotBonusNumberInstance(target) {
-        return !(target instanceof BonusNumber);
+    static #validateLotto(lotto) {
+        if (!WinningLotto.#isInstanceOfLotto(lotto))
+            throw new NotLottoInstanceError();
     }
 
-    #validateLotto(lotto) {
-        if (this.#isNotLottoInstance(lotto)) throw new NotLottoInstanceError();
-    }
-
-    #validateBonusNumber(bonusNumber) {
-        if (this.#isNotBonusNumberInstance(bonusNumber))
+    static #validateBonusNumber(bonusNumber) {
+        if (!WinningLotto.#isInstanceOfBonusNumber(bonusNumber))
             throw new NotBonusNumberInstanceError();
     }
 
-    #getMatchCount(winningNumbers, targetNumbers) {
-        return winningNumbers.filter((number) => targetNumbers.includes(number))
-            .length;
+    constructor(lotto, bonusNumber) {
+        WinningLotto.#validateLotto(lotto);
+        WinningLotto.#validateBonusNumber(bonusNumber);
+
+        this.#lotto = lotto;
+        this.#bonusNumber = bonusNumber;
     }
 
-    // TODO 메소드를 클래스 내부에 포함하는 기준을 무엇으로 해야하는지?
-    // util 함수, class 외부, static, non-static 인스턴스 메소드(prototype), private 메소드,
-    #isBonusMatch(bonusNumber, targetNumbers) {
-        return targetNumbers.includes(bonusNumber);
+    #isBonusMatch(targetNumbers) {
+        return targetNumbers.includes(this.#bonusNumber.number);
+    }
+
+    #getMatchCount(targetNumbers) {
+        const winningLottoNumbers = new Set(this.#lotto.getLottoNumbers());
+        const matchCount = targetNumbers.reduce(
+            (count, number) =>
+                winningLottoNumbers.has(number) ? count + 1 : count,
+            0,
+        );
+        return matchCount;
     }
 
     #getMatchResult(targetLotto) {
-        const winningLottoNumbers = this.#lotto.getLottoNumbers();
         const targetLottoNumbers = targetLotto.getLottoNumbers();
 
-        const matchCount = this.#getMatchCount(
-            winningLottoNumbers,
-            targetLottoNumbers,
-        );
-
-        const bonusNumber = this.#bonusNumber.getNumber();
-        const isBonusMatch = this.#isBonusMatch(
-            bonusNumber,
-            targetLottoNumbers,
-        );
+        const matchCount = this.#getMatchCount(targetLottoNumbers);
+        const isBonusMatch = this.#isBonusMatch(targetLottoNumbers);
 
         return {
             matchCount,
@@ -72,6 +73,7 @@ export default class WinningLotto {
         };
     }
 
+    // matchCount&uisBonusMatch -> rank -> prize
     #getRankFromMatchResult(matchCount, isBonusMatch) {
         switch (matchCount) {
             case 6:
