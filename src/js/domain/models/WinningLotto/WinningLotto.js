@@ -4,8 +4,8 @@ import {
     NotLottoInstanceError,
     NotBonusNumberInstanceError,
 } from './errors.js';
-import { RANKS } from '../../constants.js';
-import Rank from '../Rank/Rank.js';
+
+import Rank, { RANKS } from '../Rank/Rank.js';
 
 export default class WinningLotto {
     #lotto;

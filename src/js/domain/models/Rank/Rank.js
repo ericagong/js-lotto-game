@@ -1,5 +1,13 @@
 import { RankNotNumberError, RankOutOfRangeError } from './errors.js';
-import { RANKS } from '../../constants.js';
+
+export const RANKS = {
+    FIRST: 1,
+    SECOND: 2,
+    THIRD: 3,
+    FOURTH: 4,
+    FIFTH: 5,
+    NONE: 6,
+};
 
 export default class Rank {
     // TODO 변수 선언 위치 : utils, 클래스 외부, 내부 static, non-static, private

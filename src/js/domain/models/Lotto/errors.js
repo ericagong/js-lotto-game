@@ -16,6 +16,7 @@ export class LottoNumbersNotArrayError extends LottoError {
     }
 }
 
+// TODO 순환 참조 문제 해결
 export class LottoNumbersLengthNotSixError extends LottoError {
     static MESSAGE = '로또 번호는 길이가 6인 배열 형태여야합니다.';
 

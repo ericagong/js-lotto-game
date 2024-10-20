@@ -4,10 +4,11 @@ import {
     LottoNumbersLengthNotSixError,
     LottoNumbersDuplicatedError,
 } from './errors.js';
-import { LOTTO_DIGITS } from '../../constants.js';
 
 export default class Lotto {
     #lottoNumbers;
+
+    static DIGITS = 6;
 
     static of(numbers) {
         return new Lotto(numbers);
@@ -34,7 +35,7 @@ export default class Lotto {
     }
 
     #isLottoDigitLength(target) {
-        return target.length !== LOTTO_DIGITS;
+        return target.length !== Lotto.DIGITS;
     }
 
     #hasDuplicated(target) {

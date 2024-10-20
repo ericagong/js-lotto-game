@@ -4,13 +4,10 @@ import {
     PurchasingPriceLessLowerBoundError,
     PurchasingPriceAboveUpperBoundError,
 } from './errors.js';
-import {
-    LOTTO_UNIT_PRICE,
-    LOTTO_DIGITS,
-    LOTTO_LOWER_BOUND,
-    LOTTO_UPPER_BOUND,
-} from '../../constants.js';
 import Lotto from '../Lotto/Lotto.js';
+import LottoNumber from '../LottoNumber/LottoNumber.js';
+
+export const LOTTO_UNIT_PRICE = 1_000;
 
 // TODO 한 번 더 function createLottoMachine으로 wrapping하는 목적?
 export default function createLottoMachine() {
@@ -41,10 +38,10 @@ export default function createLottoMachine() {
 
     const generateLottoNumbers = () => {
         const lottoNumbers = new Set();
-        while (lottoNumbers.size < LOTTO_DIGITS) {
+        while (lottoNumbers.size < Lotto.DIGITS) {
             const randomNumber =
-                Math.floor(Math.random() * LOTTO_UPPER_BOUND) +
-                LOTTO_LOWER_BOUND;
+                Math.floor(Math.random() * LottoNumber.UPPER_BOUND) +
+                LottoNumber.LOWER_BOUND;
             lottoNumbers.add(randomNumber);
         }
         return Array.from(lottoNumbers);

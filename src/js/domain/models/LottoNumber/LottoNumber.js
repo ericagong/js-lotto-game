@@ -1,4 +1,3 @@
-import { LOTTO_LOWER_BOUND, LOTTO_UPPER_BOUND } from '../../constants.js';
 import {
     LottoNumberNotNumberError,
     LottoNumberNotIntegerError,
@@ -7,6 +6,9 @@ import {
 
 export default class LottoNumber {
     #number;
+
+    static LOWER_BOUND = 1;
+    static UPPER_BOUND = 45;
 
     static of(number) {
         return new LottoNumber(number);
@@ -26,7 +28,10 @@ export default class LottoNumber {
     }
 
     #isInRange(target) {
-        return LOTTO_LOWER_BOUND <= target && target <= LOTTO_UPPER_BOUND;
+        return (
+            LottoNumber.LOWER_BOUND <= target &&
+            target <= LottoNumber.UPPER_BOUND
+        );
     }
 
     #validate(number) {
