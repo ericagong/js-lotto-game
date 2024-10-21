@@ -1,4 +1,4 @@
-import { LOTTO_UNIT_PRICE } from '../LottoMachine/LottoMachine.js';
+import { LOTTO_UNIT_PRICE } from '../LottoMachine/issueLottoOf.js';
 
 const DECIMAL_POINT = 2;
 const endsWithZero = /.\d+0/;

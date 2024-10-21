@@ -54,7 +54,7 @@ const issueLotto = () => {
 const calculateIssueAmount = (purchasingPrice) =>
     Math.floor(purchasingPrice / LOTTO_UNIT_PRICE);
 
-export const issueLottoOf = (purchasingPrice) => {
+export default function issueLottoOf(purchasingPrice) {
     validate(purchasingPrice);
 
     const totalIssueAmount = calculateIssueAmount(purchasingPrice);
@@ -65,4 +65,4 @@ export const issueLottoOf = (purchasingPrice) => {
         issuedLottos.push(issueLotto());
     }
     return issuedLottos;
-};
+}

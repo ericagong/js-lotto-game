@@ -1,4 +1,4 @@
-import { issueLottoOf } from '../src/js/domain/models/LottoMachine/LottoMachine.js';
+import issueLottoOf from '../src/js/domain/models/LottoMachine/issueLottoOf.js';
 import {
     PurchasingPriceNotNumberError,
     PurchasingPriceIsNegativeError,

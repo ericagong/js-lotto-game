@@ -1,9 +1,9 @@
-import { isNumber, isInteger } from '../../utils/utils';
+import { isNumber, isInteger } from '../../utils/utils.js';
 import {
     LottoNumberNotNumberError,
     LottoNumberNotIntegerError,
     LottoNumberOutOfRangeError,
-} from './errors';
+} from './errors.js';
 
 export default class LottoNumber {
     #number;

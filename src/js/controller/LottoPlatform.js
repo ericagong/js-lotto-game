@@ -1,8 +1,9 @@
-import { issueLottoOf } from '../domain/models/LottoMachine/LottoMachine.js';
+import issueLottoOf from '../domain/models/LottoMachine/issueLottoOf.js';
 import Lotto from '../domain/models/Lotto/Lotto.js';
 import { determineRank } from '../domain/models/Rank/Rank.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
-import createStatistics from '../domain/models/Statistics/calculateRevenue.js';
+import countRanks from '../domain/models/Statistics/countRanks.js';
+import calculateRevenue from '../domain/models/Statistics/calculateRevenue.js';
 import View from '../UI/View.js';
 import { RetryError } from './errors.js';
 
@@ -18,12 +19,13 @@ export default class LottoPlatform {
 
     #issueLottos(purchasingPrice) {
         this.#lottos = issueLottoOf(purchasingPrice);
+
         this.#view.printLine(`${this.#lottos.length}개를 구매했습니다.`);
     }
 
     #getLottoNumbersLottos() {
-        this.#lottos.forEach((targetLotto) =>
-            this.#view.printLine(targetLotto.getLottoNumbers()),
+        this.#lottos.forEach((lotto) =>
+            this.#view.printLine(lotto.getLottoNumbers()),
         );
         this.#view.printLine('');
     }
@@ -37,16 +39,18 @@ export default class LottoPlatform {
             this.#lottoWithWinningNumbers,
             bonusNumber,
         );
-        this.#lottos.forEach((targetLotto) => {
-            const targetLottoNumbers = targetLotto.getLottoNumbers();
-            const matchCount = winningLotto.countMatch(targetLottoNumbers);
-            const isBonusMatch = winningLotto.isBonusMatch(targetLottoNumbers);
+
+        this.#lottos.forEach((lotto) => {
+            const lottoNumbers = lotto.getLottoNumbers();
+
+            const matchCount = winningLotto.countMatch(lottoNumbers);
+            const isBonusMatch = winningLotto.isBonusMatch(lottoNumbers);
+
             this.#ranks.push(determineRank(matchCount, isBonusMatch));
         });
     }
 
     #getLottoNumbersLottoStatistics() {
-        const { countRanks, calculateRevenue } = createStatistics();
         const rankCount = countRanks(this.#ranks);
         const revenueRate = calculateRevenue(this.#ranks);
         this.#view.printStatistics(rankCount, revenueRate);
