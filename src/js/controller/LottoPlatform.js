@@ -4,7 +4,7 @@ import { determineRank } from '../domain/models/Rank/Rank.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
 import countRanks from '../domain/models/Statistics/countRanks.js';
 import calculateRevenue from '../domain/models/Statistics/calculateRevenue.js';
-import View from '../UI/View.js';
+import createView from '../UI/index.js';
 import { RetryError } from './errors.js';
 
 export default class LottoPlatform {
@@ -14,20 +14,20 @@ export default class LottoPlatform {
     #ranks = [];
 
     constructor() {
-        this.#view = new View();
+        this.#view = createView();
     }
 
     #issueLottos(purchasingPrice) {
         this.#lottos = issueLottoOf(purchasingPrice);
 
-        this.#view.printLine(`${this.#lottos.length}개를 구매했습니다.`);
+        this.#view.purchasedTemplate(this.#lottos.length);
     }
 
     #getLottoNumbersLottos() {
-        this.#lottos.forEach((lotto) =>
-            this.#view.printLine(lotto.getLottoNumbers()),
+        const lottoNumbersArr = this.#lottos.map((lotto) =>
+            lotto.getLottoNumbers(),
         );
-        this.#view.printLine('');
+        this.#view.lottoNumbersTemplate(lottoNumbersArr);
     }
 
     #validateWinningNumbers(winningNumbers) {
@@ -53,7 +53,7 @@ export default class LottoPlatform {
     #getLottoNumbersLottoStatistics() {
         const rankCount = countRanks(this.#ranks);
         const revenueRate = calculateRevenue(this.#ranks);
-        this.#view.printStatistics(rankCount, revenueRate);
+        this.#view.statisticsTemplate(rankCount, revenueRate);
     }
 
     async runOnce() {
@@ -72,7 +72,7 @@ export default class LottoPlatform {
             );
             this.#getLottoNumbersLottoStatistics();
         } catch (error) {
-            this.#view.printLine(error.message);
+            this.#view.errorMessageTemplate(error.message);
         } finally {
             this.#view.close();
         }
@@ -121,7 +121,7 @@ export default class LottoPlatform {
                     });
                 }
             } catch (error) {
-                this.#view.printLine(error.message);
+                this.#view.errorMessageTemplate(error.message);
             }
         }
 
