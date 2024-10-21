@@ -17,7 +17,7 @@ export class PurchasingPriceNotNumberError extends PurchasingPriceError {
 }
 
 export class PurchasingPriceIsNegativeError extends PurchasingPriceError {
-    static MESSAGE = '구매 금액은 음수가 아니어야합니다.';
+    static MESSAGE = '구매 금액은 0 이상이어야 합니다.';
 
     constructor() {
         super(PurchasingPriceIsNegativeError.MESSAGE);
@@ -33,7 +33,7 @@ export class PurchasingPriceLessLowerBoundError extends PurchasingPriceError {
 }
 
 export class PurchasingPriceAboveUpperBoundError extends PurchasingPriceError {
-    static MESSAGE = '구매 금액은 100,000 초과하지않아야합니다.';
+    static MESSAGE = '구매 금액은 최대 100,000원 이하여야합니다..';
 
     constructor() {
         super(PurchasingPriceAboveUpperBoundError.MESSAGE);

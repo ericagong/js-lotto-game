@@ -1,4 +1,4 @@
-import createLottoMachine from '../src/js/domain/models/LottoMachine/createLottoMachine.js';
+import { issueLottoOf } from '../src/js/domain/models/LottoMachine/LottoMachine.js';
 import {
     PurchasingPriceNotNumberError,
     PurchasingPriceIsNegativeError,
@@ -8,7 +8,6 @@ import {
 import Lotto from '../src/js/domain/models/Lotto/Lotto.js';
 
 describe('purchasingPrice 내에서 구매할 수 있는 최대 개수의 Lotto를 발행한다.', () => {
-    const { issueLottoOf } = createLottoMachine();
     describe('issueLottoOf(purchasingPrice) 테스트', () => {
         describe('purchasingPrice 유효성 검사 테스트', () => {
             describe('구매 금액이 숫자 형태가 아닌 경우, 에러를 발생시킨다.', () => {

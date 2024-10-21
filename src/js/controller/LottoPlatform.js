@@ -1,4 +1,4 @@
-import createLottoMachine from '../domain/models/LottoMachine/createLottoMachine.js';
+import { issueLottoOf } from '../domain/models/LottoMachine/LottoMachine.js';
 import Lotto from '../domain/models/Lotto/Lotto.js';
 import { determineRank } from '../domain/models/Rank/Rank.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
@@ -17,7 +17,6 @@ export default class LottoPlatform {
     }
 
     #issueLottos(purchasingPrice) {
-        const { issueLottoOf } = createLottoMachine();
         this.#lottos = issueLottoOf(purchasingPrice);
         this.#view.printLine(`${this.#lottos.length}개를 구매했습니다.`);
     }

@@ -1,5 +1,5 @@
 import { RANKS } from './Rank/Rank.js';
-import { LOTTO_UNIT_PRICE } from './LottoMachine/createLottoMachine.js';
+import { LOTTO_UNIT_PRICE } from './LottoMachine/LottoMachine.js';
 
 export default function createStatistics() {
     const countRanks = (ranks) => {
