@@ -1,22 +1,14 @@
-import BonusNumber from '../BonusNumber/BonusNumber.js';
 import Lotto from '../Lotto/Lotto.js';
-import {
-    NotLottoInstanceError,
-    NotBonusNumberInstanceError,
-} from './errors.js';
+import { hasDuplicated } from '../../utils/utils.js';
+import { NotLottoInstanceError, BonusNumberDuplicatedError } from './errors.js';
+import LottoNumber from '../LottoNumber/LottoNumber.js';
 
-// TODO match 관련 함수 WinningLotto 외부의 당첨 확인 객체로 분리
 export default class WinningLotto {
     #lotto;
     #bonusNumber;
 
     static from(lotto, bonusNumber) {
         return new WinningLotto(lotto, bonusNumber);
-    }
-
-    // TODO 순환 참조 문제 해결
-    static #isInstanceOfBonusNumber(bonusNumber) {
-        return bonusNumber instanceof BonusNumber;
     }
 
     static #isInstanceOfLotto(lotto) {
@@ -28,17 +20,19 @@ export default class WinningLotto {
             throw new NotLottoInstanceError();
     }
 
-    static #validateBonusNumber(bonusNumber) {
-        if (!WinningLotto.#isInstanceOfBonusNumber(bonusNumber))
-            throw new NotBonusNumberInstanceError();
+    static #validateBonusNumber(bonusNumber, lottoNumbers) {
+        if (hasDuplicated([bonusNumber, ...lottoNumbers]))
+            throw new BonusNumberDuplicatedError();
     }
 
     constructor(lotto, bonusNumber) {
         WinningLotto.#validateLotto(lotto);
-        WinningLotto.#validateBonusNumber(bonusNumber);
+
+        const lottoNumbers = lotto.getLottoNumbers();
+        WinningLotto.#validateBonusNumber(bonusNumber, lottoNumbers);
 
         this.#lotto = lotto;
-        this.#bonusNumber = bonusNumber;
+        this.#bonusNumber = LottoNumber.of(bonusNumber);
     }
 
     isBonusMatch(targetNumbers) {
@@ -54,31 +48,4 @@ export default class WinningLotto {
         );
         return matchCount;
     }
-
-    // matchCount&uisBonusMatch -> rank -> prize
-    // #getRankFromMatchResult(matchCount, isBonusMatch) {
-    //     switch (matchCount) {
-    //         case 6:
-    //             return RANKS.FIRST;
-    //         case 5:
-    //             if (isBonusMatch) return RANKS.SECOND;
-    //             return RANKS.SECOND;
-    //         case 4:
-    //             return RANKS.FOURTH;
-    //         case 3:
-    //             return RANKS.FIFTH;
-    //         default:
-    //             return RANKS.NONE;
-    //     }
-    // }
-
-    // getRank(targetLotto) {
-    //     const targetLottoNumbers = targetLotto.getLottoNumbers();
-
-    //     const matchCount = this.#countMatch(targetLottoNumbers);
-    //     const isBonusMatch = this.#isBonusMatch(targetLottoNumbers);
-
-    //     const rank = this.#getRankFromMatchResult(matchCount, isBonusMatch);
-    //     return Rank.of(rank);
-    // }
 }

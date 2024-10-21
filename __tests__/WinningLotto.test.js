@@ -1,69 +1,62 @@
 import Lotto from '../src/js/domain/models/Lotto/Lotto.js';
-import BonusNumber from '../src/js/domain/models/BonusNumber/BonusNumber.js';
 import WinningLotto from '../src/js/domain/models/WinningLotto/WinningLotto.js';
 import {
     NotLottoInstanceError,
-    NotBonusNumberInstanceError,
+    BonusNumberDuplicatedError,
 } from '../src/js/domain/models/WinningLotto/errors.js';
 
 describe('WinningLotto 생성자 테스트', () => {
-    describe('lotto가 Lotto 인스턴스가 아니면, 에러를 발생시킨다.', () => {
-        it.each([
-            1,
-            '1',
-            'erica',
-            true,
-            null,
-            undefined,
-            function () {},
-            {},
-            [],
-        ])('lotto: %p', (lotto) => {
-            expect(() => new WinningLotto(lotto, 45)).toThrow(
-                NotLottoInstanceError,
+    describe('lotto 유효성 테스트', () => {
+        describe('Lotto 인스턴스가 아니면, 에러를 발생시킨다.', () => {
+            it.each([
+                1,
+                '1',
+                'erica',
+                true,
+                null,
+                undefined,
+                function () {},
+                {},
+                [],
+            ])('lotto: %p', (lotto) => {
+                expect(() => new WinningLotto(lotto, 45)).toThrow(
+                    NotLottoInstanceError,
+                );
+            });
+        });
+    });
+
+    describe('bonusNumber 유효성 테스트', () => {
+        describe('bonusNumber가 winningLottoNumbers와 중복되면, 에러를 발생시킨다.', () => {
+            const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
+            it.each([1, 2, 3, 4, 5, 6])(
+                'bonusNumber: %p winningLottoNumbers: [1, 2, 3, 4, 5, 6]',
+                (bonusNumber) => {
+                    expect(() => new WinningLotto(lotto, bonusNumber)).toThrow(
+                        BonusNumberDuplicatedError,
+                    );
+                },
             );
         });
     });
 
-    describe('bonusNumber가 BonusNumber 인스턴스가 아니면, 에러를 발생시킨다.', () => {
+    it('인자로 Lotto와 1-45 사이의 중복되지 않는 bonusNumber를 받으면, 에러를 발생시키지 않는다.', () => {
         const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-        it.each([
-            1,
-            '1',
-            'erica',
-            true,
-            null,
-            undefined,
-            function () {},
-            {},
-            [],
-        ])('bonusNumber: %p', (bonusNumber) => {
-            expect(() => new WinningLotto(lotto, bonusNumber)).toThrow(
-                NotBonusNumberInstanceError,
-            );
-        });
-    });
-
-    it('인자로 Lotto와 BonusNumber 인스턴스를 받으면, 에러를 발생시키지 않는다.', () => {
-        const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-        const bonusNumber = BonusNumber.from(45, lotto);
-        expect(() => new WinningLotto(lotto, bonusNumber)).not.toThrow();
+        expect(() => new WinningLotto(lotto, 45)).not.toThrow();
     });
 });
 
 describe('static from(lotto, bonusNumber) 테스트', () => {
     it('WinningLotto 인스턴스를 반환한다.', () => {
         const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-        const bonusNumber = BonusNumber.from(45, lotto);
-        const winningLotto = WinningLotto.from(lotto, bonusNumber);
+        const winningLotto = WinningLotto.from(lotto, 45);
         expect(winningLotto).toBeInstanceOf(WinningLotto);
     });
 });
 
 describe('isBonusMatch(targetNumbers) 테스트', () => {
     const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-    const bonusNumber = BonusNumber.from(45, lotto);
-    const winningLotto = WinningLotto.from(lotto, bonusNumber);
+    const winningLotto = WinningLotto.from(lotto, 45);
 
     it('보너스 번호가 일치하면, true를 반환한다.', () => {
         const targetNumbers = [1, 2, 3, 4, 5, 45];
@@ -78,8 +71,7 @@ describe('isBonusMatch(targetNumbers) 테스트', () => {
 
 describe('countMatch(targetNumbers) 테스트', () => {
     const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-    const bonusNumber = BonusNumber.from(45, lotto);
-    const winningLotto = WinningLotto.from(lotto, bonusNumber);
+    const winningLotto = WinningLotto.from(lotto, 45);
 
     describe('일치하는 번호 개수를 반환한다.', () => {
         it.each([
