@@ -1,4 +1,4 @@
-import Rank from '../src/js/domain/models/Rank/Rank.js';
+import Rank, { determineRank } from '../src/js/domain/models/Rank/Rank.js';
 import {
     RankNotNumberError,
     RankOutOfRangeError,
@@ -44,7 +44,7 @@ describe('static of() 테스트', () => {
 });
 
 describe('get rank 테스트', () => {
-    describe('순위에 맞는 올바른 rank를 반환한다.', () => {
+    describe('rank를 반환한다.', () => {
         it.each([1, 2, 3, 4, 5, 6])('rank: %p', (rank) => {
             expect(new Rank(rank).rank).toBe(rank);
         });
@@ -52,18 +52,33 @@ describe('get rank 테스트', () => {
 });
 
 describe('get prize 테스트', () => {
-    describe('순위에 맞는 올바른 prize를 반환한다.', () => {
-        const testCases = [
+    describe('prize를 반환한다.', () => {
+        it.each([
             { rank: 1, prize: 2_000_000_000 },
             { rank: 2, prize: 30_000_000 },
             { rank: 3, prize: 1_500_000 },
             { rank: 4, prize: 50_000 },
             { rank: 5, prize: 5_000 },
             { rank: 6, prize: 0 },
-        ];
-
-        it.each(testCases)('rank: %rank, prize: $prize', ({ rank, prize }) => {
+        ])('rank: %rank, prize: $prize', ({ rank, prize }) => {
             expect(new Rank(rank).prize).toBe(prize);
         });
+    });
+});
+
+describe('determineRank(matchCount, isBonusMatch) 테스트', () => {
+    describe('matchCount와 isBonusMatch에 따라, Rank를 반환한다.', () => {
+        it.each([
+            { matchCount: 6, isBonusMatch: false, rank: 1 },
+            { matchCount: 5, isBonusMatch: true, rank: 2 },
+            { matchCount: 5, isBonusMatch: false, rank: 3 },
+            { matchCount: 4, isBonusMatch: false, rank: 4 },
+            { matchCount: 3, isBonusMatch: false, rank: 5 },
+        ])(
+            'matchCount: %matchCount, isBonusMatch: %isBonusMatch, rank: $rank',
+            ({ matchCount, isBonusMatch, rank }) => {
+                expect(determineRank(matchCount, isBonusMatch).rank).toBe(rank);
+            },
+        );
     });
 });

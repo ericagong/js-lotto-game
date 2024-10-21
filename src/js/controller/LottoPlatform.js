@@ -1,5 +1,6 @@
 import createLottoMachine from '../domain/models/LottoMachine/createLottoMachine.js';
 import Lotto from '../domain/models/Lotto/Lotto.js';
+import { determineRank } from '../domain/models/Rank/Rank.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
 import createStatistics from '../domain/models/createStatistics.js';
 import View from '../UI/View.js';
@@ -38,7 +39,10 @@ export default class LottoPlatform {
             bonusNumber,
         );
         this.#lottos.forEach((targetLotto) => {
-            this.#ranks.push(winningLotto.getRank(targetLotto));
+            const targetLottoNumbers = targetLotto.getLottoNumbers();
+            const matchCount = winningLotto.countMatch(targetLottoNumbers);
+            const isBonusMatch = winningLotto.isBonusMatch(targetLottoNumbers);
+            this.#ranks.push(determineRank(matchCount, isBonusMatch));
         });
     }
 

@@ -29,14 +29,17 @@ export default class Rank {
         return new Rank(rank);
     }
 
-    static #validateRank(rank) {
+    static #isInRange(rank) {
+        return rank >= RANKS.FIRST && rank <= RANKS.NONE;
+    }
+
+    static #validate(rank) {
         if (!isNumber(rank)) throw new RankNotNumberError();
-        if (rank < RANKS.FIRST || rank > RANKS.NONE)
-            throw new RankOutOfRangeError();
+        if (!Rank.#isInRange(rank)) throw new RankOutOfRangeError();
     }
 
     constructor(rank) {
-        Rank.#validateRank(rank);
+        Rank.#validate(rank);
 
         this.#rank = rank;
         this.#prize = PRIZES[rank];
@@ -50,3 +53,12 @@ export default class Rank {
         return this.#prize;
     }
 }
+
+export const determineRank = (matchCount, isBonusMatch) => {
+    if (matchCount === 6) return Rank.of(RANKS.FIRST);
+    if (matchCount === 5 && isBonusMatch) return Rank.of(RANKS.SECOND);
+    if (matchCount === 5) return Rank.of(RANKS.THIRD);
+    if (matchCount === 4) return Rank.of(RANKS.FOURTH);
+    if (matchCount === 3) return Rank.of(RANKS.FIFTH);
+    return Rank.of(RANKS.NONE); // 매칭이 3개 미만일 때 NONE 반환
+};
