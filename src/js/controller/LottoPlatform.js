@@ -2,7 +2,7 @@ import { issueLottoOf } from '../domain/models/LottoMachine/LottoMachine.js';
 import Lotto from '../domain/models/Lotto/Lotto.js';
 import { determineRank } from '../domain/models/Rank/Rank.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
-import createStatistics from '../domain/models/createStatistics.js';
+import createStatistics from '../domain/models/Statistics/calculateRevenue.js';
 import View from '../UI/View.js';
 import { RetryError } from './errors.js';
 
