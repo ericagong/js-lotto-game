@@ -7,6 +7,7 @@ import calculateRevenue from '../domain/models/Statistics/calculateRevenue.js';
 import createView from '../UI/index.js';
 import { RetryError } from './errors.js';
 
+// TODO class 아닌 형태로 구현 변경!!
 export default class LottoPlatform {
     #view;
     #lottoWithWinningNumbers;
@@ -19,22 +20,20 @@ export default class LottoPlatform {
 
     #issueLottos(purchasingPrice) {
         this.#lottos = issueLottoOf(purchasingPrice);
-
-        this.#view.purchasedTemplate(this.#lottos.length);
-    }
-
-    #getLottoNumbersLottos() {
-        const lottoNumbersArr = this.#lottos.map((lotto) =>
+        const issuedAmount = this.#lottos.length;
+        const lottoNumbers = this.#lottos.map((lotto) =>
             lotto.getLottoNumbers(),
         );
-        this.#view.lottoNumbersTemplate(lottoNumbersArr);
+
+        this.#view.purchasedTemplate(issuedAmount);
+        this.#view.lottoNumbersTemplate(lottoNumbers);
     }
 
-    #validateWinningNumbers(winningNumbers) {
+    #validate(winningNumbers) {
         this.#lottoWithWinningNumbers = Lotto.of(winningNumbers);
     }
 
-    #checkLottoResult(bonusNumber) {
+    #getRanks(bonusNumber) {
         const winningLotto = new WinningLotto(
             this.#lottoWithWinningNumbers,
             bonusNumber,
@@ -50,27 +49,29 @@ export default class LottoPlatform {
         });
     }
 
-    #getLottoNumbersLottoStatistics() {
+    #getStatistics() {
         const rankCount = countRanks(this.#ranks);
         const revenueRate = calculateRevenue(this.#ranks);
         this.#view.statisticsTemplate(rankCount, revenueRate);
     }
 
+    // TODO bind 통해 2개로 만들기?
+    // TODO generator 로 순서 지정?
     async runOnce() {
         try {
             await this.#view.addPurchasingPriceHandler((purchasingPrice) =>
                 this.#issueLottos(purchasingPrice),
             );
-            this.#getLottoNumbersLottos();
 
             await this.#view.addWinningNumberHandler((winningNumbers) =>
-                this.#validateWinningNumbers(winningNumbers),
+                this.#validate(winningNumbers),
             );
 
             await this.#view.addBonusNumberHandler((bonusNumber) =>
-                this.#checkLottoResult(bonusNumber),
+                this.#getRanks(bonusNumber),
             );
-            this.#getLottoNumbersLottoStatistics();
+
+            this.#getStatistics();
         } catch (error) {
             this.#view.errorMessageTemplate(error.message);
         } finally {
@@ -87,22 +88,21 @@ export default class LottoPlatform {
                     await this.#view.addPurchasingPriceHandler(
                         (purchasingPrice) => this.#issueLottos(purchasingPrice),
                     );
-                    this.#getLottoNumbersLottos();
                     goToFlag = 2;
                 }
 
                 while (goToFlag === 2) {
                     await this.#view.addWinningNumberHandler((winningNumbers) =>
-                        this.#validateWinningNumbers(winningNumbers),
+                        this.#validate(winningNumbers),
                     );
                     goToFlag = 3;
                 }
 
                 while (goToFlag === 3) {
                     await this.#view.addBonusNumberHandler((bonusNumber) =>
-                        this.#checkLottoResult(bonusNumber),
+                        this.#getRanks(bonusNumber),
                     );
-                    this.#getLottoNumbersLottoStatistics();
+                    this.#getStatistics();
                     goToFlag = 4;
                 }
 

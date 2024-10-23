@@ -18,7 +18,5 @@ export const convertToMatchingDataType = (input) => {
 
 const DEFAULT_SEPERATOR = ',';
 export const convertToArray = (input) => {
-    return input
-        .split(DEFAULT_SEPERATOR)
-        .map((element) => convertToMatchingDataType(element));
+    return input.split(DEFAULT_SEPERATOR).map(convertToMatchingDataType);
 };

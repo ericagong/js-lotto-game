@@ -1,5 +1,8 @@
 import readline from 'readline';
-import { convertToMatchingDataType, convertToArray } from './typeConverter.js';
+import {
+    convertToMatchingDataType,
+    convertToArray,
+} from './consoleTypeConverter.js';
 
 const readlineInterface = readline.createInterface({
     input: process.stdin,
@@ -40,8 +43,8 @@ export async function addWinningNumberHandler(eventHandler) {
 }
 
 export async function addBonusNumberHandler(eventHandler) {
-    const bonusNumberInput = await new Promise((resolve) =>
-        readlineInterface.question('> 보너스 번호를 입력해 주세요. ', resolve),
+    const bonusNumberInput = await readlineFromConsole(
+        GUIDE_MESSAGES.BONUS_NUMBER,
     );
     const bonusNumber = convertToMatchingDataType(bonusNumberInput);
 

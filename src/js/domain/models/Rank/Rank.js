@@ -19,11 +19,14 @@ const PRIZES = Object.freeze({
     [RANKS.NONE]: 0,
 });
 
+// TODO matchCount, isBonusMatch 정보까지 저장
 // TODO Rank는 총 5개 미리 만들어두기 (Map)
 // Rank 이름 바꾸기
 export default class Rank {
     #rank;
     #prize;
+    #matchCount;
+    #isBonusMatch;
 
     static of(rank) {
         return new Rank(rank);
