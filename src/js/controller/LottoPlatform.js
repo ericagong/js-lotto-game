@@ -3,7 +3,7 @@ import Lotto from '../domain/models/Lotto/Lotto.js';
 import { determineRank } from '../domain/models/Rank/Rank.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
 import countRanks from '../domain/models/Statistics/countRanks.js';
-import calculateRevenue from '../domain/models/Statistics/calculateRevenue.js';
+import calculateRevenueRate from '../domain/models/Statistics/calculateRevenueRate.js';
 import createView from '../UI/index.js';
 import { RetryError } from './errors.js';
 
@@ -51,8 +51,10 @@ export default class LottoPlatform {
 
     #getStatistics() {
         const rankCount = countRanks(this.#ranks);
-        const revenueRate = calculateRevenue(this.#ranks);
-        this.#view.statisticsTemplate(rankCount, revenueRate);
+        this.#view.statisticsTemplate(rankCount);
+
+        const revenueRate = calculateRevenueRate(this.#ranks);
+        this.#view.totalRevenueTemplate(revenueRate);
     }
 
     // TODO bind 통해 2개로 만들기?

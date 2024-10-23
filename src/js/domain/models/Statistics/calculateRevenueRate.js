@@ -11,7 +11,7 @@ const roundToSecondDecimalPoint = (number) => {
 };
 
 // TODO 파일 분리/함수 선언 위치 고민하기
-export default function calculateRevenue(ranks) {
+export default function calculateRevenueRate(ranks) {
     const totalPurchased = LOTTO_UNIT_PRICE * ranks.length;
 
     let totalRevenue = ranks.reduce((acc, rank) => acc + rank.prize, 0);

@@ -13,22 +13,23 @@ export function lottoNumbersTemplate(lottoNumbersArr) {
     dividerTemplate();
 }
 
+const GUIDE_LINE = '-'.repeat(20);
 function statisticsGuideTemplate() {
     write('당첨 통계');
-    write('--------------------');
+    write(GUIDE_LINE);
 }
 
 // 1, 2, 3, 4, 5
 const matchCounts = [6, 5, 5, 4, 3];
-const prizes = ['2,000,000,000', '30,000,000', '1,5000,000', '50,000', '5,000'];
+const prizes = ['2,000,000,000', '30,000,000', '1,500,000', '50,000', '5,000'];
 function summaryTemplate(count, idx) {
-    const extraInfo = idx === 2 ? ', 보너스 볼 일치' : '';
+    const extraInfo = idx === 1 ? ', 보너스 볼 일치' : '';
     const summary = `${matchCounts[idx]}개 일치${extraInfo} (${prizes[idx]}원) - ${count}개`;
     return summary;
 }
 
-function totalRevenueTemplate(revenue) {
-    write(`총 수익률은 ${revenue}%입니다.`);
+export function totalRevenueTemplate(revenueRate) {
+    write(`총 수익률은 ${revenueRate}%입니다.`);
     dividerTemplate();
 }
 
@@ -37,7 +38,7 @@ export function errorMessageTemplate(message) {
 }
 
 // TODO : UI로직에서 도메인 로직 분리 - matchCount, prizes 데이터 받아오게 처리
-export function statisticsTemplate(rankCount, revenueRate) {
+export function statisticsTemplate(rankCount) {
     statisticsGuideTemplate();
 
     const ranks = [];
@@ -47,6 +48,4 @@ export function statisticsTemplate(rankCount, revenueRate) {
     });
     const statistics = ranks.reverse();
     statistics.forEach((line) => write(line));
-
-    totalRevenueTemplate(revenueRate);
 }

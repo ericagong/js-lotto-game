@@ -1,7 +1,7 @@
-import calculateRevenue from '../src/js/domain/models/Statistics/calculateRevenue.js';
+import calculateRevenueRate from '../src/js/domain/models/Statistics/calculateRevenueRate.js';
 import Rank from '../src/js/domain/models/Rank/Rank.js';
 
-describe('calculateRevenue(ranks) 테스트', () => {
+describe('calculateRevenueRate(ranks) 테스트', () => {
     describe('당첨된 lottos 금액을 구매 금액으로 나눠 수익률 계산해 반환한다.', () => {
         describe('로또 개수가 1개인 경우', () => {
             const testCases = [
@@ -33,7 +33,7 @@ describe('calculateRevenue(ranks) 테스트', () => {
 
             it.each(testCases)('rank: $rank', ({ rank, expected }) => {
                 const ranks = [Rank.of(rank)];
-                expect(calculateRevenue(ranks)).toBe(expected.toString());
+                expect(calculateRevenueRate(ranks)).toBe(expected.toString());
             });
         });
 
@@ -50,7 +50,9 @@ describe('calculateRevenue(ranks) 테스트', () => {
 
             it.each(testCases)('ranks: $ranks', ({ ranks, expected }) => {
                 const ranksArr = ranks.map((rank) => Rank.of(rank));
-                expect(calculateRevenue(ranksArr)).toBe(expected.toString());
+                expect(calculateRevenueRate(ranksArr)).toBe(
+                    expected.toString(),
+                );
             });
         });
     });
