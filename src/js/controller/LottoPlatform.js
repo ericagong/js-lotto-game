@@ -51,6 +51,7 @@ const step4 = () => {
     view.statisticsGuideTemplate();
 
     const rankCounter = countRanks(ranks);
+    rankCounter.delete(Rank.of(6)); // 낙첨 제외
     rankCounter.forEach((count, rank) => {
         const { matchCount, isBonusMatch, prize } = rank;
         view.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });
