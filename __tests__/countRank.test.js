@@ -1,5 +1,5 @@
-import countRanks from '../src/js/domain/models/Statistics/countRanks.js';
 import Rank from '../src/js/domain/models/Rank/Rank.js';
+import countRanks from '../src/js/domain/models/Statistics/countRanks.js';
 
 describe('countRanks(ranks) 테스트', () => {
     describe('rank 개수를 [1등, 2등, 3등, 4등, 5등, 없음] 배열 형태로 세어 반환한다.', () => {

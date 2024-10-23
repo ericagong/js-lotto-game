@@ -7,129 +7,117 @@ import calculateRevenueRate from '../domain/models/Statistics/calculateRevenueRa
 import createView from '../UI/index.js';
 import { RetryError } from './errors.js';
 
-// TODO class 아닌 형태로 구현 변경!!
-export default class LottoPlatform {
-    #view;
-    #lottoWithWinningNumbers;
-    #lottos = [];
-    #ranks = [];
+let view = createView();
+let lottoWithWinningNumbers;
+let lottos = [];
+let ranks = [];
 
-    constructor() {
-        this.#view = createView();
-    }
+function issueLottos(purchasingPrice) {
+    lottos = issueLottoOf(purchasingPrice);
+    const issuedAmount = lottos.length;
+    const lottoNumbers = lottos.map((lotto) => lotto.getLottoNumbers());
 
-    #issueLottos(purchasingPrice) {
-        this.#lottos = issueLottoOf(purchasingPrice);
-        const issuedAmount = this.#lottos.length;
-        const lottoNumbers = this.#lottos.map((lotto) =>
-            lotto.getLottoNumbers(),
+    view.purchasedTemplate(issuedAmount);
+    view.lottoNumbersTemplate(lottoNumbers);
+}
+
+function validate(winningNumbers) {
+    lottoWithWinningNumbers = Lotto.of(winningNumbers);
+}
+
+function getRanks(bonusNumber) {
+    const winningLotto = new WinningLotto(lottoWithWinningNumbers, bonusNumber);
+
+    Rank.initializeRanks();
+
+    lottos.forEach((lotto) => {
+        const lottoNumbers = lotto.getLottoNumbers();
+
+        const matchCount = winningLotto.countMatch(lottoNumbers);
+        const isBonusMatch = winningLotto.isBonusMatch(lottoNumbers);
+
+        const rank = determineRank(matchCount, isBonusMatch);
+        ranks.push(rank);
+    });
+}
+
+function getStatistics() {
+    const rankCount = countRanks(ranks);
+    view.statisticsTemplate(rankCount);
+
+    const revenueRate = calculateRevenueRate(ranks);
+    view.totalRevenueTemplate(revenueRate);
+}
+
+async function runOnce() {
+    try {
+        await view.addPurchasingPriceHandler((purchasingPrice) =>
+            issueLottos(purchasingPrice),
         );
 
-        this.#view.purchasedTemplate(issuedAmount);
-        this.#view.lottoNumbersTemplate(lottoNumbers);
-    }
-
-    #validate(winningNumbers) {
-        this.#lottoWithWinningNumbers = Lotto.of(winningNumbers);
-    }
-
-    #getRanks(bonusNumber) {
-        const winningLotto = new WinningLotto(
-            this.#lottoWithWinningNumbers,
-            bonusNumber,
+        await view.addWinningNumberHandler((winningNumbers) =>
+            validate(winningNumbers),
         );
 
-        Rank.initializeRanks();
+        await view.addBonusNumberHandler((bonusNumber) =>
+            getRanks(bonusNumber),
+        );
 
-        this.#lottos.forEach((lotto) => {
-            const lottoNumbers = lotto.getLottoNumbers();
-
-            const matchCount = winningLotto.countMatch(lottoNumbers);
-            const isBonusMatch = winningLotto.isBonusMatch(lottoNumbers);
-
-            const rank = determineRank(matchCount, isBonusMatch);
-            this.#ranks.push(rank);
-        });
-    }
-
-    #getStatistics() {
-        const rankCount = countRanks(this.#ranks);
-        this.#view.statisticsTemplate(rankCount);
-
-        const revenueRate = calculateRevenueRate(this.#ranks);
-        this.#view.totalRevenueTemplate(revenueRate);
-    }
-
-    // [ ] bind 통해, debugging option을 주어 2개로 만들기
-    // [ ] generator 로 순서 지정?
-    async runOnce() {
-        try {
-            await this.#view.addPurchasingPriceHandler((purchasingPrice) =>
-                this.#issueLottos(purchasingPrice),
-            );
-
-            await this.#view.addWinningNumberHandler((winningNumbers) =>
-                this.#validate(winningNumbers),
-            );
-
-            await this.#view.addBonusNumberHandler((bonusNumber) =>
-                this.#getRanks(bonusNumber),
-            );
-
-            this.#getStatistics();
-        } catch (error) {
-            this.#view.errorMessageTemplate(error.message);
-        } finally {
-            this.#view.close();
-        }
-    }
-
-    async runUntilFinish() {
-        let goToFlag = 1;
-
-        while (goToFlag !== 5) {
-            try {
-                while (goToFlag === 1) {
-                    await this.#view.addPurchasingPriceHandler(
-                        (purchasingPrice) => this.#issueLottos(purchasingPrice),
-                    );
-                    goToFlag = 2;
-                }
-
-                while (goToFlag === 2) {
-                    await this.#view.addWinningNumberHandler((winningNumbers) =>
-                        this.#validate(winningNumbers),
-                    );
-                    goToFlag = 3;
-                }
-
-                while (goToFlag === 3) {
-                    await this.#view.addBonusNumberHandler((bonusNumber) =>
-                        this.#getRanks(bonusNumber),
-                    );
-                    this.#getStatistics();
-                    goToFlag = 4;
-                }
-
-                while (goToFlag === 4) {
-                    await this.#view.addRetryHandler((retry) => {
-                        switch (retry) {
-                            case 'y':
-                                goToFlag = 1;
-                                break;
-                            case 'n':
-                                goToFlag = 5;
-                                break;
-                            default:
-                                throw new RetryError();
-                        }
-                    });
-                }
-            } catch (error) {
-                this.#view.errorMessageTemplate(error.message);
-            }
-        }
-
-        this.#view.close();
+        getStatistics();
+    } catch (error) {
+        view.errorMessageTemplate(error.message);
+    } finally {
+        view.close();
     }
 }
+
+async function runUntilFinish() {
+    let goToFlag = 1;
+
+    while (goToFlag !== 5) {
+        try {
+            while (goToFlag === 1) {
+                await view.addPurchasingPriceHandler((purchasingPrice) =>
+                    issueLottos(purchasingPrice),
+                );
+                goToFlag = 2;
+            }
+
+            while (goToFlag === 2) {
+                await view.addWinningNumberHandler((winningNumbers) =>
+                    validate(winningNumbers),
+                );
+                goToFlag = 3;
+            }
+
+            while (goToFlag === 3) {
+                await view.addBonusNumberHandler((bonusNumber) =>
+                    getRanks(bonusNumber),
+                );
+                getStatistics();
+                goToFlag = 4;
+            }
+
+            while (goToFlag === 4) {
+                await view.addRetryHandler((retry) => {
+                    switch (retry) {
+                        case 'y':
+                            goToFlag = 1;
+                            break;
+                        case 'n':
+                            goToFlag = 5;
+                            break;
+                        default:
+                            throw new RetryError();
+                    }
+                });
+            }
+        } catch (error) {
+            view.errorMessageTemplate(error.message);
+        }
+    }
+
+    view.close();
+}
+
+export { runOnce, runUntilFinish };
