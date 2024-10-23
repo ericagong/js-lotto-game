@@ -10,6 +10,7 @@ import Buyer from '../domain/models/Buyer/Buyer.js';
 
 let view = createView();
 let lottoWithWinningNumbers;
+let winningLotto;
 let lottos = [];
 let ranks = [];
 
@@ -30,13 +31,15 @@ const step1 = (budget) => {
     view.dividerTemplate();
 };
 
-const validate = (winningNumbers) => {
+const step2 = (winningNumbers) => {
     lottoWithWinningNumbers = Lotto.of(winningNumbers);
 };
 
-const getRanks = (bonusNumber) => {
-    const winningLotto = new WinningLotto(lottoWithWinningNumbers, bonusNumber);
+const step3 = (bonusNumber) => {
+    winningLotto = new WinningLotto(lottoWithWinningNumbers, bonusNumber);
+};
 
+const getRanks = () => {
     Rank.initializeRanks();
 
     lottos.forEach((lotto) => {
@@ -66,6 +69,11 @@ const getStatistics = () => {
     view.dividerTemplate();
 };
 
+const step4 = () => {
+    getRanks();
+    getStatistics();
+};
+
 const runOnce = async () => {
     try {
         await view.addPurchasingPriceHandler((budget) => {
@@ -73,14 +81,12 @@ const runOnce = async () => {
         });
 
         await view.addWinningNumberHandler((winningNumbers) =>
-            validate(winningNumbers),
+            step2(winningNumbers),
         );
 
-        await view.addBonusNumberHandler((bonusNumber) =>
-            getRanks(bonusNumber),
-        );
+        await view.addBonusNumberHandler((bonusNumber) => step3(bonusNumber));
 
-        getStatistics();
+        step4();
     } catch (error) {
         view.errorMessageTemplate(error.message);
     } finally {
@@ -100,16 +106,17 @@ const runUntilFinish = async () => {
 
             while (goToFlag === 2) {
                 await view.addWinningNumberHandler((winningNumbers) =>
-                    validate(winningNumbers),
+                    step2(winningNumbers),
                 );
                 goToFlag = 3;
             }
 
             while (goToFlag === 3) {
                 await view.addBonusNumberHandler((bonusNumber) =>
-                    getRanks(bonusNumber),
+                    step3(bonusNumber),
                 );
-                getStatistics();
+
+                step4();
                 goToFlag = 4;
             }
 
