@@ -1,5 +1,5 @@
-import calculateRevenueRate from '../src/js/domain/models/Statistics/calculateRevenueRate.js';
-import Rank from '../src/js/domain/models/Rank/Rank.js';
+import calculateRevenueRate from '../../src/js/controller/calculateRevenueRate.js';
+import Rank from '../../src/js/domain/models/Rank/Rank.js';
 
 describe('calculateRevenueRate(ranks) 테스트', () => {
     describe('당첨된 lottos 금액을 구매 금액으로 나눠 수익률 계산해 반환한다.', () => {

@@ -2,8 +2,8 @@ import issueLottoOf from '../domain/models/LottoMachine/issueLottoOf.js';
 import Lotto from '../domain/models/Lotto/Lotto.js';
 import Rank, { determineRank } from '../domain/models/Rank/Rank.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
-import countRanks from '../domain/models/Statistics/countRanks.js';
-import calculateRevenueRate from '../domain/models/Statistics/calculateRevenueRate.js';
+import countRanks from './countRanks.js';
+import calculateRevenueRate from './calculateRevenueRate.js';
 import createView from '../UI/index.js';
 import { RetryError } from './errors.js';
 
@@ -14,11 +14,15 @@ let ranks = [];
 
 function issueLottos(purchasingPrice) {
     lottos = issueLottoOf(purchasingPrice);
-    const issuedAmount = lottos.length;
-    const lottoNumbers = lottos.map((lotto) => lotto.getLottoNumbers());
 
+    const issuedAmount = lottos.length;
     view.purchasedTemplate(issuedAmount);
-    view.lottoNumbersTemplate(lottoNumbers);
+
+    lottos.map((lotto) => {
+        view.lottoNumberTemplate(lotto.getLottoNumbers());
+    });
+
+    view.dividerTemplate();
 }
 
 function validate(winningNumbers) {
@@ -42,11 +46,19 @@ function getRanks(bonusNumber) {
 }
 
 function getStatistics() {
-    const rankCount = countRanks(ranks);
-    view.statisticsTemplate(rankCount);
+    view.statisticsGuideTemplate();
+
+    const rankCounter = countRanks(ranks);
+
+    rankCounter.forEach((count, rank) => {
+        const { matchCount, isBonusMatch, prize } = rank;
+        view.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });
+    });
 
     const revenueRate = calculateRevenueRate(ranks);
     view.totalRevenueTemplate(revenueRate);
+
+    view.dividerTemplate();
 }
 
 async function runOnce() {

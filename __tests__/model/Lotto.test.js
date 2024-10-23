@@ -1,9 +1,9 @@
-import Lotto from '../src/js/domain/models/Lotto/Lotto.js';
+import Lotto from '../../src/js/domain/models/Lotto/Lotto.js';
 import {
     LottoNumbersNotArrayError,
     LottoNumbersLengthNotSixError,
     LottoNumberDuplicatedError,
-} from '../src/js/domain/models/Lotto/errors.js';
+} from '../../src/js/domain/models/Lotto/errors.js';
 
 describe('Lotto 생성자 테스트', () => {
     describe('LottoNumbers 유효성 검사 테스트', () => {

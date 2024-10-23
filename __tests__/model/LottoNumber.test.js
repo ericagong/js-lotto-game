@@ -1,9 +1,9 @@
-import LottoNumber from '../src/js/domain/models/LottoNumber/LottoNumber.js';
+import LottoNumber from '../../src/js/domain/models/LottoNumber/LottoNumber.js';
 import {
     LottoNumberNotNumberError,
     LottoNumberNotIntegerError,
     LottoNumberOutOfRangeError,
-} from '../src/js/domain/models/LottoNumber/errors.js';
+} from '../../src/js/domain/models/LottoNumber/errors.js';
 
 describe('LottoNumber 생성자 테스트', () => {
     describe('LottoNumber 유효성 검사 테스트', () => {

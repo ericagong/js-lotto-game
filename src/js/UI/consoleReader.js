@@ -16,13 +16,13 @@ const GUIDE_MESSAGES = Object.freeze({
     RETRY: '\n> 다시 시작하시겠습니까? (y/n) ',
 });
 
-async function readlineFromConsole(guideMessage) {
+const readlineFromConsole = async (guideMessage) => {
     return new Promise((resolve) => {
         readlineInterface.question(guideMessage, resolve);
     });
-}
+};
 
-export async function addPurchasingPriceHandler(eventHandler) {
+export const addPurchasingPriceHandler = async (eventHandler) => {
     const purchasingPriceInput = await readlineFromConsole(
         GUIDE_MESSAGES.PURCHASING_PRICE,
     );
@@ -30,9 +30,9 @@ export async function addPurchasingPriceHandler(eventHandler) {
     const purchasingPrice = convertToMatchingDataType(purchasingPriceInput);
 
     eventHandler(purchasingPrice);
-}
+};
 
-export async function addWinningNumberHandler(eventHandler) {
+export const addWinningNumberHandler = async (eventHandler) => {
     const winningNumbersInput = await readlineFromConsole(
         GUIDE_MESSAGES.WINNING_NUMBER,
     );
@@ -40,25 +40,25 @@ export async function addWinningNumberHandler(eventHandler) {
     const winningNumbers = convertToArray(winningNumbersInput);
 
     eventHandler(winningNumbers);
-}
+};
 
-export async function addBonusNumberHandler(eventHandler) {
+export const addBonusNumberHandler = async (eventHandler) => {
     const bonusNumberInput = await readlineFromConsole(
         GUIDE_MESSAGES.BONUS_NUMBER,
     );
     const bonusNumber = convertToMatchingDataType(bonusNumberInput);
 
     eventHandler(bonusNumber);
-}
+};
 
-export async function addRetryHandler(eventHandler) {
+export const addRetryHandler = async (eventHandler) => {
     const retryInput = await readlineFromConsole(GUIDE_MESSAGES.RETRY);
 
     const retry = convertToMatchingDataType(retryInput);
 
     eventHandler(retry);
-}
+};
 
-export function close() {
+export const close = () => {
     readlineInterface.close();
-}
+};

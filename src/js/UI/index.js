@@ -6,9 +6,11 @@ import {
     close,
 } from './consoleReader.js';
 import {
+    dividerTemplate,
     purchasedTemplate,
-    lottoNumbersTemplate,
-    statisticsTemplate,
+    lottoNumberTemplate,
+    statisticsGuideTemplate,
+    rankSummaryTemplate,
     totalRevenueTemplate,
     errorMessageTemplate,
 } from './consoleWritter.js';
@@ -22,9 +24,11 @@ export default function createView() {
         addRetryHandler,
         close,
         // writter
+        dividerTemplate,
         purchasedTemplate,
-        lottoNumbersTemplate,
-        statisticsTemplate,
+        lottoNumberTemplate,
+        statisticsGuideTemplate,
+        rankSummaryTemplate,
         totalRevenueTemplate,
         errorMessageTemplate,
     };

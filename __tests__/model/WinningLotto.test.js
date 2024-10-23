@@ -1,9 +1,9 @@
-import Lotto from '../src/js/domain/models/Lotto/Lotto.js';
-import WinningLotto from '../src/js/domain/models/WinningLotto/WinningLotto.js';
+import Lotto from '../../src/js/domain/models/Lotto/Lotto.js';
+import WinningLotto from '../../src/js/domain/models/WinningLotto/WinningLotto.js';
 import {
     NotLottoInstanceError,
     BonusNumberDuplicatedError,
-} from '../src/js/domain/models/WinningLotto/errors.js';
+} from '../../src/js/domain/models/WinningLotto/errors.js';
 
 describe('WinningLotto 생성자 테스트', () => {
     describe('lotto 유효성 테스트', () => {

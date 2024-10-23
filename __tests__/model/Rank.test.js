@@ -1,11 +1,11 @@
-import Rank, { determineRank } from '../src/js/domain/models/Rank/Rank.js';
+import Rank, { determineRank } from '../../src/js/domain/models/Rank/Rank.js';
 import {
     NotInitializedIndexError,
     IndexNotNumberError,
     PrizeNotNumberError,
     isBonusMatchNotBooleanError,
     MatchCountNotNumberError,
-} from '../src/js/domain/models/Rank/errors.js';
+} from '../../src/js/domain/models/Rank/errors.js';
 
 // [ ] Question - static initializeRanks 테스트 불가 - 어떻게 테스트 코드 작성해야할지?
 describe('static of() 테스트', () => {

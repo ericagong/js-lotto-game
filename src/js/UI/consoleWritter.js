@@ -1,51 +1,42 @@
 export const write = console.log;
 
-function dividerTemplate() {
+export const dividerTemplate = () => {
     write('');
-}
+};
 
-export function purchasedTemplate(totalAmount) {
-    write(`총 ${totalAmount}개를 구매했습니다.`);
-}
+export const purchasedTemplate = (purchasedCount) => {
+    const purchasedCountText = `${purchasedCount}개`;
+    write(`총 ${purchasedCountText}를 구매했습니다.`);
+};
 
-export function lottoNumbersTemplate(lottoNumbersArr) {
-    lottoNumbersArr.map((lottoNumber) => write(lottoNumber));
-    dividerTemplate();
-}
+export const lottoNumberTemplate = (numbers) => {
+    write(numbers);
+};
 
-const GUIDE_LINE = '-'.repeat(20);
-function statisticsGuideTemplate() {
+const DIVIDE_LINE = '-'.repeat(20);
+export const statisticsGuideTemplate = () => {
     write('당첨 통계');
-    write(GUIDE_LINE);
-}
+    write(DIVIDE_LINE);
+};
 
-// 1, 2, 3, 4, 5
-const matchCounts = [6, 5, 5, 4, 3];
-const prizes = ['2,000,000,000', '30,000,000', '1,500,000', '50,000', '5,000'];
-function summaryTemplate(count, idx) {
-    const extraInfo = idx === 1 ? ', 보너스 볼 일치' : '';
-    const summary = `${matchCounts[idx]}개 일치${extraInfo} (${prizes[idx]}원) - ${count}개`;
-    return summary;
-}
+export const rankSummaryTemplate = ({
+    matchCount,
+    isBonusMatch,
+    prize,
+    count,
+}) => {
+    const matchCountText = `${matchCount}개 일치`;
+    const bonusMatchText = isBonusMatch ? ', 보너스 볼 일치' : '';
+    const prizeText = `(${prize}원)`;
+    const countText = `${count}개`;
+    write(`${matchCountText}${bonusMatchText} ${prizeText} - ${countText}`);
+};
 
-export function totalRevenueTemplate(revenueRate) {
-    write(`총 수익률은 ${revenueRate}%입니다.`);
-    dividerTemplate();
-}
+export const totalRevenueTemplate = (revenueRate) => {
+    const revenueRateText = `${revenueRate}%`;
+    write(`총 수익률은 ${revenueRateText}입니다.`);
+};
 
-export function errorMessageTemplate(message) {
+export const errorMessageTemplate = (message) => {
     write(message);
-}
-
-// TODO : UI로직에서 도메인 로직 분리 - matchCount, prizes 데이터 받아오게 처리
-export function statisticsTemplate(rankCount) {
-    statisticsGuideTemplate();
-
-    const ranks = [];
-    const winningRankCount = rankCount.slice(0, rankCount.length - 1);
-    winningRankCount.forEach((count, idx) => {
-        ranks.push(summaryTemplate(count, idx));
-    });
-    const statistics = ranks.reverse();
-    statistics.forEach((line) => write(line));
-}
+};
