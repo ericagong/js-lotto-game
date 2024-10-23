@@ -1,5 +1,12 @@
+import Buyer from '../domain/models/Buyer/Buyer.js';
 import Lotto from '../domain/models/Lotto/Lotto.js';
 import LottoNumber from '../domain/models/LottoNumber/LottoNumber.js';
+
+// step1
+export const getIssueCount = (budget) => {
+    const buyer = Buyer.of(budget);
+    return buyer.getIssueCount();
+};
 
 const generateRandomNumber = (min, max) =>
     Math.floor(Math.random() * max) + min;
@@ -18,7 +25,7 @@ const generateLottoNumbers = () => {
     return Array.from(lottoNumbers);
 };
 
-export default function issueLotto() {
+export const issueLotto = () => {
     const lottoNumbers = generateLottoNumbers();
     return Lotto.of(lottoNumbers);
-}
+};

@@ -1,23 +1,18 @@
 import createView from '../UI/index.js';
-import issueLotto from './issueLotto.js';
-import Lotto from '../domain/models/Lotto/Lotto.js';
-import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
-import Rank, { getMatchingRank } from '../domain/models/Rank/Rank.js';
-import countRanks from './countRanks.js';
-import calculateRevenuePercentage from './calculateRevenueRate.js';
+import { getIssueCount, issueLotto } from './issueLotto.js';
+import {
+    getBaseWinningLotto,
+    getCompletedWinningLotto,
+} from './setWinningLotto.js';
+import Rank from '../domain/models/Rank/Rank.js';
+import determineRank from './determineRank.js';
+import { countRanks, calculateRevenuePercentage } from './createStatistics.js';
 import { RetryError } from './errors.js';
-import Buyer from '../domain/models/Buyer/Buyer.js';
 
-let view = createView();
-let lottoWithWinningNumbers;
+const view = createView();
+let baseWinningLotto;
 let winningLotto;
 let lottos = [];
-let ranks = [];
-
-const getIssueCount = (budget) => {
-    const buyer = Buyer.of(budget);
-    return buyer.getIssueCount();
-};
 
 const step1 = (budget) => {
     const count = getIssueCount(budget);
@@ -32,32 +27,30 @@ const step1 = (budget) => {
 };
 
 const step2 = (winningNumbers) => {
-    lottoWithWinningNumbers = Lotto.of(winningNumbers);
+    baseWinningLotto = getBaseWinningLotto(winningNumbers);
 };
 
 const step3 = (bonusNumber) => {
-    winningLotto = new WinningLotto(lottoWithWinningNumbers, bonusNumber);
+    winningLotto = getCompletedWinningLotto(baseWinningLotto, bonusNumber);
 };
 
-const getRanks = () => {
+const step4 = () => {
     Rank.initializeRanks();
 
+    const ranks = [];
     lottos.forEach((lotto) => {
         const lottoNumbers = lotto.getLottoNumbers();
 
         const matchCount = winningLotto.getMatchCount(lottoNumbers);
         const isBonusMatch = winningLotto.getIsBonusMatch(lottoNumbers);
 
-        const rank = getMatchingRank(matchCount, isBonusMatch);
+        const rank = determineRank(matchCount, isBonusMatch);
         ranks.push(rank);
     });
-};
 
-const getStatistics = () => {
     view.statisticsGuideTemplate();
 
     const rankCounter = countRanks(ranks);
-
     rankCounter.forEach((count, rank) => {
         const { matchCount, isBonusMatch, prize } = rank;
         view.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });
@@ -69,11 +62,7 @@ const getStatistics = () => {
     view.dividerTemplate();
 };
 
-const step4 = () => {
-    getRanks();
-    getStatistics();
-};
-
+// [ ] generator 도입해서 더 간결하게 리팩토링
 const runOnce = async () => {
     try {
         await view.addPurchasingPriceHandler((budget) => {

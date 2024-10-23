@@ -1,4 +1,4 @@
-import Rank, { getMatchingRank } from '../../src/js/domain/models/Rank/Rank.js';
+import Rank from '../../src/js/domain/models/Rank/Rank.js';
 import {
     NotInitializedIndexError,
     IndexNotNumberError,
@@ -182,23 +182,5 @@ describe('getter 테스트', () => {
                 expect(Rank.of(index).isBonusMatch).toBe(expected);
             });
         });
-    });
-});
-
-describe('getMatchingRank(matchCount, isBonusMatch) 테스트', () => {
-    describe('matchCount와 isBonusMatch에 따라, Rank를 반환한다.', () => {
-        it.each([
-            { matchCount: 6, isBonusMatch: false, expected: Rank.of(1) },
-            { matchCount: 5, isBonusMatch: true, expected: Rank.of(2) },
-            { matchCount: 5, isBonusMatch: false, expected: Rank.of(3) },
-            { matchCount: 4, isBonusMatch: false, expected: Rank.of(4) },
-            { matchCount: 3, isBonusMatch: false, expected: Rank.of(5) },
-        ])(
-            'matchCount: %matchCount, isBonusMatch: %isBonusMatch, expected: %expected',
-            ({ matchCount, isBonusMatch, expected }) => {
-                const rank = getMatchingRank(matchCount, isBonusMatch);
-                expect(rank).toEqual(expected);
-            },
-        );
     });
 });
