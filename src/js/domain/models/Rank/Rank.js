@@ -1,67 +1,76 @@
-import { isNumber } from '../../utils/utils.js';
-import { RankNotNumberError, RankOutOfRangeError } from './errors.js';
+import { isNumber, isBoolean } from '../../utils/utils.js';
+import {
+    IndexNotNumberError,
+    PrizeNotNumberError,
+    isBonusMatchNotBooleanError,
+    MatchCountNotNumberError,
+    NotInitializedIndexError,
+} from './errors.js';
 
-export const RANKS = Object.freeze({
-    FIRST: 1,
-    SECOND: 2,
-    THIRD: 3,
-    FOURTH: 4,
-    FIFTH: 5,
-    NONE: 6,
-});
+// [ ] Rank를 import해 사용하는 곳에서는 항상 Rank.initializeRanks(); 필수로 처리하게 하는 방법
+// Rank 클래스 초기화 (애플리케이션 시작 시 한 번 호출)
+// Rank.initializeRanks();
 
-const PRIZES = Object.freeze({
-    [RANKS.FIRST]: 2_000_000_000,
-    [RANKS.SECOND]: 30_000_000,
-    [RANKS.THIRD]: 1_500_000,
-    [RANKS.FOURTH]: 50_000,
-    [RANKS.FIFTH]: 5_000,
-    [RANKS.NONE]: 0,
-});
-
-// TODO matchCount, isBonusMatch 정보까지 저장
-// TODO Rank는 총 5개 미리 만들어두기 (Map)
-// Rank 이름 바꾸기
 export default class Rank {
-    #rank;
-    #prize;
+    #index;
     #matchCount;
     #isBonusMatch;
+    #prize;
 
-    static of(rank) {
-        return new Rank(rank);
+    // 1등부터 6등(낙첨)까지의 Rank 객체를 저장하는 Map
+    static #ranks = new Map();
+
+    static of(index) {
+        const rank = this.#ranks.get(index);
+        if (!rank) throw new NotInitializedIndexError();
+        return rank;
     }
 
-    static #isInRange(rank) {
-        return rank >= RANKS.FIRST && rank <= RANKS.NONE;
+    static initializeRanks() {
+        this.#ranks.set(1, new Rank(1, 2_000_000_000, false, 6));
+        this.#ranks.set(2, new Rank(2, 30_000_000, true, 5));
+        // 3등부터는 isBonusMatch false로 통합
+        this.#ranks.set(3, new Rank(3, 1_500_000, false, 5));
+        this.#ranks.set(4, new Rank(4, 50_000, false, 4));
+        this.#ranks.set(5, new Rank(5, 5_000, false, 3));
+        // 낙첨은 matchCount 2로 통합
+        this.#ranks.set(6, new Rank(6, 0, false, 2));
     }
 
-    static #validate(rank) {
-        if (!isNumber(rank)) throw new RankNotNumberError();
-        if (!Rank.#isInRange(rank)) throw new RankOutOfRangeError();
+    constructor(index, prize, isBonusMatch, matchCount) {
+        if (!isNumber(index)) throw new IndexNotNumberError();
+        if (!isNumber(prize)) throw new PrizeNotNumberError();
+        if (!isBoolean(isBonusMatch)) throw new isBonusMatchNotBooleanError();
+        if (!isNumber(matchCount)) throw new MatchCountNotNumberError();
+
+        this.#index = index;
+        this.#prize = prize;
+        this.#isBonusMatch = isBonusMatch;
+        this.#matchCount = matchCount;
     }
 
-    constructor(rank) {
-        Rank.#validate(rank);
-
-        this.#rank = rank;
-        this.#prize = PRIZES[rank];
-    }
-
-    get rank() {
-        return this.#rank;
+    get index() {
+        return this.#index;
     }
 
     get prize() {
         return this.#prize;
     }
+
+    get matchCount() {
+        return this.#matchCount;
+    }
+
+    get isBonusMatch() {
+        return this.#isBonusMatch;
+    }
 }
 
 export const determineRank = (matchCount, isBonusMatch) => {
-    if (matchCount === 6) return Rank.of(RANKS.FIRST);
-    if (matchCount === 5 && isBonusMatch) return Rank.of(RANKS.SECOND);
-    if (matchCount === 5) return Rank.of(RANKS.THIRD);
-    if (matchCount === 4) return Rank.of(RANKS.FOURTH);
-    if (matchCount === 3) return Rank.of(RANKS.FIFTH);
-    return Rank.of(RANKS.NONE); // 매칭이 3개 미만일 때 NONE 반환
+    if (matchCount === 6) return Rank.of(1);
+    if (matchCount === 5 && isBonusMatch) return Rank.of(2);
+    if (matchCount === 5) return Rank.of(3);
+    if (matchCount === 4) return Rank.of(4);
+    if (matchCount === 3) return Rank.of(5);
+    return Rank.of(6); // 매칭이 3개 미만일 때 NONE 반환
 };

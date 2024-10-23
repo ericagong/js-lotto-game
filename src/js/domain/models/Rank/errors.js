@@ -1,18 +1,49 @@
 import ValidationError from '../../ValidationError.js';
 
-export class RankNotNumberError extends ValidationError {
-    static MESSAGE = '순위는 숫자여야합니다.';
+class RankError extends ValidationError {
+    static ERROR_TYPE = ' [Rank Error] ';
 
-    constructor() {
-        super(RankNotNumberError.MESSAGE);
+    constructor(message) {
+        super(RankError.ERROR_TYPE + message);
     }
 }
 
-// TODO 순환참조 문제 해결
-export class RankOutOfRangeError extends ValidationError {
-    static MESSAGE = '순위는 [1, 6] 사이 범위여야합니다.';
+export class IndexNotNumberError extends RankError {
+    static MESSAGE = '순위는 number 타입이어야 합니다.';
 
     constructor() {
-        super(RankOutOfRangeError.MESSAGE);
+        super(IndexNotNumberError.MESSAGE);
+    }
+}
+
+export class PrizeNotNumberError extends RankError {
+    static MESSAGE = '상금은 number 타입이어야 합니다.';
+
+    constructor() {
+        super(PrizeNotNumberError.MESSAGE);
+    }
+}
+
+export class isBonusMatchNotBooleanError extends RankError {
+    static MESSAGE = '보너스 매치 여부는 boolean 타입이여야합니다.';
+
+    constructor() {
+        super(isBonusMatchNotBooleanError.MESSAGE);
+    }
+}
+
+export class MatchCountNotNumberError extends RankError {
+    static MESSAGE = '매치 카운트는 number 타입이어야합니다.';
+
+    constructor() {
+        super(MatchCountNotNumberError.MESSAGE);
+    }
+}
+
+export class NotInitializedIndexError extends RankError {
+    static MESSAGE = '사전에 정의된 index(1, 2, 3, 4, 5, 6)가 아닙니다.';
+
+    constructor() {
+        super(NotInitializedIndexError.MESSAGE);
     }
 }

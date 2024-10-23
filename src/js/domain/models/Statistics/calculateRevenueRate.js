@@ -10,7 +10,6 @@ const roundToSecondDecimalPoint = (number) => {
     return endsWithZero.test(formatted) ? formatted.slice(0, -1) : formatted;
 };
 
-// TODO 파일 분리/함수 선언 위치 고민하기
 export default function calculateRevenueRate(ranks) {
     const totalPurchased = LOTTO_UNIT_PRICE * ranks.length;
 

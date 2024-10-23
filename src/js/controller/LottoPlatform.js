@@ -1,6 +1,6 @@
 import issueLottoOf from '../domain/models/LottoMachine/issueLottoOf.js';
 import Lotto from '../domain/models/Lotto/Lotto.js';
-import { determineRank } from '../domain/models/Rank/Rank.js';
+import Rank, { determineRank } from '../domain/models/Rank/Rank.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
 import countRanks from '../domain/models/Statistics/countRanks.js';
 import calculateRevenueRate from '../domain/models/Statistics/calculateRevenueRate.js';
@@ -39,13 +39,16 @@ export default class LottoPlatform {
             bonusNumber,
         );
 
+        Rank.initializeRanks();
+
         this.#lottos.forEach((lotto) => {
             const lottoNumbers = lotto.getLottoNumbers();
 
             const matchCount = winningLotto.countMatch(lottoNumbers);
             const isBonusMatch = winningLotto.isBonusMatch(lottoNumbers);
 
-            this.#ranks.push(determineRank(matchCount, isBonusMatch));
+            const rank = determineRank(matchCount, isBonusMatch);
+            this.#ranks.push(rank);
         });
     }
 
@@ -57,8 +60,8 @@ export default class LottoPlatform {
         this.#view.totalRevenueTemplate(revenueRate);
     }
 
-    // TODO bind 통해 2개로 만들기?
-    // TODO generator 로 순서 지정?
+    // [ ] bind 통해, debugging option을 주어 2개로 만들기
+    // [ ] generator 로 순서 지정?
     async runOnce() {
         try {
             await this.#view.addPurchasingPriceHandler((purchasingPrice) =>
