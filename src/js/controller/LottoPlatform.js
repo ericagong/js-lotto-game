@@ -1,23 +1,28 @@
-import issueLottoOf from '../domain/models/LottoMachine/issueLottoOf.js';
+import createView from '../UI/index.js';
+import issueLotto from './issueLotto.js';
 import Lotto from '../domain/models/Lotto/Lotto.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
 import Rank, { getMatchingRank } from '../domain/models/Rank/Rank.js';
 import countRanks from './countRanks.js';
 import calculateRevenuePercentage from './calculateRevenueRate.js';
-import createView from '../UI/index.js';
 import { RetryError } from './errors.js';
+import Buyer from '../domain/models/Buyer/Buyer.js';
 
 let view = createView();
 let lottoWithWinningNumbers;
 let lottos = [];
 let ranks = [];
 
-const issueLottos = (purchasingPrice) => {
-    lottos = issueLottoOf(purchasingPrice);
+const getIssueCount = (budget) => {
+    const buyer = Buyer.of(budget);
+    return buyer.getIssueCount();
+};
 
-    const issuedAmount = lottos.length;
-    view.purchasedTemplate(issuedAmount);
+const step1 = (budget) => {
+    const count = getIssueCount(budget);
+    view.purchasedTemplate(count);
 
+    lottos = Array.from({ length: count }, issueLotto);
     lottos.map((lotto) => {
         view.lottoNumberTemplate(lotto.getLottoNumbers());
     });
@@ -63,9 +68,9 @@ const getStatistics = () => {
 
 const runOnce = async () => {
     try {
-        await view.addPurchasingPriceHandler((purchasingPrice) =>
-            issueLottos(purchasingPrice),
-        );
+        await view.addPurchasingPriceHandler((budget) => {
+            step1(budget);
+        });
 
         await view.addWinningNumberHandler((winningNumbers) =>
             validate(winningNumbers),
@@ -89,9 +94,7 @@ const runUntilFinish = async () => {
     while (goToFlag !== 5) {
         try {
             while (goToFlag === 1) {
-                await view.addPurchasingPriceHandler((purchasingPrice) =>
-                    issueLottos(purchasingPrice),
-                );
+                await view.addPurchasingPriceHandler((budget) => step1(budget));
                 goToFlag = 2;
             }
 
