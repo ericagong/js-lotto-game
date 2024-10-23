@@ -1,21 +1,19 @@
 import { LOTTO_UNIT_PRICE } from '../domain/models/LottoMachine/issueLottoOf.js';
+import { isInteger } from '../domain/utils/utils.js';
 
 const DECIMAL_POINT = 2;
-const endsWithZero = /.\d+0/;
-const roundToSecondDecimalPoint = (number) => {
-    if (Number.isInteger(number)) return number.toString();
-
-    const formatted = number.toFixed(DECIMAL_POINT);
-
-    return endsWithZero.test(formatted) ? formatted.slice(0, -1) : formatted;
+const ENDS_WITH_ZERO = /0$/;
+const roundToSecondDecimal = (number) => {
+    return Number(number.toFixed(DECIMAL_POINT).replace(ENDS_WITH_ZERO, ''));
 };
 
-export default function calculateRevenueRate(ranks) {
+export default function calculateRevenuePercentage(ranks) {
     const totalPurchased = LOTTO_UNIT_PRICE * ranks.length;
 
-    let totalRevenue = ranks.reduce((acc, rank) => acc + rank.prize, 0);
+    let totalPrize = ranks.reduce((acc, rank) => acc + rank.prize, 0);
 
-    const revenueRate = (totalRevenue / totalPurchased) * 100;
+    const percentage = (totalPrize / totalPurchased) * 100;
 
-    return roundToSecondDecimalPoint(revenueRate);
+    if (isInteger(percentage)) return percentage;
+    else return roundToSecondDecimal(percentage);
 }

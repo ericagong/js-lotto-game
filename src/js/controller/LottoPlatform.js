@@ -1,9 +1,9 @@
 import issueLottoOf from '../domain/models/LottoMachine/issueLottoOf.js';
 import Lotto from '../domain/models/Lotto/Lotto.js';
-import Rank, { determineRank } from '../domain/models/Rank/Rank.js';
 import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
+import Rank, { getMatchingRank } from '../domain/models/Rank/Rank.js';
 import countRanks from './countRanks.js';
-import calculateRevenueRate from './calculateRevenueRate.js';
+import calculateRevenuePercentage from './calculateRevenueRate.js';
 import createView from '../UI/index.js';
 import { RetryError } from './errors.js';
 
@@ -12,7 +12,7 @@ let lottoWithWinningNumbers;
 let lottos = [];
 let ranks = [];
 
-function issueLottos(purchasingPrice) {
+const issueLottos = (purchasingPrice) => {
     lottos = issueLottoOf(purchasingPrice);
 
     const issuedAmount = lottos.length;
@@ -23,13 +23,13 @@ function issueLottos(purchasingPrice) {
     });
 
     view.dividerTemplate();
-}
+};
 
-function validate(winningNumbers) {
+const validate = (winningNumbers) => {
     lottoWithWinningNumbers = Lotto.of(winningNumbers);
-}
+};
 
-function getRanks(bonusNumber) {
+const getRanks = (bonusNumber) => {
     const winningLotto = new WinningLotto(lottoWithWinningNumbers, bonusNumber);
 
     Rank.initializeRanks();
@@ -37,15 +37,15 @@ function getRanks(bonusNumber) {
     lottos.forEach((lotto) => {
         const lottoNumbers = lotto.getLottoNumbers();
 
-        const matchCount = winningLotto.countMatch(lottoNumbers);
-        const isBonusMatch = winningLotto.isBonusMatch(lottoNumbers);
+        const matchCount = winningLotto.getMatchCount(lottoNumbers);
+        const isBonusMatch = winningLotto.getIsBonusMatch(lottoNumbers);
 
-        const rank = determineRank(matchCount, isBonusMatch);
+        const rank = getMatchingRank(matchCount, isBonusMatch);
         ranks.push(rank);
     });
-}
+};
 
-function getStatistics() {
+const getStatistics = () => {
     view.statisticsGuideTemplate();
 
     const rankCounter = countRanks(ranks);
@@ -55,13 +55,13 @@ function getStatistics() {
         view.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });
     });
 
-    const revenueRate = calculateRevenueRate(ranks);
+    const revenueRate = calculateRevenuePercentage(ranks);
     view.totalRevenueTemplate(revenueRate);
 
     view.dividerTemplate();
-}
+};
 
-async function runOnce() {
+const runOnce = async () => {
     try {
         await view.addPurchasingPriceHandler((purchasingPrice) =>
             issueLottos(purchasingPrice),
@@ -81,9 +81,9 @@ async function runOnce() {
     } finally {
         view.close();
     }
-}
+};
 
-async function runUntilFinish() {
+const runUntilFinish = async () => {
     let goToFlag = 1;
 
     while (goToFlag !== 5) {
@@ -130,6 +130,6 @@ async function runUntilFinish() {
     }
 
     view.close();
-}
+};
 
 export { runOnce, runUntilFinish };

@@ -1,14 +1,10 @@
-import {
-    isArray,
-    hasDuplicated,
-    sortNumbersAscending,
-} from '../../utils/utils.js';
-import {
-    LottoNumbersNotArrayError,
-    LottoNumbersLengthNotSixError,
-    LottoNumbersDuplicatedError,
-} from './errors.js';
+import { isArray, hasDuplicated } from '../../utils/utils.js';
+import { NotArrayError, LengthNotSixError, DuplicatedError } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
+
+const sortNumbersAscending = (targets) => {
+    return targets.sort((a, b) => Number(a) - Number(b));
+};
 
 export default class Lotto {
     #lottoNumbers;
@@ -24,9 +20,9 @@ export default class Lotto {
     }
 
     static #validate(numbers) {
-        if (!isArray(numbers)) throw new LottoNumbersNotArrayError();
-        if (Lotto.#hasDigit(numbers)) throw new LottoNumbersLengthNotSixError();
-        if (hasDuplicated(numbers)) throw new LottoNumbersDuplicatedError();
+        if (!isArray(numbers)) throw new NotArrayError();
+        if (Lotto.#hasDigit(numbers)) throw new LengthNotSixError();
+        if (hasDuplicated(numbers)) throw new DuplicatedError();
     }
 
     constructor(numbers) {

@@ -2,10 +2,19 @@ import Lotto from '../../src/js/domain/models/Lotto/Lotto.js';
 import WinningLotto from '../../src/js/domain/models/WinningLotto/WinningLotto.js';
 import {
     NotLottoInstanceError,
-    BonusNumberDuplicatedError,
+    DuplicatedError,
 } from '../../src/js/domain/models/WinningLotto/errors.js';
 
-describe('WinningLotto 생성자 테스트', () => {
+describe('static from(lotto, bonusNumber) 테스트', () => {
+    it('WinningLotto 인스턴스를 반환한다.', () => {
+        const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
+        const bonusNumber = 45;
+        const winningLotto = WinningLotto.from(lotto, bonusNumber);
+        expect(winningLotto).toEqual(new WinningLotto(lotto, bonusNumber));
+    });
+});
+
+describe('new WinningLotto(lotto, bonusNumber) 테스트', () => {
     describe('lotto 유효성 테스트', () => {
         describe('Lotto 인스턴스가 아니면, 에러를 발생시킨다.', () => {
             it.each([
@@ -27,49 +36,38 @@ describe('WinningLotto 생성자 테스트', () => {
     });
 
     describe('bonusNumber 유효성 테스트', () => {
-        describe('bonusNumber가 winningLottoNumbers와 중복되면, 에러를 발생시킨다.', () => {
+        describe('bonusNumber가 winningLottoNumbers[1, 2, 3, 4, 5, 6]와 중복되면, 에러를 발생시킨다.', () => {
             const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-            it.each([1, 2, 3, 4, 5, 6])(
-                'bonusNumber: %p winningLottoNumbers: [1, 2, 3, 4, 5, 6]',
-                (bonusNumber) => {
-                    expect(() => new WinningLotto(lotto, bonusNumber)).toThrow(
-                        BonusNumberDuplicatedError,
-                    );
-                },
-            );
+            it.each([1, 2, 3, 4, 5, 6])('bonusNumber: %p', (bonusNumber) => {
+                expect(() => new WinningLotto(lotto, bonusNumber)).toThrow(
+                    DuplicatedError,
+                );
+            });
         });
     });
 
-    it('인자로 Lotto와 1-45 사이의 중복되지 않는 bonusNumber를 받으면, 에러를 발생시키지 않는다.', () => {
+    it('Lotto 인스턴스인 lotto와 [1, 45] 사이의 중복되지 않는 bonusNumber를 받으면, 에러를 발생시키지 않는다.', () => {
         const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
         expect(() => new WinningLotto(lotto, 45)).not.toThrow();
     });
 });
 
-describe('static from(lotto, bonusNumber) 테스트', () => {
-    it('WinningLotto 인스턴스를 반환한다.', () => {
-        const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-        const winningLotto = WinningLotto.from(lotto, 45);
-        expect(winningLotto).toBeInstanceOf(WinningLotto);
-    });
-});
-
-describe('isBonusMatch(targetNumbers) 테스트', () => {
+describe('getIsBonusMatch(targetNumbers) 테스트', () => {
     const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
     const winningLotto = WinningLotto.from(lotto, 45);
 
     it('보너스 번호가 일치하면, true를 반환한다.', () => {
         const targetNumbers = [1, 2, 3, 4, 5, 45];
-        expect(winningLotto.isBonusMatch(targetNumbers)).toBe(true);
+        expect(winningLotto.getIsBonusMatch(targetNumbers)).toBe(true);
     });
 
     it('보너스 번호가 일치하지 않으면, false를 반환한다.', () => {
         const targetNumbers = [1, 2, 3, 4, 5, 6];
-        expect(winningLotto.isBonusMatch(targetNumbers)).toBe(false);
+        expect(winningLotto.getIsBonusMatch(targetNumbers)).toBe(false);
     });
 });
 
-describe('countMatch(targetNumbers) 테스트', () => {
+describe('getMatchCount(targetNumbers) 테스트', () => {
     const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
     const winningLotto = WinningLotto.from(lotto, 45);
 
@@ -85,8 +83,7 @@ describe('countMatch(targetNumbers) 테스트', () => {
         ])(
             'lottoNumbers: $lottoNumbers, expected: $expected',
             ({ lottoNumbers, expected }) => {
-                const targetNumbers = lottoNumbers;
-                expect(winningLotto.countMatch(targetNumbers)).toBe(expected);
+                expect(winningLotto.getMatchCount(lottoNumbers)).toBe(expected);
             },
         );
     });

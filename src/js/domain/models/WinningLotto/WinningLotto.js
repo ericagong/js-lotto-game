@@ -1,6 +1,6 @@
 import Lotto from '../Lotto/Lotto.js';
 import { hasDuplicated } from '../../utils/utils.js';
-import { NotLottoInstanceError, BonusNumberDuplicatedError } from './errors.js';
+import { NotLottoInstanceError, DuplicatedError } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
 
 export default class WinningLotto {
@@ -22,7 +22,7 @@ export default class WinningLotto {
 
     static #validateBonusNumber(bonusNumber, lottoNumbers) {
         if (hasDuplicated([bonusNumber, ...lottoNumbers]))
-            throw new BonusNumberDuplicatedError();
+            throw new DuplicatedError();
     }
 
     constructor(lotto, bonusNumber) {
@@ -35,11 +35,11 @@ export default class WinningLotto {
         this.#bonusNumber = LottoNumber.of(bonusNumber);
     }
 
-    isBonusMatch(targetNumbers) {
+    getIsBonusMatch(targetNumbers) {
         return targetNumbers.includes(this.#bonusNumber.number);
     }
 
-    countMatch(targetNumbers) {
+    getMatchCount(targetNumbers) {
         const winningLottoNumbers = new Set(this.#lotto.getLottoNumbers());
         const matchCount = targetNumbers.reduce(
             (count, number) =>

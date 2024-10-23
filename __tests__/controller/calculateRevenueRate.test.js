@@ -1,7 +1,7 @@
-import calculateRevenueRate from '../../src/js/controller/calculateRevenueRate.js';
+import calculateRevenuePercentage from '../../src/js/controller/calculateRevenueRate.js';
 import Rank from '../../src/js/domain/models/Rank/Rank.js';
 
-describe('calculateRevenueRate(ranks) 테스트', () => {
+describe('calculateRevenuePercentage(ranks) 테스트', () => {
     describe('당첨된 lottos 금액을 구매 금액으로 나눠 수익률 계산해 반환한다.', () => {
         Rank.initializeRanks();
         describe('로또 개수가 1개인 경우', () => {
@@ -36,9 +36,7 @@ describe('calculateRevenueRate(ranks) 테스트', () => {
                 'rankIndex: $rankIndex',
                 ({ rankIndex, expected }) => {
                     const ranks = [Rank.of(rankIndex)];
-                    expect(calculateRevenueRate(ranks)).toBe(
-                        expected.toString(),
-                    );
+                    expect(calculateRevenuePercentage(ranks)).toBe(expected);
                 },
             );
         });
@@ -47,8 +45,8 @@ describe('calculateRevenueRate(ranks) 테스트', () => {
             const testCases = [
                 { rankIndexes: [1, 2, 3, 4, 5, 6], expected: 33859250 },
                 { rankIndexes: [1, 5, 6, 6, 6, 6], expected: 33333416.67 },
-                { rankIndexes: [2, 5, 6, 6, 6, 6], expected: 500083.3 },
-                { rankIndexes: [3, 5, 6, 6, 6, 6], expected: 25083.3 },
+                { rankIndexes: [2, 5, 6, 6, 6, 6], expected: 500083.33 },
+                { rankIndexes: [3, 5, 6, 6, 6, 6], expected: 25083.33 },
                 { rankIndexes: [4, 5, 6, 6, 6, 6], expected: 916.67 },
                 { rankIndexes: [5, 5, 6, 6, 6, 6], expected: 166.67 },
                 { rankIndexes: [5, 6, 6, 6, 6, 6, 6, 6], expected: 62.5 },
@@ -58,9 +56,7 @@ describe('calculateRevenueRate(ranks) 테스트', () => {
                 'rankIndexes: $rankIndexes',
                 ({ rankIndexes, expected }) => {
                     const ranks = rankIndexes.map((rank) => Rank.of(rank));
-                    expect(calculateRevenueRate(ranks)).toBe(
-                        expected.toString(),
-                    );
+                    expect(calculateRevenuePercentage(ranks)).toBe(expected);
                 },
             );
         });

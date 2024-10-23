@@ -8,8 +8,16 @@ class RankError extends ValidationError {
     }
 }
 
+export class NotInitializedIndexError extends RankError {
+    static MESSAGE = '사전에 정의된 index(1, 2, 3, 4, 5, 6)가 아닙니다.';
+
+    constructor() {
+        super(NotInitializedIndexError.MESSAGE);
+    }
+}
+
 export class IndexNotNumberError extends RankError {
-    static MESSAGE = '순위는 number 타입이어야 합니다.';
+    static MESSAGE = 'index는 number 타입이어야 합니다.';
 
     constructor() {
         super(IndexNotNumberError.MESSAGE);
@@ -17,7 +25,7 @@ export class IndexNotNumberError extends RankError {
 }
 
 export class PrizeNotNumberError extends RankError {
-    static MESSAGE = '상금은 number 타입이어야 합니다.';
+    static MESSAGE = 'prize는 number 타입이어야 합니다.';
 
     constructor() {
         super(PrizeNotNumberError.MESSAGE);
@@ -25,7 +33,7 @@ export class PrizeNotNumberError extends RankError {
 }
 
 export class isBonusMatchNotBooleanError extends RankError {
-    static MESSAGE = '보너스 매치 여부는 boolean 타입이여야합니다.';
+    static MESSAGE = 'isBonusMatch는 boolean 타입이여야합니다.';
 
     constructor() {
         super(isBonusMatchNotBooleanError.MESSAGE);
@@ -33,17 +41,9 @@ export class isBonusMatchNotBooleanError extends RankError {
 }
 
 export class MatchCountNotNumberError extends RankError {
-    static MESSAGE = '매치 카운트는 number 타입이어야합니다.';
+    static MESSAGE = 'matchCount는 number 타입이어야합니다.';
 
     constructor() {
         super(MatchCountNotNumberError.MESSAGE);
-    }
-}
-
-export class NotInitializedIndexError extends RankError {
-    static MESSAGE = '사전에 정의된 index(1, 2, 3, 4, 5, 6)가 아닙니다.';
-
-    constructor() {
-        super(NotInitializedIndexError.MESSAGE);
     }
 }

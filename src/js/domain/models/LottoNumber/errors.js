@@ -8,26 +8,27 @@ export class LottoNumberError extends ValidationError {
     }
 }
 
-export class LottoNumberNotNumberError extends LottoNumberError {
-    static MESSAGE = '로또 번호는 숫자 타입이여야합니다.';
+export class NotNumberError extends LottoNumberError {
+    static MESSAGE = 'lottoNumber는 number 타입이여야합니다.';
 
     constructor() {
-        super(LottoNumberNotNumberError.MESSAGE);
+        super(NotNumberError.MESSAGE);
     }
 }
 
-export class LottoNumberNotIntegerError extends LottoNumberError {
-    static MESSAGE = '로또 번호는 정수여야합니다.';
+export class NotIntegerError extends LottoNumberError {
+    static MESSAGE = 'lottoNumber는 정수 형태이어야합니다.';
 
     constructor() {
-        super(LottoNumberNotIntegerError.MESSAGE);
+        super(NotIntegerError.MESSAGE);
     }
 }
 
-export class LottoNumberOutOfRangeError extends LottoNumberError {
-    static MESSAGE = `로또 번호는 [1, 45] 사이의 숫자여야합니다.`;
+// [ ] 순환 참조 이슈
+export class OutOfRangeError extends LottoNumberError {
+    static MESSAGE = `lottoNumber는 [1, 45] 사이의 정수 형태이어야합니다.`;
 
     constructor() {
-        super(LottoNumberOutOfRangeError.MESSAGE);
+        super(OutOfRangeError.MESSAGE);
     }
 }

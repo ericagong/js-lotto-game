@@ -1,4 +1,4 @@
-import Rank, { determineRank } from '../../src/js/domain/models/Rank/Rank.js';
+import Rank, { getMatchingRank } from '../../src/js/domain/models/Rank/Rank.js';
 import {
     NotInitializedIndexError,
     IndexNotNumberError,
@@ -8,8 +8,8 @@ import {
 } from '../../src/js/domain/models/Rank/errors.js';
 
 // [ ] Question - static initializeRanks 테스트 불가 - 어떻게 테스트 코드 작성해야할지?
-describe('static of() 테스트', () => {
-    describe('rank index가 1, 2, 3, 4, 5, 6 중 하나라면, 미리 생성된 Rank 객체를 반환한다.', () => {
+describe('static of(index) 테스트', () => {
+    describe('index가 사전에 정의된 1, 2, 3, 4, 5, 6 중 하나라면, Rank 객체를 반환한다.', () => {
         it.each([
             {
                 index: 1,
@@ -26,14 +26,14 @@ describe('static of() 테스트', () => {
             const expectedRank = new Rank(
                 index,
                 prize,
-                isBonusMatch,
                 matchCount,
+                isBonusMatch,
             );
             expect(Rank.of(index)).toEqual(expectedRank);
         });
     });
 
-    describe('rank index가 사전에 정의된 값이 아니면, 에러를 생성한다.', () => {
+    describe('index가 사전에 정의된 값이 아니면, 에러를 생성한다.', () => {
         it.each([
             0,
             7,
@@ -51,7 +51,7 @@ describe('static of() 테스트', () => {
     });
 });
 
-describe('Rank 생성자 테스트', () => {
+describe('new Rank(index, prize, matchCount, isBonusMatch) 테스트', () => {
     describe('Rank 유효성 검사 테스트', () => {
         describe('index가 number 타입이 아니면, 에러를 발생시킨다.', () => {
             it.each([
@@ -83,17 +83,6 @@ describe('Rank 생성자 테스트', () => {
             });
         });
 
-        describe('isBonusMatch가 boolean 타입이 아니면, 에러를 발생시킨다.', () => {
-            it.each(['1', 'erica', 1, null, undefined, function () {}, {}, []])(
-                'isBonusMatch: %p',
-                (isBonusMatch) => {
-                    expect(
-                        () => new Rank(1, 20_000_000_000, isBonusMatch),
-                    ).toThrow(isBonusMatchNotBooleanError);
-                },
-            );
-        });
-
         describe('matchCount가 number 타입이 아니면, 에러를 발생시킨다.', () => {
             it.each([
                 '1',
@@ -106,13 +95,24 @@ describe('Rank 생성자 테스트', () => {
                 [],
             ])('matchCount: %p', (matchCount) => {
                 expect(
-                    () => new Rank(1, 20_000_000_000, false, matchCount),
+                    () => new Rank(1, 20_000_000_000, matchCount, false),
                 ).toThrow(MatchCountNotNumberError);
             });
         });
 
+        describe('isBonusMatch가 boolean 타입이 아니면, 에러를 발생시킨다.', () => {
+            it.each(['1', 'erica', 1, null, undefined, function () {}, {}, []])(
+                'isBonusMatch: %p',
+                (isBonusMatch) => {
+                    expect(
+                        () => new Rank(1, 20_000_000_000, 6, isBonusMatch),
+                    ).toThrow(isBonusMatchNotBooleanError);
+                },
+            );
+        });
+
         it('모든 인자의 데이터 타입이 유효한 경우, 에러를 발생시키지 않는다.', () => {
-            expect(() => new Rank(1, 20_000_000_000, false, 6)).not.toThrow();
+            expect(() => new Rank(1, 20_000_000_000, 6, false)).not.toThrow();
         });
     });
 });
@@ -185,19 +185,19 @@ describe('getter 테스트', () => {
     });
 });
 
-describe('determineRank(matchCount, isBonusMatch) 테스트', () => {
+describe('getMatchingRank(matchCount, isBonusMatch) 테스트', () => {
     describe('matchCount와 isBonusMatch에 따라, Rank를 반환한다.', () => {
         it.each([
-            { matchCount: 6, isBonusMatch: false, rankIndex: 1 },
-            { matchCount: 5, isBonusMatch: true, rankIndex: 2 },
-            { matchCount: 5, isBonusMatch: false, rankIndex: 3 },
-            { matchCount: 4, isBonusMatch: false, rankIndex: 4 },
-            { matchCount: 3, isBonusMatch: false, rankIndex: 5 },
+            { matchCount: 6, isBonusMatch: false, expected: Rank.of(1) },
+            { matchCount: 5, isBonusMatch: true, expected: Rank.of(2) },
+            { matchCount: 5, isBonusMatch: false, expected: Rank.of(3) },
+            { matchCount: 4, isBonusMatch: false, expected: Rank.of(4) },
+            { matchCount: 3, isBonusMatch: false, expected: Rank.of(5) },
         ])(
-            'matchCount: %matchCount, isBonusMatch: %isBonusMatch, rankIndex: $rankIndex',
-            ({ matchCount, isBonusMatch, rankIndex }) => {
-                const rank = determineRank(matchCount, isBonusMatch);
-                expect(rank.index).toBe(rankIndex);
+            'matchCount: %matchCount, isBonusMatch: %isBonusMatch, expected: %expected',
+            ({ matchCount, isBonusMatch, expected }) => {
+                const rank = getMatchingRank(matchCount, isBonusMatch);
+                expect(rank).toEqual(expected);
             },
         );
     });

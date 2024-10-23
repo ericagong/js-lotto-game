@@ -1,10 +1,7 @@
 import { isNumber, isInteger } from '../../utils/utils.js';
-import {
-    LottoNumberNotNumberError,
-    LottoNumberNotIntegerError,
-    LottoNumberOutOfRangeError,
-} from './errors.js';
+import { NotNumberError, NotIntegerError, OutOfRangeError } from './errors.js';
 
+// [ ]  45개 만들어 두고 시작해도 됨
 export default class LottoNumber {
     #number;
 
@@ -23,10 +20,9 @@ export default class LottoNumber {
     }
 
     static #validate(number) {
-        if (!isNumber(number)) throw new LottoNumberNotNumberError();
-        if (!isInteger(number)) throw new LottoNumberNotIntegerError();
-        if (!LottoNumber.#isInRange(number))
-            throw new LottoNumberOutOfRangeError();
+        if (!isNumber(number)) throw new NotNumberError();
+        if (!isInteger(number)) throw new NotIntegerError();
+        if (!LottoNumber.#isInRange(number)) throw new OutOfRangeError();
     }
 
     constructor(number) {
