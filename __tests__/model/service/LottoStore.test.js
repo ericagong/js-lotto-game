@@ -1,7 +1,5 @@
-import {
-    getIssueCount,
-    issueLotto,
-} from '../../../src/js/domain/models/service/issueLotto.js';
+import { getIssueCount } from '../../../src/js/domain/models/service/LottoStrore/getIssueCount.js';
+import { issueLotto } from '../../../src/js/domain/models/service/LottoStrore/issueLotto.js';
 import Lotto from '../../../src/js/domain/models/entities/Lotto/Lotto.js';
 
 describe('getIssueCount(budget) 테스트', () => {
@@ -16,8 +14,6 @@ describe('getIssueCount(budget) 테스트', () => {
         });
     });
 });
-
-// [ ] Question 의미 없는 테스트 = 제거?
 describe('issueLotto() 테스트', () => {
     it('Lotto 객체를 반환한다.', () => {
         const lotto = issueLotto();

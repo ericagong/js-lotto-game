@@ -1,17 +1,13 @@
 import createView from '../UI/index.js';
-import {
-    getIssueCount,
-    issueLotto,
-} from '../domain/models/service/issueLotto.js';
+import { getIssueCount } from '../domain/models/service/LottoStrore/getIssueCount.js';
+import { issueLotto } from '../domain/models/service/LottoStrore/issueLotto.js';
 import {
     getBaseWinningLotto,
     getCompletedWinningLotto,
 } from '../domain/models/service/setWinningLotto.js';
 import Rank from '../domain/models/entities/Rank/Rank.js';
-import {
-    countRanks,
-    calculateRevenuePercentage,
-} from '../domain/models/service/Statistic/createStatistics.js';
+import { getRankCounter } from '../domain/models/service/Statistic/getRankCounter.js';
+import { getRevenuePercentage } from '../domain/models/service/Statistic/getRevenuePercentage.js';
 import { RetryError } from './errors.js';
 
 const view = createView();
@@ -53,14 +49,14 @@ const step4 = () => {
 
     view.statisticsGuideTemplate();
 
-    const rankCounter = countRanks(ranks);
-    rankCounter.delete(Rank.NONE); // [ ] 낙첨 제외 - Rankcount 내부로 이동
+    const rankCounter = getRankCounter(ranks);
     rankCounter.forEach((count, rank) => {
         const { matchCount, isBonusMatch, prize } = rank;
         view.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });
     });
 
-    const revenueRate = calculateRevenuePercentage(ranks);
+    const revenueRate = getRevenuePercentage(ranks);
+
     view.totalRevenueTemplate(revenueRate);
 
     view.dividerTemplate();

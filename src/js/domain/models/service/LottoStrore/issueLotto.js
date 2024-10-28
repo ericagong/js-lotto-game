@@ -1,12 +1,5 @@
-import Buyer from '../entities/Buyer/Buyer.js';
-import Lotto from '../entities/Lotto/Lotto.js';
-import LottoNumber from '../entities/LottoNumber/LottoNumber.js';
-
-// step1
-export const getIssueCount = (budget) => {
-    const buyer = Buyer.of(budget);
-    return buyer.getIssueCount();
-};
+import Lotto from '../../entities/Lotto/Lotto.js';
+import LottoNumber from '../../entities/LottoNumber/LottoNumber.js';
 
 const generateRandomNumber = (min, max) =>
     Math.floor(Math.random() * max) + min;
