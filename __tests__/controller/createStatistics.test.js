@@ -1,4 +1,4 @@
-import Rank from '../../src/js/domain/models/Rank/Rank.js';
+import Rank from '../../src/js/domain/models/entities/Rank/Rank.js';
 import {
     countRanks,
     calculateRevenuePercentage,

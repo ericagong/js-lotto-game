@@ -1,11 +1,11 @@
-import Rank from '../../src/js/domain/models/Rank/Rank.js';
+import Rank from '../../../src/js/domain/models/entities/Rank/Rank.js';
 import {
     NotInitializedIndexError,
     IndexNotNumberError,
     PrizeNotNumberError,
     isBonusMatchNotBooleanError,
     MatchCountNotNumberError,
-} from '../../src/js/domain/models/Rank/errors.js';
+} from '../../../src/js/domain/models/entities/Rank/errors.js';
 
 describe('static of(index) 테스트', () => {
     describe('index가 사전에 정의된 1, 2, 3, 4, 5, 6 중 하나라면, Rank 객체를 반환한다.', () => {

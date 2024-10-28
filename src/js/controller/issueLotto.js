@@ -1,6 +1,6 @@
-import Buyer from '../domain/models/Buyer/Buyer.js';
-import Lotto from '../domain/models/Lotto/Lotto.js';
-import LottoNumber from '../domain/models/LottoNumber/LottoNumber.js';
+import Buyer from '../domain/models/entities/Buyer/Buyer.js';
+import Lotto from '../domain/models/entities/Lotto/Lotto.js';
+import LottoNumber from '../domain/models/entities/LottoNumber/LottoNumber.js';
 
 // step1
 export const getIssueCount = (budget) => {

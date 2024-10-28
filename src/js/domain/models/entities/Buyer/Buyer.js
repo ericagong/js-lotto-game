@@ -1,4 +1,4 @@
-import { isNumber } from '../../utils/utils.js';
+import { isNumber } from '../../../utils/utils.js';
 import {
     NotNumberError,
     BelowMinBudgetError,

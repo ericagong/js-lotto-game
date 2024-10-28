@@ -1,9 +1,9 @@
-import Lotto from '../../src/js/domain/models/Lotto/Lotto.js';
+import Lotto from '../../../src/js/domain/models/entities/Lotto/Lotto.js';
 import {
     NotArrayError,
     LengthNotSixError,
     DuplicatedError,
-} from '../../src/js/domain/models/Lotto/errors.js';
+} from '../../../src/js/domain/models/entities/Lotto/errors.js';
 
 describe('static of(lottoNumbers) 테스트', () => {
     it('Lotto 인스턴스를 반환한다.', () => {

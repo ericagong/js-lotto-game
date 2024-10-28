@@ -1,9 +1,9 @@
-import LottoNumber from '../../src/js/domain/models/LottoNumber/LottoNumber.js';
+import LottoNumber from '../../../src/js/domain/models/entities/LottoNumber/LottoNumber.js';
 import {
     NotNumberError,
     NotIntegerError,
     OutOfRangeError,
-} from '../../src/js/domain/models/LottoNumber/errors.js';
+} from '../../../src/js/domain/models/entities/LottoNumber/errors.js';
 
 // lottoNumber 인덱스로 변경
 describe('static of(number) 테스트', () => {

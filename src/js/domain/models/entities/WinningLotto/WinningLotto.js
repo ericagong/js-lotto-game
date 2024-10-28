@@ -1,5 +1,5 @@
 import Lotto from '../Lotto/Lotto.js';
-import { hasDuplicated } from '../../utils/utils.js';
+import { hasDuplicated } from '../../../utils/utils.js';
 import { NotLottoInstanceError, DuplicatedError } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
 

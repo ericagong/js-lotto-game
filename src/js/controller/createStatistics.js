@@ -1,5 +1,5 @@
-import Rank from '../domain/models/Rank/Rank.js';
-import Buyer from '../domain/models/Buyer/Buyer.js';
+import Rank from '../domain/models/entities/Rank/Rank.js';
+import Buyer from '../domain/models/entities/Buyer/Buyer.js';
 import { isInteger } from '../domain/utils/utils.js';
 
 export const countRanks = (ranks) => {

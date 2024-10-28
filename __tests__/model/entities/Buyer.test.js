@@ -1,9 +1,9 @@
-import Buyer from '../../src/js/domain/models/Buyer/Buyer.js';
+import Buyer from '../../../src/js/domain/models/entities/Buyer/Buyer.js';
 import {
     NotNumberError,
     BelowMinBudgetError,
     AboveMaxBudgetError,
-} from '../../src/js/domain/models/Buyer/errors.js';
+} from '../../../src/js/domain/models/entities/Buyer/errors.js';
 
 describe('static of(budget) 테스트', () => {
     describe('Buyer 객체를 반환한다.', () => {

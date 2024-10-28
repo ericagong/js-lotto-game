@@ -113,7 +113,7 @@ domain/
 
 ### To-Be
 
-[ ] Model 코드는 class 구현 여부에 따라 entries와 service로 분리
+[V] Model 코드는 class 구현 여부에 따라 entries와 service로 분리
 
 [ ] Controller에는 View와 상호작용하는 코드만 유지하고, Model과 상호작용하는 로직은 service로 이동
 

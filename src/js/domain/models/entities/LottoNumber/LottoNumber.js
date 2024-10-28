@@ -1,4 +1,4 @@
-import { isNumber, isInteger } from '../../utils/utils.js';
+import { isNumber, isInteger } from '../../../utils/utils.js';
 import { NotNumberError, NotIntegerError, OutOfRangeError } from './errors.js';
 
 // [ ]  45개 만들어 두고 시작해도 됨

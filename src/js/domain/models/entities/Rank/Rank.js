@@ -1,4 +1,4 @@
-import { isNumber, isBoolean } from '../../utils/utils.js';
+import { isNumber, isBoolean } from '../../../utils/utils.js';
 import {
     IndexNotNumberError,
     PrizeNotNumberError,

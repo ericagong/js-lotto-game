@@ -1,4 +1,4 @@
-import { isArray, hasDuplicated } from '../../utils/utils.js';
+import { isArray, hasDuplicated } from '../../../utils/utils.js';
 import { NotArrayError, LengthNotSixError, DuplicatedError } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
 
