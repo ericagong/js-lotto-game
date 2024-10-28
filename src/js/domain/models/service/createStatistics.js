@@ -1,6 +1,6 @@
-import Rank from '../domain/models/entities/Rank/Rank.js';
-import Buyer from '../domain/models/entities/Buyer/Buyer.js';
-import { isInteger } from '../domain/utils/utils.js';
+import Rank from '../entities/Rank/Rank.js';
+import Buyer from '../entities/Buyer/Buyer.js';
+import { isInteger } from '../../utils/utils.js';
 
 export const countRanks = (ranks) => {
     const rankCounter = new Map([

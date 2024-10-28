@@ -1,5 +1,5 @@
-import Lotto from '../domain/models/Lotto/Lotto.js';
-import WinningLotto from '../domain/models/WinningLotto/WinningLotto.js';
+import Lotto from '../entities/Lotto/Lotto.js';
+import WinningLotto from '../entities/WinningLotto/WinningLotto.js';
 
 // step2
 export const getBaseWinningLotto = (winningLottoNumbers) => {

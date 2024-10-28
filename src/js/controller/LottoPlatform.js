@@ -1,11 +1,17 @@
 import createView from '../UI/index.js';
-import { getIssueCount, issueLotto } from './issueLotto.js';
+import {
+    getIssueCount,
+    issueLotto,
+} from '../domain/models/service/issueLotto.js';
 import {
     getBaseWinningLotto,
     getCompletedWinningLotto,
-} from './setWinningLotto.js';
-import Rank from '../domain/models/Rank/Rank.js';
-import { countRanks, calculateRevenuePercentage } from './createStatistics.js';
+} from '../domain/models/service/setWinningLotto.js';
+import Rank from '../domain/models/entities/Rank/Rank.js';
+import {
+    countRanks,
+    calculateRevenuePercentage,
+} from '../domain/models/service/createStatistics.js';
 import { RetryError } from './errors.js';
 
 const view = createView();
