@@ -1,7 +1,8 @@
+import LottoBroadCast from '../../../src/js/domain/models/service/LottoBroadcast/index.js';
 import Lotto from '../../../src/js/domain/models/entities/Lotto/Lotto.js';
-import { setWinnerLottoNumbers } from '../../../src/js/domain/models/service/LottoBroadcast/setWinnerNumbers.js';
 import WinningLotto from '../../../src/js/domain/models/entities/WinningLotto/WinningLotto.js';
-import { setBonusNumber } from '../../../src/js/domain/models/service/LottoBroadcast/setBonusNumber.js';
+
+const { setWinnerLottoNumbers, setBonusNumber } = LottoBroadCast;
 
 describe('setWinnerLottoNumbers(winningLottoNumbers) 테스트', () => {
     describe('winningLottoNumbers를 numbers로 가지는 Lotto 인스턴스를 반환한다.', () => {

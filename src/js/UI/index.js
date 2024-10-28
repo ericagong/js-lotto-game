@@ -15,21 +15,19 @@ import {
     errorMessageTemplate,
 } from './consoleWritter.js';
 
-export default function createView() {
-    return {
-        // reader,
-        addPurchasingPriceHandler,
-        addWinningNumberHandler,
-        addBonusNumberHandler,
-        addRetryHandler,
-        close,
-        // writter
-        dividerTemplate,
-        purchasedTemplate,
-        lottoNumberTemplate,
-        statisticsGuideTemplate,
-        rankSummaryTemplate,
-        totalRevenueTemplate,
-        errorMessageTemplate,
-    };
-}
+export default {
+    // reader,
+    addPurchasingPriceHandler,
+    addWinningNumberHandler,
+    addBonusNumberHandler,
+    addRetryHandler,
+    close,
+    // writter
+    dividerTemplate,
+    purchasedTemplate,
+    lottoNumberTemplate,
+    statisticsGuideTemplate,
+    rankSummaryTemplate,
+    totalRevenueTemplate,
+    errorMessageTemplate,
+};

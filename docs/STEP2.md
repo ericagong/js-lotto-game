@@ -131,7 +131,7 @@ domain/
 
 [ ] 관심사 집약적 코드로 변경: service 내 로직 중 entities와 연관 깊은 코드는 entities의 class static 메소드로 위치 이동
 
-[ ] service/\*에 index.js 통합 내보내기 방식 도입
+[V] service/\*에 index.js 통합 내보내기 방식 도입
 
 ## 3. 기타 리팩토링 필요 부분 개선
 
