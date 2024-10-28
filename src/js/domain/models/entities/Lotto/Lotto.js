@@ -1,5 +1,9 @@
-import { isArray, hasDuplicated } from '../../../utils/utils.js';
-import { NotArrayError, LengthNotSixError, DuplicatedError } from './errors.js';
+import { hasDuplicated } from '../../../utils/utils.js';
+import {
+    NumbersNotArrayError,
+    NumbersLengthNotSixError,
+    NumbersDuplicatedError,
+} from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
 
 const sortNumbersAscending = (targets) => {
@@ -7,7 +11,7 @@ const sortNumbersAscending = (targets) => {
 };
 
 export default class Lotto {
-    #lottoNumbers;
+    #numbers;
 
     static DIGITS = 6;
 
@@ -15,14 +19,14 @@ export default class Lotto {
         return new Lotto(numbers);
     }
 
-    static #hasDigit(target) {
+    static #hasSixDigits(target) {
         return target.length !== Lotto.DIGITS;
     }
 
     static #validate(numbers) {
-        if (!isArray(numbers)) throw new NotArrayError();
-        if (Lotto.#hasDigit(numbers)) throw new LengthNotSixError();
-        if (hasDuplicated(numbers)) throw new DuplicatedError();
+        if (!Array.isArray(numbers)) throw new NumbersNotArrayError();
+        if (Lotto.#hasSixDigits(numbers)) throw new NumbersLengthNotSixError();
+        if (hasDuplicated(numbers)) throw new NumbersDuplicatedError();
     }
 
     constructor(numbers) {
@@ -30,10 +34,10 @@ export default class Lotto {
 
         numbers = sortNumbersAscending(numbers);
 
-        this.#lottoNumbers = numbers.map(LottoNumber.of);
+        this.#numbers = numbers.map(LottoNumber.of);
     }
 
-    getLottoNumbers() {
-        return this.#lottoNumbers.map((lottoNumber) => lottoNumber.number);
+    getNumbers() {
+        return this.#numbers.map((number) => number.value);
     }
 }

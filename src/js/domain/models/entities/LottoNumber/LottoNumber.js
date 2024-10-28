@@ -1,15 +1,18 @@
-import { isNumber, isInteger } from '../../../utils/utils.js';
-import { NotNumberError, NotIntegerError, OutOfRangeError } from './errors.js';
+import { isNumber } from '../../../utils/utils.js';
+import {
+    ValueNotNumberError,
+    ValueNotIntegerError,
+    ValueOutOfRangeError,
+} from './errors.js';
 
-// [ ]  45개 만들어 두고 시작해도 됨
 export default class LottoNumber {
-    #number;
+    #value;
 
     static LOWER_BOUND = 1;
     static UPPER_BOUND = 45;
 
-    static of(number) {
-        return new LottoNumber(number);
+    static of(value) {
+        return new LottoNumber(value);
     }
 
     static #isInRange(target) {
@@ -19,18 +22,18 @@ export default class LottoNumber {
         );
     }
 
-    static #validate(number) {
-        if (!isNumber(number)) throw new NotNumberError();
-        if (!isInteger(number)) throw new NotIntegerError();
-        if (!LottoNumber.#isInRange(number)) throw new OutOfRangeError();
+    static #validate(value) {
+        if (!isNumber(value)) throw new ValueNotNumberError();
+        if (!Number.isInteger(value)) throw new ValueNotIntegerError();
+        if (!LottoNumber.#isInRange(value)) throw new ValueOutOfRangeError();
     }
 
-    constructor(number) {
-        LottoNumber.#validate(number);
-        this.#number = number;
+    constructor(value) {
+        LottoNumber.#validate(value);
+        this.#value = value;
     }
 
-    get number() {
-        return this.#number;
+    get value() {
+        return this.#value;
     }
 }

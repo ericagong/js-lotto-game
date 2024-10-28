@@ -8,27 +8,26 @@ export class LottoError extends ValidationError {
     }
 }
 
-export class NotArrayError extends LottoError {
-    static MESSAGE = 'lottoNumbers는 배열 형태여야합니다.';
+export class NumbersNotArrayError extends LottoError {
+    static MESSAGE = 'numbers는 배열 형태여야합니다.';
 
     constructor() {
-        super(NotArrayError.MESSAGE);
+        super(NumbersNotArrayError.MESSAGE);
     }
 }
 
-// [ ] 순환 참조 문제 해결
-export class LengthNotSixError extends LottoError {
-    static MESSAGE = 'lottoNumbers는 길이가 6인 배열 형태여야합니다.';
+export class NumbersLengthNotSixError extends LottoError {
+    static MESSAGE = 'numbers는 길이가 6인 배열 형태여야합니다.';
 
     constructor() {
-        super(LengthNotSixError.MESSAGE);
+        super(NumbersLengthNotSixError.MESSAGE);
     }
 }
 
-export class DuplicatedError extends LottoError {
-    static MESSAGE = 'lottoNumbers는 모두 중복되지 않아야합니다.';
+export class NumbersDuplicatedError extends LottoError {
+    static MESSAGE = 'numbers는 모두 중복되지 않아야합니다.';
 
     constructor() {
-        super(DuplicatedError.MESSAGE);
+        super(NumbersDuplicatedError.MESSAGE);
     }
 }

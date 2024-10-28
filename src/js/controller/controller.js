@@ -15,7 +15,7 @@ const step1 = (budget) => {
 
     lottos = Array.from({ length: count }, LottoStore.issueLotto);
     lottos.forEach((lotto) => {
-        View.lottoNumberTemplate(lotto.getLottoNumbers());
+        View.lottoNumberTemplate(lotto.getNumbers());
     });
 
     View.dividerTemplate();
@@ -32,7 +32,7 @@ const step3 = (bonusNumber) => {
 const step4 = () => {
     const ranks = [];
     lottos.forEach((lotto) => {
-        const lottoNumbers = lotto.getLottoNumbers();
+        const lottoNumbers = lotto.getNumbers();
 
         const matchCount = winningLotto.getMatchCount(lottoNumbers);
         const isBonusMatch = winningLotto.getIsBonusMatch(lottoNumbers);

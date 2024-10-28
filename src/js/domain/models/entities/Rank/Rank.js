@@ -2,7 +2,7 @@ import { isNumber, isBoolean } from '../../../utils/utils.js';
 import {
     IndexNotNumberError,
     PrizeNotNumberError,
-    isBonusMatchNotBooleanError,
+    IsBonusMatchNotBooleanError,
     MatchCountNotNumberError,
     // NotInitializedIndexError,
 } from './errors.js';
@@ -13,7 +13,6 @@ export default class Rank {
     #matchCount;
     #isBonusMatch;
 
-    // 1-6등의 Rank 인스턴스를 static으로 정의
     static FIRST = new Rank(1, 2_000_000_000, 6, false);
     static SECOND = new Rank(2, 30_000_000, 5, true);
     static THIRD = new Rank(3, 1_500_000, 5, false);
@@ -31,8 +30,9 @@ export default class Rank {
                 return Rank.FOURTH;
             case 3:
                 return Rank.FIFTH;
+            // 매칭이 3개 미만일 때 NONE 반환
             default:
-                return Rank.NONE; // 매칭이 3개 미만일 때 NONE 반환
+                return Rank.NONE;
         }
     }
 
@@ -41,7 +41,7 @@ export default class Rank {
         if (!isNumber(index)) throw new IndexNotNumberError();
         if (!isNumber(prize)) throw new PrizeNotNumberError();
         if (!isNumber(matchCount)) throw new MatchCountNotNumberError();
-        if (!isBoolean(isBonusMatch)) throw new isBonusMatchNotBooleanError();
+        if (!isBoolean(isBonusMatch)) throw new IsBonusMatchNotBooleanError();
 
         this.#index = index;
         this.#prize = prize;

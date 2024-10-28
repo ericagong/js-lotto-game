@@ -8,18 +8,19 @@ class WinningLottoError extends ValidationError {
     }
 }
 
-export class NotLottoInstanceError extends WinningLottoError {
-    static MESSAGE = 'lotto가 Lotto 인스턴스 형태가 아닙니다.';
+export class LottoNotLottoInstanceError extends WinningLottoError {
+    static MESSAGE = 'lotto가 Lotto 인스턴스 타입이 아닙니다.';
 
     constructor() {
-        super(NotLottoInstanceError.MESSAGE);
+        super(LottoNotLottoInstanceError.MESSAGE);
     }
 }
 
-export class DuplicatedError extends WinningLottoError {
-    static MESSAGE = 'bonusNumber는 당첨 로또 번호들과 중복되지 않아야합니다.';
+export class BonusNumberDuplicatedError extends WinningLottoError {
+    static MESSAGE =
+        'bonusNumber는 lotto의 로또 번호들과 중복되지 않아야합니다.';
 
     constructor() {
-        super(DuplicatedError.MESSAGE);
+        super(BonusNumberDuplicatedError.MESSAGE);
     }
 }

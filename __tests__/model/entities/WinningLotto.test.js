@@ -1,8 +1,8 @@
 import Lotto from '../../../src/js/domain/models/entities/Lotto/Lotto.js';
 import WinningLotto from '../../../src/js/domain/models/entities/WinningLotto/WinningLotto.js';
 import {
-    NotLottoInstanceError,
-    DuplicatedError,
+    LottoNotLottoInstanceError,
+    BonusNumberDuplicatedError,
 } from '../../../src/js/domain/models/entities/WinningLotto/errors.js';
 
 describe('static from(lotto, bonusNumber) 테스트', () => {
@@ -29,7 +29,7 @@ describe('new WinningLotto(lotto, bonusNumber) 테스트', () => {
                 [],
             ])('lotto: %p', (lotto) => {
                 expect(() => new WinningLotto(lotto, 45)).toThrow(
-                    NotLottoInstanceError,
+                    LottoNotLottoInstanceError,
                 );
             });
         });
@@ -40,7 +40,7 @@ describe('new WinningLotto(lotto, bonusNumber) 테스트', () => {
             const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
             it.each([1, 2, 3, 4, 5, 6])('bonusNumber: %p', (bonusNumber) => {
                 expect(() => new WinningLotto(lotto, bonusNumber)).toThrow(
-                    DuplicatedError,
+                    BonusNumberDuplicatedError,
                 );
             });
         });
@@ -71,7 +71,7 @@ describe('getMatchCount(targetNumbers) 테스트', () => {
     const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
     const winningLotto = WinningLotto.from(lotto, 45);
 
-    describe('일치하는 번호 개수를 반환한다.', () => {
+    describe('tagetNumbers가 winnningLotto lotto 번호가 일치하는 개수를 반환한다.', () => {
         it.each([
             { lottoNumbers: [1, 2, 3, 4, 5, 6], expected: 6 },
             { lottoNumbers: [1, 2, 3, 4, 5, 7], expected: 5 },

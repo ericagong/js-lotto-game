@@ -1,5 +1,4 @@
 import Buyer from '../../entities/Buyer/Buyer.js';
-import { isInteger } from '../../../utils/utils.js';
 
 const DECIMAL_POINT = 2;
 const ENDS_WITH_ZERO = /0$/;
@@ -15,7 +14,7 @@ const calculateTotalPrize = (ranks) =>
 const PERCENTAGE_BASE = 100;
 const toPercentage = (revenueRate) => {
     const value = revenueRate * PERCENTAGE_BASE;
-    if (isInteger(value)) return value;
+    if (Number.isInteger(value)) return value;
     else return roundToSecondAndTrimZeroEnds(value);
 };
 

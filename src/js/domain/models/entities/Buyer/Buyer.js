@@ -1,8 +1,8 @@
 import { isNumber } from '../../../utils/utils.js';
 import {
-    NotNumberError,
-    BelowMinBudgetError,
-    AboveMaxBudgetError,
+    BudgetNotNumberError,
+    BudgetBelowMinError,
+    BudgetAboveMaxError,
 } from './errors.js';
 
 export default class Buyer {
@@ -22,9 +22,9 @@ export default class Buyer {
         target > Buyer.LOTTO_UNIT_PRICE * Buyer.#MAX_COUNT;
 
     static #validate(budget) {
-        if (!isNumber(budget)) throw new NotNumberError();
-        if (Buyer.#isBelowMinBudget(budget)) throw new BelowMinBudgetError();
-        if (Buyer.#isAboveMaxBudget(budget)) throw new AboveMaxBudgetError();
+        if (!isNumber(budget)) throw new BudgetNotNumberError();
+        if (Buyer.#isBelowMinBudget(budget)) throw new BudgetBelowMinError();
+        if (Buyer.#isAboveMaxBudget(budget)) throw new BudgetAboveMaxError();
     }
 
     constructor(budget) {

@@ -8,26 +8,26 @@ export class BuyerError extends ValidationError {
     }
 }
 
-export class NotNumberError extends BuyerError {
-    static MESSAGE = 'budget은 number 타입이어야합니다.';
+export class BudgetNotNumberError extends BuyerError {
+    static MESSAGE = 'budget은 Number 타입이어야합니다.';
 
     constructor() {
-        super(NotNumberError.MESSAGE);
+        super(BudgetNotNumberError.MESSAGE);
     }
 }
 
-export class BelowMinBudgetError extends BuyerError {
-    static MESSAGE = 'budget은 최소 1000원 이상이어야합니다.';
+export class BudgetBelowMinError extends BuyerError {
+    static MESSAGE = 'budget은 1_000 이하의 값이어야합니다.';
 
     constructor() {
-        super(BelowMinBudgetError.MESSAGE);
+        super(BudgetBelowMinError.MESSAGE);
     }
 }
 
-export class AboveMaxBudgetError extends Error {
-    static MESSAGE = 'budget은 최대 100_000원 이하여야합니다.';
+export class BudgetAboveMaxError extends Error {
+    static MESSAGE = 'budget은 100_000 이하의 값이어야합니다.';
 
     constructor() {
-        super(AboveMaxBudgetError.MESSAGE);
+        super(BudgetAboveMaxError.MESSAGE);
     }
 }

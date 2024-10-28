@@ -71,11 +71,11 @@ export default class Rank {
 
 ### To-Be
 
-[X] Java enum 모방
+[V] Java enum 모방
 
-[X] static values를 추가해 외부에서 인스턴스를 만들지 않고 바로 참조할 수 있도록 처리
+[V] static values를 추가해 외부에서 인스턴스를 만들지 않고 바로 참조할 수 있도록 처리
 
-[X] determineRank 함수 Rank의 static 메소드로 변경
+[V] determineRank 함수 Rank의 static 메소드로 변경
 
 ### ADVANCED
 
@@ -127,7 +127,7 @@ domain/
 
 ### ADVANCED
 
-[ ] 도메인 멘탈 모델 기반 객체 역할/책임에 따라 네이밍 변경
+[V] 도메인 멘탈 모델 기반 객체 역할/책임에 따라 네이밍 변경
 
 [ ] 관심사 집약적 코드로 변경: service 내 로직 중 entities와 연관 깊은 코드는 entities의 class static 메소드로 위치 이동
 
@@ -135,8 +135,12 @@ domain/
 
 ## 3. 기타 리팩토링 필요 부분 개선
 
-[ ] 순환 참조 error 잡을 수 있게, eslint rule 적용
+[V] 순환 참조 error 잡을 수 있게, eslint rule 적용
 
 [ ] ConsoleReader InputStep 선언형 방식으로 변경
 
 [ ] step3에서 View를 ConsoleView, HTMLView로 분화
+
+[V] utils의 수레바퀴 재발명 지양
+
+[ ] LottoNumber 45개 만들어두고 시작하는 방식으로 변경

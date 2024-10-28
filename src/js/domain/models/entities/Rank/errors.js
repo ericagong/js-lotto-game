@@ -32,11 +32,11 @@ export class PrizeNotNumberError extends RankError {
     }
 }
 
-export class isBonusMatchNotBooleanError extends RankError {
+export class IsBonusMatchNotBooleanError extends RankError {
     static MESSAGE = 'isBonusMatch는 boolean 타입이여야합니다.';
 
     constructor() {
-        super(isBonusMatchNotBooleanError.MESSAGE);
+        super(IsBonusMatchNotBooleanError.MESSAGE);
     }
 }
 
