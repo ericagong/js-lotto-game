@@ -11,7 +11,7 @@ import Rank from '../domain/models/entities/Rank/Rank.js';
 import {
     countRanks,
     calculateRevenuePercentage,
-} from '../domain/models/service/createStatistics.js';
+} from '../domain/models/service/Statistic/createStatistics.js';
 import { RetryError } from './errors.js';
 
 const view = createView();
@@ -54,7 +54,7 @@ const step4 = () => {
     view.statisticsGuideTemplate();
 
     const rankCounter = countRanks(ranks);
-    rankCounter.delete(Rank.NONE); // 낙첨 제외
+    rankCounter.delete(Rank.NONE); // [ ] 낙첨 제외 - Rankcount 내부로 이동
     rankCounter.forEach((count, rank) => {
         const { matchCount, isBonusMatch, prize } = rank;
         view.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });

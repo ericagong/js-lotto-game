@@ -115,7 +115,19 @@ domain/
 
 [V] Model 코드는 class 구현 여부에 따라 entries와 service로 분리
 
-[ ] Controller에는 View와 상호작용하는 코드만 유지하고, Model과 상호작용하는 로직은 service로 이동
+[V] Controller에는 View와 상호작용하는 코드만 유지하고, Model과 상호작용하는 로직은 service로 이동
+
+[ ] service 하위 코드 역할에 따라 모듈화
+
+-   statistics: revenueCalculator, rankCounter
+
+-   issueLottos: issueLotto, getIssueAmount
+
+-   setWinningLotto: base, completed
+
+### ADVANCED
+
+[ ] service 내 로직 중 entities와 연관 깊은 코드는 entities의 class static 메소드로 위치 이동
 
 ## 3. 기타 리팩토링 필요 부분 개선
 
