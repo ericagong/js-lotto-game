@@ -5,7 +5,6 @@ import {
     getCompletedWinningLotto,
 } from './setWinningLotto.js';
 import Rank from '../domain/models/Rank/Rank.js';
-import determineRank from './determineRank.js';
 import { countRanks, calculateRevenuePercentage } from './createStatistics.js';
 import { RetryError } from './errors.js';
 
@@ -42,14 +41,14 @@ const step4 = () => {
         const matchCount = winningLotto.getMatchCount(lottoNumbers);
         const isBonusMatch = winningLotto.getIsBonusMatch(lottoNumbers);
 
-        const rank = determineRank(matchCount, isBonusMatch);
+        const rank = Rank.determine(matchCount, isBonusMatch);
         ranks.push(rank);
     });
 
     view.statisticsGuideTemplate();
 
     const rankCounter = countRanks(ranks);
-    rankCounter.delete(Rank.of(6)); // 낙첨 제외
+    rankCounter.delete(Rank.NONE); // 낙첨 제외
     rankCounter.forEach((count, rank) => {
         const { matchCount, isBonusMatch, prize } = rank;
         view.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });

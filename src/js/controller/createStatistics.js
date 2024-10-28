@@ -4,12 +4,12 @@ import { isInteger } from '../domain/utils/utils.js';
 
 export const countRanks = (ranks) => {
     const rankCounter = new Map([
-        [Rank.of(1), 0],
-        [Rank.of(2), 0],
-        [Rank.of(3), 0],
-        [Rank.of(4), 0],
-        [Rank.of(5), 0],
-        [Rank.of(6), 0], // 낙첨
+        [Rank.FIRST, 0],
+        [Rank.SECOND, 0],
+        [Rank.THIRD, 0],
+        [Rank.FOURTH, 0],
+        [Rank.FIFTH, 0],
+        [Rank.NONE, 0], // 낙첨
     ]);
 
     ranks.forEach((rank) => {

@@ -75,7 +75,14 @@ export default class Rank {
 
 [X] static values를 추가해 외부에서 인스턴스를 만들지 않고 바로 참조할 수 있도록 처리
 
-[ ] private constructor 적용
+[X] determineRank 함수 Rank의 static 메소드로 변경
+
+### ADVANCED
+
+[ ] private constructor 적용해 외부 생성 막기
+
+-   static of 삭제
+-   constructor 호출시 에러
 
 [ ] Symbol 사용해 유일성 보장하기(디버깅 이슈)
 

@@ -21,7 +21,21 @@ export default class Rank {
     static FIFTH = new Rank(5, 5_000, 3, false);
     static NONE = new Rank(6, 0, 2, false);
 
-    // 모든 Rank 인스턴스를 포함하는 배열
+    static determine(matchCount, isBonusMatch) {
+        switch (matchCount) {
+            case 6:
+                return Rank.FIRST;
+            case 5:
+                return isBonusMatch ? Rank.SECOND : Rank.THIRD;
+            case 4:
+                return Rank.FOURTH;
+            case 3:
+                return Rank.FIFTH;
+            default:
+                return Rank.NONE; // 매칭이 3개 미만일 때 NONE 반환
+        }
+    }
+
     static values = [
         Rank.FIRST,
         Rank.SECOND,
