@@ -1,5 +1,5 @@
 import View from '../UI/index.js';
-import LottoStore from '../domain/models/service/LottoStrore/index.js';
+import LottoStore from '../domain/models/service/LottoStore/index.js';
 import LottoBroadcast from '../domain/models/service/LottoBroadcast/index.js';
 import Statistic from '../domain/models/service/Statistic/index.js';
 import Rank from '../domain/models/entities/Rank/Rank.js';
@@ -30,20 +30,20 @@ const step3 = (bonusNumber) => {
 };
 
 const step4 = () => {
-    const ranks = [];
-    lottos.forEach((lotto) => {
+    const ranks = lottos.map((lotto) => {
         const lottoNumbers = lotto.getNumbers();
 
         const matchCount = winningLotto.getMatchCount(lottoNumbers);
         const isBonusMatch = winningLotto.getIsBonusMatch(lottoNumbers);
 
         const rank = Rank.determine(matchCount, isBonusMatch);
-        ranks.push(rank);
+        return rank;
     });
 
     View.statisticsGuideTemplate();
 
     const rankCounter = Statistic.getRankCounter(ranks);
+
     rankCounter.forEach((count, rank) => {
         const { matchCount, isBonusMatch, prize } = rank;
         View.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });

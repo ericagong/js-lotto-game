@@ -1,7 +1,7 @@
-import LottoStrore from '../../../src/js/domain/models/service/LottoStrore/index.js';
+import LottoStore from '../../../src/js/domain/models/service/LottoStore/index.js';
 import Lotto from '../../../src/js/domain/models/entities/Lotto/Lotto.js';
 
-const { getIssueCount, issueLotto } = LottoStrore;
+const { getIssueCount, issueLotto } = LottoStore;
 
 describe('getIssueCount(budget) 테스트', () => {
     describe('주어진 budget 내에서 발행할 수 있는 로또 최대 개수를 반환한다.', () => {
