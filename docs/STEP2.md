@@ -117,17 +117,21 @@ domain/
 
 [V] Controller에는 View와 상호작용하는 코드만 유지하고, Model과 상호작용하는 로직은 service로 이동
 
-[ ] service 하위 코드 역할에 따라 모듈화
+[V] service 하위 코드 역할에 따라, 도메인 멘탈 모델 이름 하에 모듈화
 
--   statistics: revenueCalculator, rankCounter
+-   Statistics: getRankCounter, getRevenuePercentage
 
--   issueLottos: issueLotto, getIssueAmount
+-   LottoStore: issueLotto, getIssueAmount
 
--   setWinningLotto: base, completed
+-   LottoBroadcast: setWinningLottoNumber, setBonusNumber
 
 ### ADVANCED
 
-[ ] service 내 로직 중 entities와 연관 깊은 코드는 entities의 class static 메소드로 위치 이동
+[ ] 도메인 멘탈 모델 기반 객체 역할/책임에 따라 네이밍 변경
+
+[ ] 관심사 집약적 코드로 변경: service 내 로직 중 entities와 연관 깊은 코드는 entities의 class static 메소드로 위치 이동
+
+[ ] service/\*에 index.js 통합 내보내기 방식 도입
 
 ## 3. 기타 리팩토링 필요 부분 개선
 
