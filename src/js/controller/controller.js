@@ -1,10 +1,8 @@
 import createView from '../UI/index.js';
 import { getIssueCount } from '../domain/models/service/LottoStrore/getIssueCount.js';
 import { issueLotto } from '../domain/models/service/LottoStrore/issueLotto.js';
-import {
-    getBaseWinningLotto,
-    getCompletedWinningLotto,
-} from '../domain/models/service/setWinningLotto.js';
+import { setWinnerLottoNumbers } from '../domain/models/service/LottoBroadcast/setWinnerNumbers.js';
+import { setBonusNumber } from '../domain/models/service/LottoBroadcast/setBonusNumber.js';
 import Rank from '../domain/models/entities/Rank/Rank.js';
 import { getRankCounter } from '../domain/models/service/Statistic/getRankCounter.js';
 import { getRevenuePercentage } from '../domain/models/service/Statistic/getRevenuePercentage.js';
@@ -28,11 +26,11 @@ const step1 = (budget) => {
 };
 
 const step2 = (winningNumbers) => {
-    baseWinningLotto = getBaseWinningLotto(winningNumbers);
+    baseWinningLotto = setWinnerLottoNumbers(winningNumbers);
 };
 
 const step3 = (bonusNumber) => {
-    winningLotto = getCompletedWinningLotto(baseWinningLotto, bonusNumber);
+    winningLotto = setBonusNumber(baseWinningLotto, bonusNumber);
 };
 
 const step4 = () => {
