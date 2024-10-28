@@ -7,7 +7,6 @@ import {
     MatchCountNotNumberError,
 } from '../../src/js/domain/models/Rank/errors.js';
 
-// [ ] Question - static initializeRanks 테스트 불가 - 어떻게 테스트 코드 작성해야할지?
 describe('static of(index) 테스트', () => {
     describe('index가 사전에 정의된 1, 2, 3, 4, 5, 6 중 하나라면, Rank 객체를 반환한다.', () => {
         it.each([
@@ -53,7 +52,7 @@ describe('static of(index) 테스트', () => {
 
 describe('new Rank(index, prize, matchCount, isBonusMatch) 테스트', () => {
     describe('Rank 유효성 검사 테스트', () => {
-        describe('index가 number 타입이 아니면, 에러를 발생시킨다.', () => {
+        describe('index가 Number 타입이 아니면, 에러를 발생시킨다.', () => {
             it.each([
                 '1',
                 'erica',
@@ -68,7 +67,7 @@ describe('new Rank(index, prize, matchCount, isBonusMatch) 테스트', () => {
             });
         });
 
-        describe('prize가 number 타입이 아니면, 에러를 발생시킨다.', () => {
+        describe('prize가 Number 타입이 아니면, 에러를 발생시킨다.', () => {
             it.each([
                 '1',
                 'erica',
@@ -83,7 +82,7 @@ describe('new Rank(index, prize, matchCount, isBonusMatch) 테스트', () => {
             });
         });
 
-        describe('matchCount가 number 타입이 아니면, 에러를 발생시킨다.', () => {
+        describe('matchCount가 Number 타입이 아니면, 에러를 발생시킨다.', () => {
             it.each([
                 '1',
                 'erica',
@@ -100,7 +99,7 @@ describe('new Rank(index, prize, matchCount, isBonusMatch) 테스트', () => {
             });
         });
 
-        describe('isBonusMatch가 boolean 타입이 아니면, 에러를 발생시킨다.', () => {
+        describe('isBonusMatch가 Boolean 타입이 아니면, 에러를 발생시킨다.', () => {
             it.each(['1', 'erica', 1, null, undefined, function () {}, {}, []])(
                 'isBonusMatch: %p',
                 (isBonusMatch) => {
@@ -118,8 +117,6 @@ describe('new Rank(index, prize, matchCount, isBonusMatch) 테스트', () => {
 });
 
 describe('getter 테스트', () => {
-    Rank.initializeRanks();
-
     describe('get index 테스트', () => {
         describe('index를 반환한다.', () => {
             it.each([

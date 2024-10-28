@@ -6,8 +6,6 @@ import {
 
 describe('countRanks(ranks) 테스트', () => {
     describe('rank 개수를 [1등, 2등, 3등, 4등, 5등, 없음] 배열 형태로 세어 반환한다.', () => {
-        Rank.initializeRanks();
-
         describe('로또가 1개인 경우', () => {
             it.each([
                 {
@@ -176,7 +174,6 @@ describe('countRanks(ranks) 테스트', () => {
 
 describe('calculateRevenuePercentage(ranks) 테스트', () => {
     describe('당첨된 lottos 금액을 구매 금액으로 나눠 수익률 계산해 반환한다.', () => {
-        Rank.initializeRanks();
         describe('로또 개수가 1개인 경우', () => {
             const testCases = [
                 {

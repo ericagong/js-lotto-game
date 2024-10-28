@@ -1,6 +1,7 @@
 import Rank from '../domain/models/Rank/Rank.js';
 
 // step3 - 1
+// [ ] Rank의 Static으로 이동
 export default function determineRank(matchCount, isBonusMatch) {
     if (matchCount === 6) return Rank.of(1);
     if (matchCount === 5 && isBonusMatch) return Rank.of(2);

@@ -35,8 +35,6 @@ const step3 = (bonusNumber) => {
 };
 
 const step4 = () => {
-    Rank.initializeRanks();
-
     const ranks = [];
     lottos.forEach((lotto) => {
         const lottoNumbers = lotto.getLottoNumbers();

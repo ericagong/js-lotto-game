@@ -71,9 +71,11 @@ export default class Rank {
 
 ### To-Be
 
-[ ] Java enum 모방
+[X] Java enum 모방
 
-[ ] static values를 추가해 외부에서 인스턴스를 만들지 않고 바로 참조할 수 있도록 처리
+[X] static values를 추가해 외부에서 인스턴스를 만들지 않고 바로 참조할 수 있도록 처리
+
+[ ] private constructor 적용
 
 [ ] Symbol 사용해 유일성 보장하기(디버깅 이슈)
 
