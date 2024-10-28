@@ -82,7 +82,7 @@ export default class Rank {
 [ ] private constructor 적용해 외부 생성 막기
 
 -   static of 삭제
--   constructor 호출시 에러
+-   constructor 호출시 에러 처리
 
 [ ] Symbol 사용해 유일성 보장하기(디버깅 이슈)
 

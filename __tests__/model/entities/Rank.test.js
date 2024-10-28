@@ -1,54 +1,11 @@
 import Rank from '../../../src/js/domain/models/entities/Rank/Rank.js';
 import {
-    NotInitializedIndexError,
+    // NotInitializedIndexError,
     IndexNotNumberError,
     PrizeNotNumberError,
     isBonusMatchNotBooleanError,
     MatchCountNotNumberError,
 } from '../../../src/js/domain/models/entities/Rank/errors.js';
-
-describe('static of(index) 테스트', () => {
-    describe('index가 사전에 정의된 1, 2, 3, 4, 5, 6 중 하나라면, Rank 객체를 반환한다.', () => {
-        it.each([
-            {
-                index: 1,
-                prize: 2_000_000_000,
-                isBonusMatch: false,
-                matchCount: 6,
-            },
-            { index: 2, prize: 30_000_000, isBonusMatch: true, matchCount: 5 },
-            { index: 3, prize: 1_500_000, isBonusMatch: false, matchCount: 5 },
-            { index: 4, prize: 50_000, isBonusMatch: false, matchCount: 4 },
-            { index: 5, prize: 5_000, isBonusMatch: false, matchCount: 3 },
-            { index: 6, prize: 0, isBonusMatch: false, matchCount: 2 },
-        ])('index: $index', ({ index, prize, isBonusMatch, matchCount }) => {
-            const expectedRank = new Rank(
-                index,
-                prize,
-                matchCount,
-                isBonusMatch,
-            );
-            expect(Rank.of(index)).toEqual(expectedRank);
-        });
-    });
-
-    describe('index가 사전에 정의된 값이 아니면, 에러를 생성한다.', () => {
-        it.each([
-            0,
-            7,
-            '1',
-            'erica',
-            true,
-            null,
-            undefined,
-            function () {},
-            {},
-            [],
-        ])('index: %p', (index) => {
-            expect(() => Rank.of(index)).toThrow(NotInitializedIndexError);
-        });
-    });
-});
 
 describe('new Rank(index, prize, matchCount, isBonusMatch) 테스트', () => {
     describe('Rank 유효성 검사 테스트', () => {
@@ -121,12 +78,16 @@ describe('getter 테스트', () => {
         describe('index를 반환한다.', () => {
             it.each([
                 {
-                    idx: 1,
+                    rank: Rank.FIRST,
                     expected: 1,
                 },
-                { idx: 6, expected: 6 },
-            ])('index: $idx', ({ idx, expected }) => {
-                expect(Rank.of(idx).index).toBe(expected);
+                { rank: Rank.SECOND, expected: 2 },
+                { rank: Rank.THIRD, expected: 3 },
+                { rank: Rank.FOURTH, expected: 4 },
+                { rank: Rank.FIFTH, expected: 5 },
+                { rank: Rank.NONE, expected: 6 },
+            ])('index: $expected', ({ rank, expected }) => {
+                expect(rank.index).toBe(expected);
             });
         });
     });
@@ -135,12 +96,16 @@ describe('getter 테스트', () => {
         describe('prize를 반환한다.', () => {
             it.each([
                 {
-                    index: 1,
+                    rank: Rank.FIRST,
                     expected: 2_000_000_000,
                 },
-                { index: 6, expected: 0 },
-            ])('index: $index', ({ index, expected }) => {
-                expect(Rank.of(index).prize).toBe(expected);
+                { rank: Rank.SECOND, expected: 30_000_000 },
+                { rank: Rank.THIRD, expected: 1_500_000 },
+                { rank: Rank.FOURTH, expected: 50_000 },
+                { rank: Rank.FIFTH, expected: 5_000 },
+                { rank: Rank.NONE, expected: 0 },
+            ])('prize: $expected', ({ rank, expected }) => {
+                expect(rank.prize).toBe(expected);
             });
         });
     });
@@ -149,16 +114,16 @@ describe('getter 테스트', () => {
         describe('matchCount를 반환한다.', () => {
             it.each([
                 {
-                    index: 1,
+                    rank: Rank.FIRST,
                     expected: 6,
                 },
-                { index: 2, expected: 5 },
-                { index: 3, expected: 5 },
-                { index: 4, expected: 4 },
-                { index: 5, expected: 3 },
-                { index: 6, expected: 2 },
-            ])('index: $index', ({ index, expected }) => {
-                expect(Rank.of(index).matchCount).toBe(expected);
+                { rank: Rank.SECOND, expected: 5 },
+                { rank: Rank.THIRD, expected: 5 },
+                { rank: Rank.FOURTH, expected: 4 },
+                { rank: Rank.FIFTH, expected: 3 },
+                { rank: Rank.NONE, expected: 2 },
+            ])('matchCount: $expected', ({ rank, expected }) => {
+                expect(rank.matchCount).toBe(expected);
             });
         });
     });
@@ -167,16 +132,16 @@ describe('getter 테스트', () => {
         describe('isBonusMatch를 반환한다.', () => {
             it.each([
                 {
-                    index: 1,
+                    rank: Rank.FIRST,
                     expected: false,
                 },
-                { index: 2, expected: true },
-                { index: 3, expected: false },
-                { index: 4, expected: false },
-                { index: 5, expected: false },
-                { index: 6, expected: false },
-            ])('index: $index', ({ index, expected }) => {
-                expect(Rank.of(index).isBonusMatch).toBe(expected);
+                { rank: Rank.SECOND, expected: true },
+                { rank: Rank.THIRD, expected: false },
+                { rank: Rank.FOURTH, expected: false },
+                { rank: Rank.FIFTH, expected: false },
+                { rank: Rank.NONE, expected: false },
+            ])('isBonusMatch: $expected', ({ rank, expected }) => {
+                expect(rank.isBonusMatch).toBe(expected);
             });
         });
     });

@@ -7,7 +7,8 @@ describe('getRankCounter(ranks) 테스트', () => {
         describe('로또가 1개인 경우', () => {
             it.each([
                 {
-                    rankIndex: 1,
+                    name: 'ranks: [1]',
+                    ranks: [Rank.FIRST],
                     expected: new Map([
                         [Rank.FIRST, 1],
                         [Rank.SECOND, 0],
@@ -17,7 +18,8 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndex: 2,
+                    name: 'ranks: [2]',
+                    ranks: [Rank.SECOND],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 1],
@@ -27,7 +29,8 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndex: 3,
+                    name: 'ranks: [3]',
+                    ranks: [Rank.THIRD],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 0],
@@ -37,7 +40,8 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndex: 4,
+                    name: 'ranks: [4]',
+                    ranks: [Rank.FOURTH],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 0],
@@ -47,7 +51,8 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndex: 5,
+                    name: 'ranks: [5]',
+                    ranks: [Rank.FIFTH],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 0],
@@ -57,7 +62,8 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndex: 6,
+                    name: 'ranks: [6]',
+                    ranks: [Rank.NONE],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 0],
@@ -66,16 +72,23 @@ describe('getRankCounter(ranks) 테스트', () => {
                         [Rank.FIFTH, 0],
                     ]),
                 },
-            ])('rankIndex: $rankIndex', ({ rankIndex, expected }) => {
-                const ranks = [Rank.of(rankIndex)];
+            ])('$name', ({ ranks, expected }) => {
                 expect(getRankCounter(ranks)).toEqual(expected);
             });
         });
 
         describe('로또가 여러 개인 경우', () => {
-            const testCases = [
+            it.each([
                 {
-                    rankIndexes: [1, 2, 3, 4, 5, 6],
+                    name: 'ranks: [1, 2, 3, 4, 5, 6]',
+                    ranks: [
+                        Rank.FIRST,
+                        Rank.SECOND,
+                        Rank.THIRD,
+                        Rank.FOURTH,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                    ],
                     expected: new Map([
                         [Rank.FIRST, 1],
                         [Rank.SECOND, 1],
@@ -85,7 +98,15 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndexes: [1, 5, 6, 6, 6, 6],
+                    name: 'ranks: [1, 5, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.FIRST,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: new Map([
                         [Rank.FIRST, 1],
                         [Rank.SECOND, 0],
@@ -95,7 +116,15 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndexes: [2, 5, 6, 6, 6, 6],
+                    name: 'ranks: [2, 5, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.SECOND,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 1],
@@ -105,7 +134,15 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndexes: [3, 5, 6, 6, 6, 6],
+                    name: 'ranks: [3, 5, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.THIRD,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 0],
@@ -115,7 +152,14 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndexes: [4, 5, 6, 6, 6, 6],
+                    name: 'ranks: [4, 5, 6, 6, 6]',
+                    ranks: [
+                        Rank.FOURTH,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 0],
@@ -125,7 +169,14 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndexes: [5, 5, 6, 6, 6, 6],
+                    name: 'ranks: [5, 5, 6, 6, 6]',
+                    ranks: [
+                        Rank.FIFTH,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 0],
@@ -135,7 +186,14 @@ describe('getRankCounter(ranks) 테스트', () => {
                     ]),
                 },
                 {
-                    rankIndexes: [5, 6, 6, 6, 6, 6, 6, 6],
+                    name: 'ranks: [5, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: new Map([
                         [Rank.FIRST, 0],
                         [Rank.SECOND, 0],
@@ -144,15 +202,9 @@ describe('getRankCounter(ranks) 테스트', () => {
                         [Rank.FIFTH, 1],
                     ]),
                 },
-            ];
-
-            it.each(testCases)(
-                'rankIndexes: $rankIndexes',
-                ({ rankIndexes, expected }) => {
-                    const ranks = rankIndexes.map((rank) => Rank.of(rank));
-                    expect(getRankCounter(ranks)).toEqual(expected);
-                },
-            );
+            ])('$name', ({ ranks, expected }) => {
+                expect(getRankCounter(ranks)).toEqual(expected);
+            });
         });
     });
 });
@@ -160,60 +212,133 @@ describe('getRankCounter(ranks) 테스트', () => {
 describe('getRevenuePercentage(ranks) 테스트', () => {
     describe('당첨된 lottos 금액을 구매 금액으로 나눠 수익률 계산해 반환한다.', () => {
         describe('로또 개수가 1개인 경우', () => {
-            const testCases = [
+            it.each([
                 {
-                    rankIndex: 1,
+                    name: 'ranks: [1]',
+                    ranks: [Rank.FIRST],
                     expected: (2_000_000_000 / 1_000) * 100,
                 },
                 {
-                    rankIndex: 2,
+                    name: 'ranks: [2]',
+                    ranks: [Rank.SECOND],
                     expected: (30_000_000 / 1_000) * 100,
                 },
                 {
-                    rankIndex: 3,
+                    name: 'ranks: [3]',
+                    ranks: [Rank.THIRD],
                     expected: (1_500_000 / 1_000) * 100,
                 },
                 {
-                    rankIndex: 4,
+                    name: 'ranks: [4]',
+                    ranks: [Rank.FOURTH],
                     expected: (50_000 / 1_000) * 100,
                 },
                 {
-                    rankIndex: 5,
+                    name: 'ranks: [5]',
+                    ranks: [Rank.FIFTH],
                     expected: (5_000 / 1_000) * 100,
                 },
                 {
-                    rankIndex: 6,
+                    name: 'ranks: [6]',
+                    ranks: [Rank.NONE],
                     expected: (0 / 1_000) * 100,
                 },
-            ];
-
-            it.each(testCases)(
-                'rankIndex: $rankIndex',
-                ({ rankIndex, expected }) => {
-                    const ranks = [Rank.of(rankIndex)];
-                    expect(getRevenuePercentage(ranks)).toBe(expected);
-                },
-            );
+            ])('$name', ({ ranks, expected }) => {
+                expect(getRevenuePercentage(ranks)).toBe(expected);
+            });
         });
 
         describe('로또가 여러 개인 경우', () => {
-            const testCases = [
-                { rankIndexes: [1, 2, 3, 4, 5, 6], expected: 33859250 },
-                { rankIndexes: [1, 5, 6, 6, 6, 6], expected: 33333416.67 },
-                { rankIndexes: [2, 5, 6, 6, 6, 6], expected: 500083.33 },
-                { rankIndexes: [3, 5, 6, 6, 6, 6], expected: 25083.33 },
-                { rankIndexes: [4, 5, 6, 6, 6, 6], expected: 916.67 },
-                { rankIndexes: [5, 5, 6, 6, 6, 6], expected: 166.67 },
-                { rankIndexes: [5, 6, 6, 6, 6, 6, 6, 6], expected: 62.5 },
-            ];
-
-            it.each(testCases)(
-                'rankIndexes: $rankIndexes',
-                ({ rankIndexes, expected }) => {
-                    const ranks = rankIndexes.map((rank) => Rank.of(rank));
-                    expect(getRevenuePercentage(ranks)).toBe(expected);
+            it.each([
+                {
+                    name: 'ranks: [1, 2, 3, 4, 5, 6]',
+                    ranks: [
+                        Rank.FIRST,
+                        Rank.SECOND,
+                        Rank.THIRD,
+                        Rank.FOURTH,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                    ],
+                    expected: 33_859_250,
                 },
-            );
+                {
+                    name: 'ranks: [1, 5, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.FIRST,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
+                    expected: 33_333_416.67,
+                },
+                {
+                    name: 'ranks: [2, 5, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.SECOND,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
+                    expected: 500_083.33,
+                },
+                {
+                    name: 'ranks: [3, 5, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.THIRD,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
+                    expected: 25_083.33,
+                },
+                {
+                    name: 'ranks: [4, 5, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.FOURTH,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
+                    expected: 916.67,
+                },
+                {
+                    name: 'ranks: [5, 5, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.FIFTH,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
+                    expected: 166.67,
+                },
+                {
+                    name: 'ranks: [5, 6, 6, 6, 6, 6, 6, 6]',
+                    ranks: [
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
+                    expected: 62.5,
+                },
+            ])('$name', ({ ranks, expected }) => {
+                expect(getRevenuePercentage(ranks)).toBe(expected);
+            });
         });
     });
 });

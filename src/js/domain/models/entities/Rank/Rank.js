@@ -4,7 +4,7 @@ import {
     PrizeNotNumberError,
     isBonusMatchNotBooleanError,
     MatchCountNotNumberError,
-    NotInitializedIndexError,
+    // NotInitializedIndexError,
 } from './errors.js';
 
 export default class Rank {
@@ -36,21 +36,7 @@ export default class Rank {
         }
     }
 
-    static values = [
-        Rank.FIRST,
-        Rank.SECOND,
-        Rank.THIRD,
-        Rank.FOURTH,
-        Rank.FIFTH,
-        Rank.NONE,
-    ];
-
-    static of(index) {
-        const rank = Rank.values.find((rank) => rank.index === index);
-        if (!rank) throw new NotInitializedIndexError();
-        return rank;
-    }
-
+    // [ ] private constructor emulate
     constructor(index, prize, matchCount, isBonusMatch) {
         if (!isNumber(index)) throw new IndexNotNumberError();
         if (!isNumber(prize)) throw new PrizeNotNumberError();
