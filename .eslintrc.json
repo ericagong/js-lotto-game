@@ -8,8 +8,14 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
-    "plugins": ["prettier", "jest"],
+    "plugins": ["prettier", "jest", "import"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:prettier/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+    ],
+
     "rules": {
         "prettier/prettier": "error",
         "jest/no-disabled-tests": "warn",
@@ -17,8 +23,9 @@
         "jest/no-identical-title": "error",
         "jest/prefer-to-have-length": "warn",
         "jest/valid-expect": "error",
+        "import/no-cycle": ["error", { "maxDepth": 1 }],
         "no-var": "error",
-        // "no-console": ["error", { "allow": ["warn", "error", "info"] }],
+        // "no-console": ["error", { "allow": ["warn", "info"] }],
         "eqeqeq": "warn",
         "no-unused-vars": "warn"
     }
