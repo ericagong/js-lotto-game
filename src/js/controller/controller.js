@@ -2,7 +2,7 @@ import View from '../UI/index.js';
 import LottoStore from '../domain/models/service/LottoStore/index.js';
 import LottoBroadcast from '../domain/models/service/LottoBroadcast/index.js';
 import Statistic from '../domain/models/service/Statistic/index.js';
-import Rank from '../domain/models/entities/Rank/Rank.js';
+import { getRank } from '../domain/models/service/getRank.js';
 import { RetryError } from './errors.js';
 
 let baseWinningLotto;
@@ -30,15 +30,9 @@ const step3 = (bonusNumber) => {
 };
 
 const step4 = () => {
-    const ranks = lottos.map((lotto) => {
-        const lottoNumbers = lotto.getNumbers();
-
-        const matchCount = winningLotto.getMatchCount(lottoNumbers);
-        const isBonusMatch = winningLotto.getIsBonusMatch(lottoNumbers);
-
-        const rank = Rank.determine(matchCount, isBonusMatch);
-        return rank;
-    });
+    const ranks = lottos.map((targetLotto) =>
+        getRank(targetLotto, winningLotto),
+    );
 
     View.statisticsGuideTemplate();
 

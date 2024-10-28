@@ -75,7 +75,7 @@ export default class Rank {
 
 [V] static values를 추가해 외부에서 인스턴스를 만들지 않고 바로 참조할 수 있도록 처리
 
-[V] determineRank 함수 Rank의 static 메소드로 변경
+[V] fromRank 함수 Rank의 static 메소드로 변경
 
 ### ADVANCED
 
@@ -93,7 +93,7 @@ export default class Rank {
 ```
 controller/
 ├── createStatistics.js
-├── determineRank.js
+├── fromRank.js
 ├── errors.js
 ├── issueLotto.js
 ├── LottoPlatform.js
