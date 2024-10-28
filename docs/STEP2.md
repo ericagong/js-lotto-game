@@ -144,3 +144,7 @@ domain/
 [V] utils의 수레바퀴 재발명 지양
 
 [ ] LottoNumber 45개 만들어두고 시작하는 방식으로 변경
+
+[ ] Counter 중심으로 서비스 로직 변경:
+
+-   Statistics을 Map 기반 Counter의 totalPurchased, totalPrize 계산으로 변경
