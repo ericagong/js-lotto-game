@@ -33,7 +33,7 @@ export default class WinningLotto {
         this.#bonusNumber = LottoNumber.of(bonusNumber);
     }
 
-    getIsBonusMatch(targetNumbers) {
+    matchBonusNumber(targetNumbers) {
         return targetNumbers.includes(this.#bonusNumber.value);
     }
 

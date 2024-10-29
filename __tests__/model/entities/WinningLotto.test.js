@@ -52,18 +52,18 @@ describe('new WinningLotto(lotto, bonusNumber) 테스트', () => {
     });
 });
 
-describe('getIsBonusMatch(targetNumbers) 테스트', () => {
+describe('matchBonusNumber(targetNumbers) 테스트', () => {
     const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
     const winningLotto = WinningLotto.from(lotto, 45);
 
     it('보너스 번호가 일치하면, true를 반환한다.', () => {
         const targetNumbers = [1, 2, 3, 4, 5, 45];
-        expect(winningLotto.getIsBonusMatch(targetNumbers)).toBe(true);
+        expect(winningLotto.matchBonusNumber(targetNumbers)).toBe(true);
     });
 
     it('보너스 번호가 일치하지 않으면, false를 반환한다.', () => {
         const targetNumbers = [1, 2, 3, 4, 5, 6];
-        expect(winningLotto.getIsBonusMatch(targetNumbers)).toBe(false);
+        expect(winningLotto.matchBonusNumber(targetNumbers)).toBe(false);
     });
 });
 

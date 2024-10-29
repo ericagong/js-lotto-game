@@ -3,6 +3,7 @@ import LottoStore from '../domain/models/service/LottoStore/index.js';
 import LottoBroadcast from '../domain/models/service/LottoBroadcast/index.js';
 import Statistic from '../domain/models/service/Statistic/index.js';
 import { RetryError } from './errors.js';
+import ValidationError from '../domain/ValidationError.js';
 
 let baseWinningLotto;
 let winningLotto;
@@ -43,6 +44,7 @@ const step4 = () => {
         View.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });
     });
 
+    // [ ] fix: delete로 인해 NaN 나오는 이슈 해결
     const revenueRate = Statistic.calculateRevenueRate(rankCounter);
     const percentage = Statistic.toPercentage(revenueRate);
 
@@ -66,7 +68,13 @@ const runOnce = async () => {
 
         step4();
     } catch (error) {
-        View.errorMessageTemplate(error.message);
+        if (error instanceof ValidationError) {
+            // 예상 가능한 에러 - 에러 출력
+            View.errorMessageTemplate(error.type, error.message);
+        } else {
+            // 예상 불가능한 에러 - 프로그램 종료
+            throw error;
+        }
     } finally {
         View.close();
     }
@@ -113,7 +121,13 @@ const runUntilFinish = async () => {
                 });
             }
         } catch (error) {
-            View.errorMessageTemplate(error.message);
+            if (error instanceof ValidationError) {
+                // 예상 가능한 에러 - 에러 출력
+                View.errorMessageTemplate(error.type, error.message);
+            } else {
+                // 예상 불가능한 에러 - 프로그램 종료
+                throw error;
+            }
         }
     }
 

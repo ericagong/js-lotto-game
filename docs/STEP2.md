@@ -86,6 +86,8 @@ export default class Rank {
 
 [ ] Symbol 사용해 유일성 보장하기(디버깅 이슈)
 
+[ ] values 추가
+
 ## 2. Controller와 Model 코드 영역 분리
 
 ### As-Is
@@ -137,13 +139,19 @@ domain/
 
 [V] 순환 참조 error 잡을 수 있게, eslint rule 적용
 
+[V] utils의 수레바퀴 재발명 지양
+
+[ ] ValidationError 메소드 추가
+
+[ ] 어플리케이션단 Error catch 구조 변경
+
+[ ] ranks enum 모방
+
+[ ] LottoNumber 45개 만들어두고 시작하는 방식으로 변경
+
 [ ] ConsoleReader InputStep 선언형 방식으로 변경
 
 [ ] step3에서 View를 ConsoleView, HTMLView로 분화
-
-[V] utils의 수레바퀴 재발명 지양
-
-[ ] LottoNumber 45개 만들어두고 시작하는 방식으로 변경
 
 [ ] Counter 중심으로 서비스 로직 변경:
 

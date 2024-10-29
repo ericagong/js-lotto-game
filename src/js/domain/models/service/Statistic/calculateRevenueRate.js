@@ -16,7 +16,9 @@ const calculateTotalPrize = (counter) => {
 
 export const calculateRevenueRate = (counter) => {
     const totalPurchased = calculateTotalPurchased(counter); // 외부 분리 가능
-    let totalPrize = calculateTotalPrize(counter);
+    const totalPrize = calculateTotalPrize(counter);
+
+    console.log(totalPurchased, totalPrize);
 
     const revenueRate = totalPrize / totalPurchased;
     return revenueRate;

@@ -1,10 +1,10 @@
 import ValidationError from '../../../ValidationError.js';
 
 export class BuyerError extends ValidationError {
-    static ERROR_TYPE = ' [Buyer Error] ';
+    static #TYPE = 'BuyerError';
 
     constructor(message) {
-        super(BuyerError.ERROR_TYPE + message);
+        super(BuyerError.#TYPE, message);
     }
 }
 

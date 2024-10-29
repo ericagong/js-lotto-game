@@ -37,6 +37,6 @@ export const totalRevenueTemplate = (revenueRate) => {
     write(`총 수익률은 ${revenueRateText}입니다.`);
 };
 
-export const errorMessageTemplate = (message) => {
-    write(message);
+export const errorMessageTemplate = (type, message) => {
+    write(`[${type}] ${message}`);
 };

@@ -1,10 +1,10 @@
 import ValidationError from '../domain/ValidationError.js';
 
 export class RetryError extends ValidationError {
-    static ERROR_TYPE = ' [Retry Error] ';
-    static MESSAGE = 'Retry 입력값은 y나 n 중 하나여야합니다.';
+    static #TYPE = 'RetryError';
+    static #MESSAGE = 'Retry 입력값은 y나 n 중 하나여야합니다.';
 
     constructor() {
-        super(RetryError.ERROR_TYPE + RetryError.MESSAGE);
+        super(RetryError.#TYPE, RetryError.#MESSAGE);
     }
 }
