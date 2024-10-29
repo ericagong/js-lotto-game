@@ -37,16 +37,16 @@ const step4 = () => {
     View.statisticsGuideTemplate();
 
     const rankCounter = Statistic.getCounter(ranks);
+
+    const revenueRate = Statistic.calculateRevenueRate(rankCounter);
+    const percentage = Statistic.toPercentage(revenueRate);
+
     Statistic.deleteNoneRank(rankCounter);
 
     rankCounter.forEach((count, rank) => {
         const { matchCount, isBonusMatch, prize } = rank;
         View.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });
     });
-
-    // [ ] fix: delete로 인해 NaN 나오는 이슈 해결
-    const revenueRate = Statistic.calculateRevenueRate(rankCounter);
-    const percentage = Statistic.toPercentage(revenueRate);
 
     View.totalRevenueTemplate(percentage);
 

@@ -141,9 +141,9 @@ domain/
 
 [V] utils의 수레바퀴 재발명 지양
 
-[ ] ValidationError 메소드 추가
+[V] ValidationError 메소드 추가
 
-[ ] 어플리케이션단 Error catch 구조 변경
+[V] 어플리케이션단 Error catch 구조 변경
 
 [ ] ranks enum 모방
 
