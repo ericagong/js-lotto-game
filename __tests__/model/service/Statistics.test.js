@@ -1,6 +1,7 @@
 import Statistic from '../../../src/js/domain/models/service/Statistic/index.js';
-import WinningLotto from '../../../src/js/domain/models/entities/WinningLotto/WinningLotto.js';
 import Lotto from '../../../src/js/domain/models/entities/Lotto/Lotto.js';
+import LottoNumber from '../../../src/js/domain/models/entities/LottoNumber/LottoNumber.js';
+import WinningLotto from '../../../src/js/domain/models/entities/WinningLotto/WinningLotto.js';
 import Rank from '../../../src/js/domain/models/entities/Rank/Rank.js';
 
 const {
@@ -12,7 +13,9 @@ const {
 } = Statistic;
 
 describe('getRank(targetLotto, winningLotto) 테스트', () => {
-    const winningLotto = WinningLotto.from(Lotto.of([1, 2, 3, 4, 5, 6]), 7);
+    const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
+    const bonusLottoNumber = LottoNumber.of(7);
+    const winningLotto = WinningLotto.from(lotto, bonusLottoNumber);
     describe('targetLotto 번호와 winningLotto 번호([1, 2, 3, 4, 5, 6], 7)를 비교해, Rank 객체를 반환한다.', () => {
         it.each([
             {

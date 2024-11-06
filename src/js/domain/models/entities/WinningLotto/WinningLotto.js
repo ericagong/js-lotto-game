@@ -1,7 +1,7 @@
 import Lotto from '../Lotto/Lotto.js';
-import { hasDuplicated } from '../../../utils/utils.js';
 import {
     LottoNotLottoInstanceError,
+    BonusNumberNotLottoNumberInstanceError,
     BonusNumberDuplicatedError,
 } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
@@ -18,28 +18,36 @@ export default class WinningLotto {
         if (!(lotto instanceof Lotto)) throw new LottoNotLottoInstanceError();
     }
 
-    static #validateBonusNumber(bonusNumber, lottoNumbers) {
-        if (hasDuplicated([bonusNumber, ...lottoNumbers]))
-            throw new BonusNumberDuplicatedError();
+    static #validateBonusNumber(bonusNumber) {
+        if (!(bonusNumber instanceof LottoNumber))
+            throw new BonusNumberNotLottoNumberInstanceError();
+    }
+
+    static #validateDuplicateBonusNumber(lotto, bonusNumber) {
+        if (lotto.contains(bonusNumber)) throw new BonusNumberDuplicatedError();
     }
 
     constructor(lotto, bonusNumber) {
         WinningLotto.#validateLotto(lotto);
-
-        const lottoNumbers = lotto.getNumbers();
-        WinningLotto.#validateBonusNumber(bonusNumber, lottoNumbers);
+        WinningLotto.#validateBonusNumber(bonusNumber);
+        WinningLotto.#validateDuplicateBonusNumber(lotto, bonusNumber);
 
         this.#lotto = lotto;
-        this.#bonusNumber = LottoNumber.of(bonusNumber);
+        this.#bonusNumber = bonusNumber;
     }
 
-    matchBonusNumber(targetNumbers) {
-        return targetNumbers.includes(this.#bonusNumber.value);
+    matchBonusNumber(targetLotto) {
+        WinningLotto.#validateLotto(targetLotto);
+
+        return targetLotto.contains(this.#bonusNumber);
     }
 
-    getMatchCount(targetNumbers) {
+    getMatchCount(targetLotto) {
+        WinningLotto.#validateLotto(targetLotto);
+
         const winningLottoNumbers = new Set(this.#lotto.getNumbers());
-        const matchCount = targetNumbers.reduce(
+        const targetLottoNumbers = targetLotto.getNumbers();
+        const matchCount = targetLottoNumbers.reduce(
             (count, number) =>
                 winningLottoNumbers.has(number) ? count + 1 : count,
             0,

@@ -3,7 +3,9 @@ import {
     NumbersNotArrayError,
     NumbersLengthNotSixError,
     NumbersDuplicatedError,
+    TargetNotLottoNumberInstanceError,
 } from '../../../src/js/domain/models/entities/Lotto/errors.js';
+import LottoNumber from '../../../src/js/domain/models/entities/LottoNumber/LottoNumber.js';
 
 describe('static of(numbers) 테스트', () => {
     it('Lotto 인스턴스를 반환한다.', () => {
@@ -86,6 +88,38 @@ describe('new Lotto(numbers) 테스트', () => {
                 const lotto = new Lotto(numbers);
                 expect(lotto.getNumbers()).toEqual(expected);
             });
+        });
+    });
+});
+
+describe('contains(target) 테스트', () => {
+    describe('target 유효성 검사 테스트', () => {
+        describe('target이 LottoNumber 인스턴스가 아닌 경우, 에러를 발생시킨다.', () => {
+            it.each([1, 'erica', true, null, undefined, function () {}, {}])(
+                'target: %p',
+                (target) => {
+                    const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
+                    expect(() => lotto.contains(target)).toThrow(
+                        TargetNotLottoNumberInstanceError,
+                    );
+                },
+            );
+        });
+
+        it('target이 LottoNumber 인스턴스인 경우, 에러를 발생시키지 않는다.', () => {
+            const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
+            expect(() => lotto.contains(LottoNumber.of(1))).not.toThrow();
+        });
+    });
+
+    describe('numbers에 target이 포함되어 있는지 여부를 반환한다.', () => {
+        it.each([
+            { numbers: [1, 2, 3, 4, 5, 6], target: 1, expected: true },
+            { numbers: [1, 2, 3, 4, 5, 6], target: 6, expected: true },
+            { numbers: [1, 2, 3, 4, 5, 6], target: 7, expected: false },
+        ])('$numbers, $target', ({ numbers, target, expected }) => {
+            const lotto = new Lotto(numbers);
+            expect(lotto.contains(LottoNumber.of(target))).toBe(expected);
         });
     });
 });

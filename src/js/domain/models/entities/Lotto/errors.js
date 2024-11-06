@@ -31,3 +31,12 @@ export class NumbersDuplicatedError extends LottoError {
         super(NumbersDuplicatedError.#MESSAGE);
     }
 }
+
+export class TargetNotLottoNumberInstanceError extends LottoError {
+    static #MESSAGE =
+        'contains의 인자 target은 LottoNumber 인스턴스여야합니다.';
+
+    constructor() {
+        super(TargetNotLottoNumberInstanceError.#MESSAGE);
+    }
+}

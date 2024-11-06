@@ -1,5 +1,7 @@
+import LottoNumber from '../../entities/LottoNumber/LottoNumber.js';
 import WinningLotto from '../../entities/WinningLotto/WinningLotto.js';
 
-export const setBonusNumber = (baseWinningLotto, bonusNumber) => {
-    return WinningLotto.from(baseWinningLotto, bonusNumber);
+export const setBonusNumber = (lotto, bonusNumber) => {
+    const bonusLottoNumber = LottoNumber.of(bonusNumber);
+    return WinningLotto.from(lotto, bonusLottoNumber);
 };

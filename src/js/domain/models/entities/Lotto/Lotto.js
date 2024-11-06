@@ -3,6 +3,7 @@ import {
     NumbersNotArrayError,
     NumbersLengthNotSixError,
     NumbersDuplicatedError,
+    TargetNotLottoNumberInstanceError,
 } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
 
@@ -35,6 +36,13 @@ export default class Lotto {
         numbers = sortNumbersAscending(numbers);
 
         this.#numbers = numbers.map(LottoNumber.of);
+    }
+
+    contains(target) {
+        if (!(target instanceof LottoNumber))
+            throw new TargetNotLottoNumberInstanceError();
+        const targetNumber = target.value;
+        return this.#numbers.some((number) => number.value === targetNumber);
     }
 
     getNumbers() {
