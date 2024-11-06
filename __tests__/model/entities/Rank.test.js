@@ -1,108 +1,42 @@
 import Rank from '../../../src/js/domain/models/entities/Rank/Rank.js';
 import {
-    // NotInitializedIndexError,
-    IndexNotNumberError,
-    PrizeNotNumberError,
-    IsBonusMatchNotBooleanError,
-    MatchCountNotNumberError,
+    GetMatchCountError,
+    GetIsBonusMatchError,
 } from '../../../src/js/domain/models/entities/Rank/errors.js';
 
-describe('new Rank(index, matchCount, isBonusMatch, prize) 테스트', () => {
-    describe('Rank 유효성 검사 테스트', () => {
-        describe('index, matchCount, isBonusMatch, prize가 유효하지 않은 타입이라면, 에러를 발생시킨다.', () => {
-            describe('index가 Number 타입이 아닌 경우', () => {
-                it.each([
-                    '1',
-                    'erica',
-                    true,
-                    null,
-                    undefined,
-                    function () {},
-                    {},
-                    [],
-                ])('index: %p', (rank) => {
-                    expect(() => new Rank(rank)).toThrow(IndexNotNumberError);
-                });
-            });
-
-            describe('matchCount가 Number 타입이 아닌 경우', () => {
-                it.each([
-                    '1',
-                    'erica',
-                    true,
-                    null,
-                    undefined,
-                    function () {},
-                    {},
-                    [],
-                ])('matchCount: %p', (matchCount) => {
-                    expect(
-                        () => new Rank(1, matchCount, false, 20_000_000_000),
-                    ).toThrow(MatchCountNotNumberError);
-                });
-            });
-
-            describe('isBonusMatch가 Boolean 타입이 아닌 경우', () => {
-                it.each([
-                    '1',
-                    'erica',
-                    1,
-                    null,
-                    undefined,
-                    function () {},
-                    {},
-                    [],
-                ])('isBonusMatch: %p', (isBonusMatch) => {
-                    expect(
-                        () => new Rank(1, 6, isBonusMatch, 20_000_000_000),
-                    ).toThrow(IsBonusMatchNotBooleanError);
-                });
-            });
-
-            describe('prize가 Number 타입이 아닌 경우', () => {
-                it.each([
-                    '1',
-                    'erica',
-                    true,
-                    null,
-                    undefined,
-                    function () {},
-                    {},
-                    [],
-                ])('prize: %p', (prize) => {
-                    expect(() => new Rank(1, 6, false, prize)).toThrow(
-                        PrizeNotNumberError,
-                    );
-                });
-            });
-        });
-
-        it('모든 인자의 데이터 타입이 유효한 경우, 에러를 발생시키지 않는다.', () => {
-            expect(() => new Rank(1, 6, false, 20_000_000_000)).not.toThrow();
-        });
-    });
-});
-
-describe('get index 테스트', () => {
-    describe('index를 반환한다.', () => {
+describe('static from() 테스트', () => {
+    describe('matchCount, isBonusMatch 조건에 따라 Rank를 반환한다.', () => {
         it.each([
-            {
-                rank: Rank.FIRST,
-                expected: 1,
+            { matchCount: 6, isBonusMatch: false, expected: Rank.FIRST },
+            { matchCount: 5, isBonusMatch: true, expected: Rank.SECOND },
+            { matchCount: 5, isBonusMatch: false, expected: Rank.THIRD },
+            { matchCount: 4, isBonusMatch: true, expected: Rank.FOURTH },
+            { matchCount: 4, isBonusMatch: false, expected: Rank.FOURTH },
+            { matchCount: 3, isBonusMatch: true, expected: Rank.FIFTH },
+            { matchCount: 3, isBonusMatch: false, expected: Rank.FIFTH },
+            { matchCount: 2, isBonusMatch: true, expected: Rank.NONE },
+            { matchCount: 2, isBonusMatch: false, expected: Rank.NONE },
+            { matchCount: 1, isBonusMatch: true, expected: Rank.NONE },
+            { matchCount: 1, isBonusMatch: false, expected: Rank.NONE },
+            { matchCount: 0, isBonusMatch: true, expected: Rank.NONE },
+            { matchCount: 0, isBonusMatch: false, expected: Rank.NONE },
+        ])(
+            'matchCount: $matchCount, isBonusMatch: $isBonusMatch',
+            ({ matchCount, isBonusMatch, expected }) => {
+                expect(Rank.from(matchCount, isBonusMatch)).toBe(expected);
             },
-            { rank: Rank.SECOND, expected: 2 },
-            { rank: Rank.THIRD, expected: 3 },
-            { rank: Rank.FOURTH, expected: 4 },
-            { rank: Rank.FIFTH, expected: 5 },
-            { rank: Rank.NONE, expected: 6 },
-        ])('index: $expected', ({ rank, expected }) => {
-            expect(rank.index).toBe(expected);
-        });
+        );
     });
 });
 
-describe('get macthCount 테스트', () => {
-    describe('matchCount를 반환한다.', () => {
+describe('new Rank() 테스트', () => {
+    it('new 키워드로 Rank 객체를 생성하려고 하면, 에러가 발생한다.', () => {
+        expect(() => new Rank()).toThrow(TypeError);
+    });
+});
+
+describe('getMatchCount() 테스트', () => {
+    describe('Rank별로 matchCount를 반환한다.', () => {
         it.each([
             {
                 rank: Rank.FIRST,
@@ -112,28 +46,34 @@ describe('get macthCount 테스트', () => {
             { rank: Rank.THIRD, expected: 5 },
             { rank: Rank.FOURTH, expected: 4 },
             { rank: Rank.FIFTH, expected: 3 },
-            { rank: Rank.NONE, expected: 2 },
         ])('matchCount: $expected', ({ rank, expected }) => {
-            expect(rank.matchCount).toBe(expected);
+            expect(rank.getMatchCount()).toBe(expected);
         });
+    });
+
+    it('Rank.NONE인 경우, 에러를 발생시킨다.', () => {
+        expect(() => Rank.NONE.getMatchCount()).toThrow(GetMatchCountError);
     });
 });
 
-describe('get isBonusMatch 테스트', () => {
-    describe('isBonusMatch를 반환한다.', () => {
-        it.each([
-            {
-                rank: Rank.FIRST,
-                expected: false,
+describe('getIsBonusMatch() 테스트', () => {
+    it('Rank.SECOND인 경우, true를 반환한다.', () => {
+        expect(Rank.SECOND.getIsBonusMatch()).toBe(true);
+    });
+
+    it('Rank.THIRD인 경우, false를 반환한다.', () => {
+        expect(Rank.THIRD.getIsBonusMatch()).toBe(false);
+    });
+
+    describe('Rank.SECOND, Rank.THIRD가 아닌 경우, 에러를 발생시킨다.', () => {
+        it.each([Rank.FIRST, Rank.FOURTH, Rank.FIFTH, Rank.NONE])(
+            'rank: %p',
+            (rank) => {
+                expect(() => rank.getIsBonusMatch()).toThrow(
+                    GetIsBonusMatchError,
+                );
             },
-            { rank: Rank.SECOND, expected: true },
-            { rank: Rank.THIRD, expected: false },
-            { rank: Rank.FOURTH, expected: false },
-            { rank: Rank.FIFTH, expected: false },
-            { rank: Rank.NONE, expected: false },
-        ])('isBonusMatch: $expected', ({ rank, expected }) => {
-            expect(rank.isBonusMatch).toBe(expected);
-        });
+        );
     });
 });
 
