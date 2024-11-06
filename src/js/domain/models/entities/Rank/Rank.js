@@ -1,20 +1,23 @@
+import { isNumber, isBoolean } from '../../../utils/utils.js';
 import {
-    IndexNotNumberError,
+    // PrivateConstructorError,
+    MatchCountNotNumberError,
+    IsBonusMatchNotBooleanError,
     PrizeNotNumberError,
-    GetMatchCountError,
-    GetIsBonusMatchError,
 } from './errors.js';
 
-class Rank {
-    #index;
+export default class Rank {
+    #matchCount;
+    #isBonusMatch;
     #prize;
 
-    static FIRST = new Rank(1, 2_000_000_000);
-    static SECOND = new Rank(2, 30_000_000);
-    static THIRD = new Rank(3, 1_500_000);
-    static FOURTH = new Rank(4, 50_000);
-    static FIFTH = new Rank(5, 5_000);
-    static NONE = new Rank(6, 0);
+    // FE에서 model 의존성을 제거하기 위해, model 추상화...
+    static FIRST = new Rank(6, false, 2_000_000_000);
+    static SECOND = new Rank(5, true, 30_000_000);
+    static THIRD = new Rank(5, false, 1_500_000);
+    static FOURTH = new Rank(4, false, 50_000);
+    static FIFTH = new Rank(3, false, 5_000);
+    static NONE = new Rank(2, false, 0);
 
     static from(matchCount, isBonusMatch) {
         switch (matchCount) {
@@ -26,59 +29,33 @@ class Rank {
                 return Rank.FOURTH;
             case 3:
                 return Rank.FIFTH;
+            // 매칭이 3개 미만일 때 NONE 반환
             default:
                 return Rank.NONE;
         }
     }
 
-    constructor(index, prize) {
-        if (typeof index !== 'number') throw new IndexNotNumberError();
-        if (typeof index !== 'number') throw new PrizeNotNumberError();
+    constructor(matchCount, isBonusMatch, prize) {
+        // [ ] question - private constructor 도입 시 , constructor 내 유효성 검사 불가
+        // if (new.target === Rank) throw new PrivateConstructorError();
+        if (!isNumber(matchCount)) throw new MatchCountNotNumberError();
+        if (!isBoolean(isBonusMatch)) throw new IsBonusMatchNotBooleanError();
+        if (!isNumber(prize)) throw new PrizeNotNumberError();
 
-        this.#index = index;
+        this.#matchCount = matchCount;
+        this.#isBonusMatch = isBonusMatch;
         this.#prize = prize;
     }
 
-    getMatchCount() {
-        switch (this.#index) {
-            case Rank.FIRST.#index:
-                return 6;
-            case Rank.SECOND.#index:
-            case Rank.THIRD.#index:
-                return 5;
-            case Rank.FOURTH.#index:
-                return 4;
-            case Rank.FIFTH.#index:
-                return 3;
-            default:
-                throw new GetMatchCountError();
-        }
+    get matchCount() {
+        return this.#matchCount;
     }
 
-    getIsBonusMatch() {
-        switch (this.#index) {
-            case Rank.SECOND.#index:
-                return true;
-            case Rank.THIRD.#index:
-                return false;
-            default:
-                throw new GetIsBonusMatchError();
-        }
+    get isBonusMatch() {
+        return this.#isBonusMatch;
     }
 
     get prize() {
         return this.#prize;
     }
 }
-
-const _Rank = Object.assign({}, Rank, {
-    FIRST: Rank.FIRST,
-    SECOND: Rank.SECOND,
-    THIRD: Rank.THIRD,
-    FOURTH: Rank.FOURTH,
-    FIFTH: Rank.FIFTH,
-    NONE: Rank.NONE,
-    from: Rank.from,
-});
-
-export default _Rank;

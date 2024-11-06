@@ -8,11 +8,19 @@ class RankError extends ValidationError {
     }
 }
 
-export class IndexNotNumberError extends RankError {
-    static #MESSAGE = 'index는 number 타입이어야 합니다.';
+export class PrivateConstructorError extends RankError {
+    static #MESSAGE = 'Rank는 new 키워드로 인스턴스를 생성할 수 없습니다.';
 
     constructor() {
-        super(IndexNotNumberError.#MESSAGE);
+        super(PrivateConstructorError.#MESSAGE);
+    }
+}
+
+export class MatchCountNotNumberError extends RankError {
+    static #MESSAGE = 'matchCount는 number 타입이어야합니다.';
+
+    constructor() {
+        super(MatchCountNotNumberError.#MESSAGE);
     }
 }
 
@@ -24,19 +32,10 @@ export class PrizeNotNumberError extends RankError {
     }
 }
 
-export class GetMatchCountError extends RankError {
-    static #MESSAGE = 'Rank.NONE의 matchCount에는 접근할 수 없습니다.';
+export class IsBonusMatchNotBooleanError extends RankError {
+    static #MESSAGE = 'isBonusMatch는 boolean 타입이여야합니다.';
 
     constructor() {
-        super(GetMatchCountError.#MESSAGE);
-    }
-}
-
-export class GetIsBonusMatchError extends RankError {
-    static #MESSAGE =
-        'Rank.SECOND, Rank.THIRD만 isBonusMatch에 접근할 수 있습니다.';
-
-    constructor() {
-        super(GetIsBonusMatchError.#MESSAGE);
+        super(IsBonusMatchNotBooleanError.#MESSAGE);
     }
 }
