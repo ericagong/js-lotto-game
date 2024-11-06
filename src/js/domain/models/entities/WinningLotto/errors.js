@@ -1,4 +1,4 @@
-import ValidationError from '../../../ValidationError.js';
+import ValidationError from '../../../../ValidationError.js';
 
 class WinningLottoError extends ValidationError {
     static #TYPE = 'WinningLottoError';
