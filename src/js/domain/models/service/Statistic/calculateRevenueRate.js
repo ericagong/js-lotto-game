@@ -1,11 +1,11 @@
-import Buyer from '../../entities/Buyer/Buyer.js';
+import LottoStore from '../../entities/LottoStore/LottoStore.js';
 
 const getTotalIssuedCount = (counter) => {
     return Array.from(counter.values()).reduce((acc, count) => acc + count, 0);
 };
 const calculateTotalPurchased = (counter) => {
     const totalIssued = getTotalIssuedCount(counter);
-    return Buyer.LOTTO_UNIT_PRICE * totalIssued;
+    return LottoStore.LOTTO_UNIT_PRICE * totalIssued;
 };
 
 const calculateTotalPrize = (counter) => {

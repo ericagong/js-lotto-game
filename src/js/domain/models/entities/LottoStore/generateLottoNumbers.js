@@ -1,10 +1,10 @@
-import Lotto from '../../entities/Lotto/Lotto.js';
-import LottoNumber from '../../entities/LottoNumber/LottoNumber.js';
+import LottoNumber from '../LottoNumber/LottoNumber.js';
+import Lotto from '../Lotto/Lotto.js';
 
 const generateRandomNumber = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
-const generateLottoNumbers = () => {
+export default function generateLottoNumbers() {
     const numbers = new Set();
     while (numbers.size < Lotto.DIGITS) {
         const randomNumber = generateRandomNumber(
@@ -14,9 +14,4 @@ const generateLottoNumbers = () => {
         numbers.add(randomNumber);
     }
     return Array.from(numbers);
-};
-
-export const issueLotto = () => {
-    const lottoNumbers = generateLottoNumbers();
-    return Lotto.of(lottoNumbers);
-};
+}

@@ -1,14 +1,14 @@
 import ValidationError from '../../../ValidationError.js';
 
-export class BuyerError extends ValidationError {
-    static #TYPE = 'BuyerError';
+export class LottoStoreError extends ValidationError {
+    static #TYPE = 'LottoStoreError';
 
     constructor(message) {
-        super(BuyerError.#TYPE, message);
+        super(LottoStoreError.#TYPE, message);
     }
 }
 
-export class BudgetNotNumberError extends BuyerError {
+export class BudgetNotNumberError extends LottoStoreError {
     static MESSAGE = 'budget은 Number 타입이어야합니다.';
 
     constructor() {
@@ -16,7 +16,7 @@ export class BudgetNotNumberError extends BuyerError {
     }
 }
 
-export class BudgetBelowMinError extends BuyerError {
+export class BudgetBelowMinError extends LottoStoreError {
     static MESSAGE = 'budget은 1_000 이하의 값이어야합니다.';
 
     constructor() {

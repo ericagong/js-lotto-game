@@ -1,5 +1,5 @@
 import View from '../UI/index.js';
-import LottoStore from '../domain/models/service/LottoStore/index.js';
+import LottoStore from '../domain/models/entities/LottoStore/LottoStore.js';
 import LottoBroadcast from '../domain/models/service/LottoBroadcast/index.js';
 import Statistic from '../domain/models/service/Statistic/index.js';
 import { RetryError } from './errors.js';
@@ -10,10 +10,11 @@ let winningLotto;
 let lottos = [];
 
 const step1 = (budget) => {
-    const count = LottoStore.getIssueCount(budget);
+    const lottoStore = LottoStore.of(budget);
+    const count = lottoStore.getIssueCount(budget);
     View.purchasedTemplate(count);
 
-    lottos = Array.from({ length: count }, LottoStore.issueLotto);
+    lottos = lottoStore.getLottos();
     lottos.forEach((lotto) => {
         View.lottoNumberTemplate(lotto.getNumbers());
     });
