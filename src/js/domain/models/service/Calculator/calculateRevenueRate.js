@@ -14,10 +14,10 @@ const calculateTotalPrize = (counter) => {
     }, 0);
 };
 
-export const calculateRevenueRate = (counter) => {
-    const totalPurchased = calculateTotalPurchased(counter); // 외부 분리 가능
+export default function calculateRevenueRate(counter) {
+    const totalPurchased = calculateTotalPurchased(counter);
     const totalPrize = calculateTotalPrize(counter);
 
     const revenueRate = totalPrize / totalPurchased;
     return revenueRate;
-};
+}

@@ -1,6 +1,6 @@
 import Rank from '../../entities/Rank/Rank.js';
 
-export const deleteNoneRank = (counter) => {
+export default function removeNoPrizeRank(counter) {
     counter.delete(Rank.NONE);
     return counter;
-};
+}

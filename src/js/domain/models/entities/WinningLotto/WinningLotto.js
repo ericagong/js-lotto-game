@@ -5,6 +5,7 @@ import {
     BonusNumberDuplicatedError,
 } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
+import Rank from '../Rank/Rank.js';
 
 export default class WinningLotto {
     #lotto;
@@ -36,13 +37,13 @@ export default class WinningLotto {
         this.#bonusNumber = bonusNumber;
     }
 
-    matchBonusNumber(targetLotto) {
+    #matchBonusNumber(targetLotto) {
         WinningLotto.#validateLotto(targetLotto);
 
         return targetLotto.contains(this.#bonusNumber);
     }
 
-    getMatchCount(targetLotto) {
+    #countMatchingNumbers(targetLotto) {
         WinningLotto.#validateLotto(targetLotto);
 
         const winningLottoNumbers = new Set(this.#lotto.getNumbers());
@@ -53,5 +54,12 @@ export default class WinningLotto {
             0,
         );
         return matchCount;
+    }
+
+    getRank(targetLotto) {
+        const matchCount = this.#countMatchingNumbers(targetLotto);
+        const isBonusMatch = this.#matchBonusNumber(targetLotto);
+
+        return Rank.from(matchCount, isBonusMatch);
     }
 }

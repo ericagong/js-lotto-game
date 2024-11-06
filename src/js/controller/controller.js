@@ -1,9 +1,11 @@
 import View from '../UI/index.js';
 import LottoStore from '../domain/models/entities/LottoStore/LottoStore.js';
+// [ ] LottoBroadCast
 import Lotto from '../domain/models/entities/Lotto/Lotto.js';
 import LottoNumber from '../domain/models/entities/LottoNumber/LottoNumber.js';
 import WinningLotto from '../domain/models/entities/WinningLotto/WinningLotto.js';
-import Statistic from '../domain/models/service/Statistic/index.js';
+import Calculator from '../domain/models/service/Calculator/index.js';
+import Counter from '../domain/models/service/Counter/index.js';
 
 import { RetryError } from './errors.js';
 import ValidationError from '../domain/ValidationError.js';
@@ -37,17 +39,17 @@ const step3 = (bonusNumber) => {
 
 const step4 = () => {
     const ranks = lottos.map((targetLotto) =>
-        Statistic.getRank(targetLotto, winningLotto),
+        winningLotto.getRank(targetLotto),
     );
 
     View.statisticsGuideTemplate();
 
-    const rankCounter = Statistic.getCounter(ranks);
+    const rankCounter = Counter.countRanks(ranks);
 
-    const revenueRate = Statistic.calculateRevenueRate(rankCounter);
-    const percentage = Statistic.toPercentage(revenueRate);
+    const revenueRate = Calculator.calculateRevenueRate(rankCounter);
+    const percentage = Calculator.toPercentage(revenueRate);
 
-    Statistic.deleteNoneRank(rankCounter);
+    Counter.removeNoPrizeRank(rankCounter);
 
     rankCounter.forEach((count, rank) => {
         const { matchCount, isBonusMatch, prize } = rank;

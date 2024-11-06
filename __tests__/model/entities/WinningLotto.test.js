@@ -6,6 +6,7 @@ import {
     BonusNumberNotLottoNumberInstanceError,
     BonusNumberDuplicatedError,
 } from '../../../src/js/domain/models/entities/WinningLotto/errors.js';
+import Rank from '../../../src/js/domain/models/entities/Rank/Rank.js';
 
 describe('static from(lotto, bonusNumber) 테스트', () => {
     it('WinningLotto 인스턴스를 반환한다.', () => {
@@ -69,76 +70,39 @@ describe('new WinningLotto(lotto, bonusNumber) 테스트', () => {
     });
 });
 
-describe('matchBonusNumber(targetLotto) 테스트', () => {
-    const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-    const bonusNumber = LottoNumber.of(45);
-    const winningLotto = WinningLotto.from(lotto, bonusNumber);
-
-    describe('targetLotto가 Lotto 인스턴스 타입이 아니면, 에러를 발생시킨다.', () => {
+describe('getRank(targetLotto) 테스트', () => {
+    describe('targetLotto 번호와 winningLotto 번호([1, 2, 3, 4, 5, 6], 7)를 비교해, Rank 객체를 반환한다.', () => {
         it.each([
-            1,
-            '1',
-            'erica',
-            true,
-            null,
-            undefined,
-            function () {},
-            {},
-            [],
-        ])('targetLotto: %p', (targetLotto) => {
-            expect(() => winningLotto.matchBonusNumber(targetLotto)).toThrow(
-                LottoNotLottoInstanceError,
-            );
-        });
-    });
-
-    it('targetLotto의 번호 중 하나가 보너스 번호와 일치하면, true를 반환한다.', () => {
-        const targetLotto = Lotto.of([1, 2, 3, 4, 5, 45]);
-        expect(winningLotto.matchBonusNumber(targetLotto)).toBe(true);
-    });
-
-    it('targetLotto의 번호가 모두 보너스 번호와 일치하지 않으면, false를 반환한다.', () => {
-        const targetLotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-        expect(winningLotto.matchBonusNumber(targetLotto)).toBe(false);
-    });
-});
-
-describe('getMatchCount(targetLotto) 테스트', () => {
-    const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-    const winningLotto = WinningLotto.from(lotto, LottoNumber.of(45));
-
-    describe('targetLotto가 Lotto 인스턴스 타입이 아니면, 에러를 발생시킨다.', () => {
-        it.each([
-            1,
-            '1',
-            'erica',
-            true,
-            null,
-            undefined,
-            function () {},
-            {},
-            [],
-        ])('targetLotto: %p', (targetLotto) => {
-            expect(() => winningLotto.getMatchCount(targetLotto)).toThrow(
-                LottoNotLottoInstanceError,
-            );
-        });
-    });
-
-    describe('targetLotto의 로또 번호와 winnningLotto의 lotto 번호가 일치하는 개수를 반환한다.', () => {
-        it.each([
-            { targetLottoNumbers: [1, 2, 3, 4, 5, 6], expected: 6 },
-            { targetLottoNumbers: [1, 2, 3, 4, 5, 7], expected: 5 },
-            { targetLottoNumbers: [1, 2, 3, 4, 7, 8], expected: 4 },
-            { targetLottoNumbers: [1, 2, 3, 7, 8, 9], expected: 3 },
-            { targetLottoNumbers: [1, 2, 7, 8, 9, 10], expected: 2 },
-            { targetLottoNumbers: [1, 7, 8, 9, 10, 11], expected: 1 },
-            { targetLottoNumbers: [7, 8, 9, 10, 11, 12], expected: 0 },
+            {
+                targetLottoNumbers: [1, 2, 3, 4, 5, 6],
+                expected: Rank.FIRST,
+            },
+            {
+                targetLottoNumbers: [1, 2, 3, 4, 5, 7],
+                expected: Rank.SECOND,
+            },
+            { targetLottoNumbers: [1, 2, 3, 4, 5, 45], expected: Rank.THIRD },
+            { targetLottoNumbers: [1, 2, 3, 4, 44, 45], expected: Rank.FOURTH },
+            { targetLottoNumbers: [1, 2, 3, 43, 44, 45], expected: Rank.FIFTH },
+            { targetLottoNumbers: [1, 2, 42, 43, 44, 45], expected: Rank.NONE },
+            {
+                targetLottoNumbers: [1, 41, 42, 43, 44, 45],
+                expected: Rank.NONE,
+            },
+            {
+                targetLottoNumbers: [40, 41, 42, 43, 44, 45],
+                expected: Rank.NONE,
+            },
         ])(
-            'targetLottoNumbers: $targetLottoNumbers, expected: $expected',
+            'targetLottoNumbers: $targetLottoNumbers, ',
             ({ targetLottoNumbers, expected }) => {
+                const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
+                const bonusLottoNumber = LottoNumber.of(7);
+                const winningLotto = WinningLotto.from(lotto, bonusLottoNumber);
                 const targetLotto = Lotto.of(targetLottoNumbers);
-                expect(winningLotto.getMatchCount(targetLotto)).toBe(expected);
+                expect(winningLotto.getRank(targetLotto, winningLotto)).toEqual(
+                    expected,
+                );
             },
         );
     });

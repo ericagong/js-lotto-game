@@ -1,6 +1,6 @@
 import Rank from '../../entities/Rank/Rank.js';
 
-export const getCounter = (ranks) => {
+export default function countRanks(ranks) {
     const counter = new Map([
         [Rank.FIRST, 0],
         [Rank.SECOND, 0],
@@ -15,4 +15,4 @@ export const getCounter = (ranks) => {
     });
 
     return counter;
-};
+}
