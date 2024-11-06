@@ -46,7 +46,7 @@ const step4 = () => {
 
     const rankCounter = Counter.countRanks(ranks);
 
-    const revenueRate = Calculator.calculateRevenueRate(rankCounter);
+    const revenueRate = Calculator.calculateRevenueRate(ranks);
     const percentage = Calculator.toPercentage(revenueRate);
 
     Counter.removeNoPrizeRank(rankCounter);

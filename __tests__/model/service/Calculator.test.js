@@ -3,113 +3,135 @@ import Rank from '../../../src/js/domain/models/entities/Rank/Rank.js';
 
 const { calculateRevenueRate, toPercentage } = Calculator;
 
-describe('calculateRevenueRate(counter) 테스트', () => {
+describe('calculateRevenueRate(ranks) 테스트', () => {
     describe('당첨된 lottos 금액을 구매 금액으로 나눠 수익률 계산해 반환한다.', () => {
         describe('로또 개수가 1개인 경우', () => {
             it.each([
                 {
-                    name: 'counter: [1]',
-                    counter: new Map([[Rank.FIRST, 1]]),
+                    name: 'ranks: [Rank.FIRST]',
+                    ranks: [Rank.FIRST],
                     expected: 2_000_000_000 / 1_000,
                 },
                 {
-                    name: 'counter: [2]',
-                    counter: new Map([[Rank.SECOND, 1]]),
+                    name: 'ranks: [Rank.SECOND]',
+                    ranks: [Rank.SECOND],
                     expected: 30_000_000 / 1_000,
                 },
                 {
-                    name: 'counter: [3]',
-                    counter: new Map([[Rank.THIRD, 1]]),
+                    name: 'ranks: [Rank.THIRD]',
+                    ranks: [Rank.THIRD],
                     expected: 1_500_000 / 1_000,
                 },
                 {
-                    name: 'counter: [4]',
-                    counter: new Map([[Rank.FOURTH, 1]]),
+                    name: 'ranks: [Rank.FOURTH]',
+                    ranks: [Rank.FOURTH],
                     expected: 50_000 / 1_000,
                 },
                 {
-                    name: 'counter: [5]',
-                    counter: new Map([[Rank.FIFTH, 1]]),
+                    name: 'ranks: [Rank.FIFTH]',
+                    ranks: [Rank.FIFTH],
                     expected: 5_000 / 1_000,
                 },
                 {
-                    name: 'counter: [6]',
-                    counter: new Map([[Rank.NONE, 1]]),
+                    name: 'ranks: [Rank.NONE]',
+                    ranks: [Rank.NONE],
                     expected: 0 / 1_000,
                 },
-            ])('$name', ({ counter, expected }) => {
-                expect(calculateRevenueRate(counter)).toBe(expected);
+            ])('$name', ({ ranks, expected }) => {
+                expect(calculateRevenueRate(ranks)).toBe(expected);
             });
         });
 
         describe('로또가 여러 개인 경우', () => {
             it.each([
                 {
-                    name: 'counter: [1, 2, 3, 4, 5, 6]',
-                    counter: new Map([
-                        [Rank.FIRST, 1],
-                        [Rank.SECOND, 1],
-                        [Rank.THIRD, 1],
-                        [Rank.FOURTH, 1],
-                        [Rank.FIFTH, 1],
-                        [Rank.NONE, 1],
-                    ]),
+                    name: 'ranks: [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH, Rank.NONE]',
+                    ranks: [
+                        Rank.FIRST,
+                        Rank.SECOND,
+                        Rank.THIRD,
+                        Rank.FOURTH,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                    ],
                     expected: 338592.5,
                 },
                 {
-                    name: 'counter: [1, 5, 6, 6, 6, 6]',
-                    counter: new Map([
-                        [Rank.FIRST, 1],
-                        [Rank.FIFTH, 1],
-                        [Rank.NONE, 4],
-                    ]),
+                    name: 'ranks: [Rank.FIRST, Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE]',
+                    ranks: [
+                        Rank.FIRST,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: 333334.1666666667,
                 },
                 {
-                    name: 'counter: [2, 5, 6, 6, 6, 6]',
-                    counter: new Map([
-                        [Rank.SECOND, 1],
-                        [Rank.FIFTH, 1],
-                        [Rank.NONE, 4],
-                    ]),
+                    name: 'ranks: [Rank.SECOND, Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE]',
+                    ranks: [
+                        Rank.SECOND,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: 5000.833333333333,
                 },
                 {
-                    name: 'counter: [3, 5, 6, 6, 6, 6]',
-                    counter: new Map([
-                        [Rank.THIRD, 1],
-                        [Rank.FIFTH, 1],
-                        [Rank.NONE, 4],
-                    ]),
+                    name: 'ranks: [Rank.THIRD, Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE]',
+                    ranks: [
+                        Rank.THIRD,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: 250.83333333333334,
                 },
                 {
-                    name: 'counter: [4, 5, 6, 6, 6, 6]',
-                    counter: new Map([
-                        [Rank.FOURTH, 1],
-                        [Rank.FIFTH, 1],
-                        [Rank.NONE, 4],
-                    ]),
+                    name: 'ranks: [Rank.FOURTH, Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE]',
+                    ranks: [
+                        Rank.FOURTH,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: 9.166666666666666,
                 },
                 {
-                    name: 'counter: [5, 5, 6, 6, 6, 6]',
-                    counter: new Map([
-                        [Rank.FIFTH, 2],
-                        [Rank.NONE, 4],
-                    ]),
+                    name: 'ranks: [Rank.FIFTH, Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE]',
+                    ranks: [
+                        Rank.FIFTH,
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: 1.6666666666666667,
                 },
                 {
-                    name: 'counter: [5, 6, 6, 6, 6, 6, 6, 6]',
-                    counter: new Map([
-                        [Rank.FIFTH, 1],
-                        [Rank.NONE, 7],
-                    ]),
+                    name: 'ranks: [Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE]',
+                    ranks: [
+                        Rank.FIFTH,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                        Rank.NONE,
+                    ],
                     expected: 0.625,
                 },
-            ])('$name', ({ counter, expected }) => {
-                expect(calculateRevenueRate(counter)).toBe(expected);
+            ])('$name', ({ ranks, expected }) => {
+                expect(calculateRevenueRate(ranks)).toBe(expected);
             });
         });
     });
