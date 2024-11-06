@@ -1,3 +1,4 @@
+import { isNumber } from '../../../utils/utils.js';
 import {
     ValueNotNumberError,
     ValueNotIntegerError,
@@ -22,7 +23,7 @@ export default class LottoNumber {
     }
 
     static #validate(value) {
-        if (typeof value !== 'number') throw new ValueNotNumberError();
+        if (!isNumber(value)) throw new ValueNotNumberError();
         if (!Number.isInteger(value)) throw new ValueNotIntegerError();
         if (!LottoNumber.#isInRange(value)) throw new ValueOutOfRangeError();
     }

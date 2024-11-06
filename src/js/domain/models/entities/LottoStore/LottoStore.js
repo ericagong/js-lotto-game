@@ -1,3 +1,4 @@
+import { isNumber } from '../../../utils/utils.js';
 import {
     BudgetNotNumberError,
     BudgetBelowMinError,
@@ -23,7 +24,7 @@ export default class LottoStore {
         target > LottoStore.LOTTO_UNIT_PRICE * LottoStore.#MAX_COUNT;
 
     static #validate(budget) {
-        if (typeof budget !== 'number') throw new BudgetNotNumberError();
+        if (!isNumber(budget)) throw new BudgetNotNumberError();
         if (LottoStore.#isBelowMinBudget(budget))
             throw new BudgetBelowMinError();
         if (LottoStore.#isAboveMaxBudget(budget))
@@ -36,18 +37,19 @@ export default class LottoStore {
         this.#budget = budget;
     }
 
-    // default condition: LottoStore는 항상 budget을 최대한 사용해 lotto를 구매함
-    getIssueCount() {
-        return Math.floor(this.#budget / LottoStore.LOTTO_UNIT_PRICE);
-    }
-
-    #issueLotto() {
+    static #issueLotto() {
         const lottoNumbers = generateLottoNumbers();
         return Lotto.of(lottoNumbers);
     }
 
+    #getMaxIssueCount() {
+        return Math.floor(this.#budget / LottoStore.LOTTO_UNIT_PRICE);
+    }
+
     getLottos() {
-        const issueCount = this.getIssueCount();
-        return Array.from({ length: issueCount }, () => this.#issueLotto());
+        const issueCount = this.#getMaxIssueCount();
+        return Array.from({ length: issueCount }, () =>
+            LottoStore.#issueLotto(),
+        );
     }
 }

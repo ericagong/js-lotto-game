@@ -1,20 +1,24 @@
 import View from '../UI/index.js';
 import LottoStore from '../domain/models/entities/LottoStore/LottoStore.js';
-import LottoBroadcast from '../domain/models/service/LottoBroadcast/index.js';
+import Lotto from '../domain/models/entities/Lotto/Lotto.js';
+import LottoNumber from '../domain/models/entities/LottoNumber/LottoNumber.js';
+import WinningLotto from '../domain/models/entities/WinningLotto/WinningLotto.js';
 import Statistic from '../domain/models/service/Statistic/index.js';
+
 import { RetryError } from './errors.js';
 import ValidationError from '../domain/ValidationError.js';
 
-let baseWinningLotto;
+let firstRankLotto;
 let winningLotto;
 let lottos = [];
 
 const step1 = (budget) => {
     const lottoStore = LottoStore.of(budget);
-    const count = lottoStore.getIssueCount(budget);
-    View.purchasedTemplate(count);
 
     lottos = lottoStore.getLottos();
+    const issuedCount = lottos.length;
+
+    View.purchasedTemplate(issuedCount);
     lottos.forEach((lotto) => {
         View.lottoNumberTemplate(lotto.getNumbers());
     });
@@ -22,12 +26,13 @@ const step1 = (budget) => {
     View.dividerTemplate();
 };
 
-const step2 = (winningNumbers) => {
-    baseWinningLotto = LottoBroadcast.setWinnerLottoNumbers(winningNumbers);
+const step2 = (winningLottoNumbers) => {
+    firstRankLotto = Lotto.of(winningLottoNumbers);
 };
 
 const step3 = (bonusNumber) => {
-    winningLotto = LottoBroadcast.setBonusNumber(baseWinningLotto, bonusNumber);
+    const bonusLottoNumber = LottoNumber.of(bonusNumber);
+    winningLotto = WinningLotto.from(firstRankLotto, bonusLottoNumber);
 };
 
 const step4 = () => {
@@ -61,8 +66,8 @@ const runOnce = async () => {
             step1(budget);
         });
 
-        await View.addWinningNumberHandler((winningNumbers) =>
-            step2(winningNumbers),
+        await View.addWinningNumberHandler((winningLottoNumbers) =>
+            step2(winningLottoNumbers),
         );
 
         await View.addBonusNumberHandler((bonusNumber) => step3(bonusNumber));
