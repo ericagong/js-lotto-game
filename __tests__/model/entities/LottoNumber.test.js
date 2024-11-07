@@ -66,7 +66,7 @@ describe('get value 테스트', () => {
         it.each([
             { value: 1, expected: 1 },
             { value: 45, expected: 45 },
-        ])('%p', ({ value, expected }) => {
+        ])('value: $value', ({ value, expected }) => {
             const lottoNumber = LottoNumber.of(value);
             expect(lottoNumber.value).toBe(expected);
         });
