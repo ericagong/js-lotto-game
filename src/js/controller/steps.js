@@ -1,5 +1,5 @@
 import View from '../UI/index.js';
-import LottoStore from '../domain/models/entities/LottoStore/LottoStore.js';
+import Lottos from '../domain/models/service/Lottos/index.js';
 import Lotto from '../domain/models/entities/Lotto/Lotto.js';
 import LottoNumber from '../domain/models/entities/LottoNumber/LottoNumber.js';
 import WinningLotto from '../domain/models/entities/WinningLotto/WinningLotto.js';
@@ -11,9 +11,7 @@ let winningLotto;
 let lottos = [];
 
 export const step1 = (budget) => {
-    const lottoStore = LottoStore.of(budget);
-
-    lottos = lottoStore.getLottos();
+    lottos = Lottos.issue(budget);
     const issuedCount = lottos.length;
 
     View.purchasedTemplate(issuedCount);
@@ -34,9 +32,7 @@ export const step3 = (bonusNumber) => {
 };
 
 export const step4 = () => {
-    const ranks = lottos.map((targetLotto) =>
-        winningLotto.getRank(targetLotto),
-    );
+    const ranks = Lottos.determineRanks(lottos, winningLotto);
 
     View.statisticsGuideTemplate();
 
