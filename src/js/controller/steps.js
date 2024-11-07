@@ -1,8 +1,6 @@
 import View from '../UI/index.js';
 import Lottos from '../domain/models/service/Lottos/index.js';
-import Lotto from '../domain/models/entities/Lotto/Lotto.js';
-import LottoNumber from '../domain/models/entities/LottoNumber/LottoNumber.js';
-import WinningLotto from '../domain/models/entities/WinningLotto/WinningLotto.js';
+import LottoBroadCast from '../domain/models/service/LottoBroadCast/index.js';
 import Calculator from '../domain/models/service/Calculator/index.js';
 import Counter from '../domain/models/service/Counter/index.js';
 
@@ -22,13 +20,14 @@ export const step1 = (budget) => {
     View.dividerTemplate();
 };
 
+// [ ] step2에서는 유효성 검사만 하면 되는게 아닐까? -> 현재구조에서는 constructor만 가져다 써야한다.
 export const step2 = (winningLottoNumbers) => {
-    firstRankLotto = Lotto.of(winningLottoNumbers);
+    firstRankLotto = LottoBroadCast.getFirstRankLotto(winningLottoNumbers);
 };
 
+// [ ] 실제로 lotto를 생성하는 부분을 step3로 옮기는 것이 나을 것 같다.
 export const step3 = (bonusNumber) => {
-    const bonusLottoNumber = LottoNumber.of(bonusNumber);
-    winningLotto = WinningLotto.from(firstRankLotto, bonusLottoNumber);
+    winningLotto = LottoBroadCast.getWinningLotto(firstRankLotto, bonusNumber);
 };
 
 export const step4 = () => {
