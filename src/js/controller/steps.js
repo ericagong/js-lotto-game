@@ -1,8 +1,7 @@
 import View from '../UI/index.js';
 import Lottos from '../domain/models/service/Lottos/index.js';
 import LottoBroadCast from '../domain/models/service/LottoBroadCast/index.js';
-import Calculator from '../domain/models/service/Calculator/index.js';
-import Counter from '../domain/models/service/Counter/index.js';
+import Ranks from '../domain/models/service/Ranks/index.js';
 
 let firstRankLotto;
 let winningLotto;
@@ -10,9 +9,10 @@ let lottos = [];
 
 export const step1 = (budget) => {
     lottos = Lottos.issue(budget);
-    const issuedCount = lottos.length;
 
+    const issuedCount = lottos.length;
     View.purchasedTemplate(issuedCount);
+
     lottos.forEach((lotto) => {
         View.lottoNumberTemplate(lotto.getNumbers());
     });
@@ -35,19 +35,14 @@ export const step4 = () => {
 
     View.statisticsGuideTemplate();
 
-    const rankCounter = Counter.countRanks(ranks);
-
-    const revenueRate = Calculator.calculateRevenueRate(ranks);
-    const percentage = Calculator.toPercentage(revenueRate);
-
-    Counter.removeNoPrizeRank(rankCounter);
-
-    rankCounter.forEach((count, rank) => {
+    const winningRankCounter = Ranks.getRankStatistic(ranks);
+    winningRankCounter.forEach((count, rank) => {
         const { matchCount, isBonusMatch, prize } = rank;
         View.rankSummaryTemplate({ matchCount, isBonusMatch, prize, count });
     });
 
-    View.totalRevenueTemplate(percentage);
+    const revenueRate = Ranks.getRevenueRate(ranks);
+    View.totalRevenueTemplate(revenueRate);
 
     View.dividerTemplate();
 };

@@ -1,6 +1,6 @@
 import Rank from '../../entities/Rank/Rank.js';
 
-export default function countRanks(ranks) {
+const countRanks = (ranks) => {
     const counter = new Map([
         [Rank.FIRST, 0],
         [Rank.SECOND, 0],
@@ -15,4 +15,15 @@ export default function countRanks(ranks) {
     });
 
     return counter;
+};
+
+const removeLostRank = (counter) => {
+    counter.delete(Rank.NONE);
+    return counter;
+};
+
+export default function getRankStatistic(ranks) {
+    const rankCounter = countRanks(ranks);
+    const winningRankCounter = removeLostRank(rankCounter);
+    return winningRankCounter;
 }
