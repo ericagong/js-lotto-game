@@ -1,4 +1,5 @@
 import {
+    readlineFromConsole,
     createStepper,
     close,
 } from './inputReader.js';
@@ -13,6 +14,7 @@ import {
 } from './consoleWritter.js';
 
 export default {
+    readlineFromConsole,
     createStepper,
     close,
     // writter

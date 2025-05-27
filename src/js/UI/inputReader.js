@@ -6,7 +6,6 @@ export const messageRegistry = Object.freeze({
     [STEPS.PURCHASE]: '> 구입금액을 입력해 주세요. ',
     [STEPS.WINNING_NUMBERS]: '\n> 당첨 번호를 입력해 주세요. ',
     [STEPS.BONUS_NUMBER]: '\n> 보너스 번호를 입력해 주세요. ',
-    [STEPS.RETRY]: '\n> 다시 시작하시겠습니까? (y/n) ',
 });
 
 const readlineInterface = readline.createInterface({
@@ -14,7 +13,7 @@ const readlineInterface = readline.createInterface({
     output: process.stdout,
 });
 
-const readlineFromConsole = async (guideMessage) => {
+export const readlineFromConsole = async (guideMessage) => {
     return new Promise((resolve) => {
         readlineInterface.question(guideMessage, resolve);
     });
