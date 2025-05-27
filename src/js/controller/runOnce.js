@@ -8,9 +8,7 @@ export default async function runOnce() {
             step1(budget);
         });
 
-        await View.addWinningNumberHandler((winningLottoNumbers) =>
-            step2(winningLottoNumbers),
-        );
+        await View.addWinningNumberHandler((winningLottoNumbers) => step2(winningLottoNumbers));
 
         await View.addBonusNumberHandler((bonusNumber) => step3(bonusNumber));
 

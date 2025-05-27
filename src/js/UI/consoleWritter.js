@@ -19,12 +19,7 @@ export const statisticsGuideTemplate = () => {
     write(DIVIDE_LINE);
 };
 
-export const rankSummaryTemplate = ({
-    matchCount,
-    isBonusMatch,
-    prize,
-    count,
-}) => {
+export const rankSummaryTemplate = ({ matchCount, isBonusMatch, prize, count }) => {
     const matchCountText = `${matchCount}개 일치`;
     const bonusMatchText = isBonusMatch ? ', 보너스 볼 일치' : '';
     const prizeText = `(${prize}원)`;

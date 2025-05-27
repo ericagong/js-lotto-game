@@ -43,6 +43,8 @@
     [ ] onRetry 다시하기 버튼 - 다시 시작하기 클릭 시, 구입 금액 입력 초기화 상태로 복귀
 
 [step2] Web, Console 공통 인터페이스 추출
+[ ] 리팩토링 전 데모 링크 먼저 보고 방향성 검토하기
+
 [ ] Controller 코드를 console/web 구현체에 관계없이 사용할 수 있도록, View -> HTMLView / ConsoleView 상속 방식 도입
 
 ```javascript

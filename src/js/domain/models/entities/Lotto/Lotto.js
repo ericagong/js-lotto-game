@@ -39,8 +39,7 @@ export default class Lotto {
     }
 
     contains(target) {
-        if (!(target instanceof LottoNumber))
-            throw new TargetNotLottoNumberInstanceError();
+        if (!(target instanceof LottoNumber)) throw new TargetNotLottoNumberInstanceError();
         const targetNumber = target.value;
         return this.#numbers.some((number) => number.value === targetNumber);
     }

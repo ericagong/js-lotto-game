@@ -14,16 +14,12 @@ export default async function runUntilFinish() {
             }
 
             while (goToFlag === 2) {
-                await View.addWinningNumberHandler((winningNumbers) =>
-                    step2(winningNumbers),
-                );
+                await View.addWinningNumberHandler((winningNumbers) => step2(winningNumbers));
                 goToFlag = 3;
             }
 
             while (goToFlag === 3) {
-                await View.addBonusNumberHandler((bonusNumber) =>
-                    step3(bonusNumber),
-                );
+                await View.addBonusNumberHandler((bonusNumber) => step3(bonusNumber));
 
                 step4();
                 goToFlag = 4;

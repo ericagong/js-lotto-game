@@ -17,7 +17,7 @@ export class BudgetNotNumberError extends LottoStoreError {
 }
 
 export class BudgetBelowMinError extends LottoStoreError {
-    static MESSAGE = 'budget은 1_000 이하의 값이어야합니다.';
+    static MESSAGE = 'budget은 1_000 이상의 값이어야합니다.';
 
     constructor() {
         super(BudgetBelowMinError.MESSAGE);

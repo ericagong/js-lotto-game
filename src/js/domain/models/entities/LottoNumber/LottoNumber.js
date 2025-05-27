@@ -1,9 +1,5 @@
 import { isNumber } from '../../../utils/utils.js';
-import {
-    ValueNotNumberError,
-    ValueNotIntegerError,
-    ValueOutOfRangeError,
-} from './errors.js';
+import { ValueNotNumberError, ValueNotIntegerError, ValueOutOfRangeError } from './errors.js';
 
 export default class LottoNumber {
     #value;
@@ -21,10 +17,7 @@ export default class LottoNumber {
     }
 
     static #isInRange(target) {
-        return (
-            LottoNumber.LOWER_BOUND <= target &&
-            target <= LottoNumber.UPPER_BOUND
-        );
+        return LottoNumber.LOWER_BOUND <= target && target <= LottoNumber.UPPER_BOUND;
     }
 
     static #validate(value) {

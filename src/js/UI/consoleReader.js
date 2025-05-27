@@ -1,8 +1,5 @@
 import readline from 'readline';
-import {
-    convertToMatchingDataType,
-    convertToArray,
-} from './consoleTypeConverter.js';
+import { convertToMatchingDataType, convertToArray } from './consoleTypeConverter.js';
 
 const readlineInterface = readline.createInterface({
     input: process.stdin,
@@ -23,9 +20,7 @@ const readlineFromConsole = async (guideMessage) => {
 };
 
 export const addPurchasingPriceHandler = async (eventHandler) => {
-    const purchasingPriceInput = await readlineFromConsole(
-        GUIDE_MESSAGES.PURCHASING_PRICE,
-    );
+    const purchasingPriceInput = await readlineFromConsole(GUIDE_MESSAGES.PURCHASING_PRICE);
 
     const purchasingPrice = convertToMatchingDataType(purchasingPriceInput);
 
@@ -33,9 +28,7 @@ export const addPurchasingPriceHandler = async (eventHandler) => {
 };
 
 export const addWinningNumberHandler = async (eventHandler) => {
-    const winningNumbersInput = await readlineFromConsole(
-        GUIDE_MESSAGES.WINNING_NUMBER,
-    );
+    const winningNumbersInput = await readlineFromConsole(GUIDE_MESSAGES.WINNING_NUMBER);
 
     const winningNumbers = convertToArray(winningNumbersInput);
 
@@ -43,9 +36,8 @@ export const addWinningNumberHandler = async (eventHandler) => {
 };
 
 export const addBonusNumberHandler = async (eventHandler) => {
-    const bonusNumberInput = await readlineFromConsole(
-        GUIDE_MESSAGES.BONUS_NUMBER,
-    );
+    const bonusNumberInput = await readlineFromConsole(GUIDE_MESSAGES.BONUS_NUMBER);
+
     const bonusNumber = convertToMatchingDataType(bonusNumberInput);
 
     eventHandler(bonusNumber);

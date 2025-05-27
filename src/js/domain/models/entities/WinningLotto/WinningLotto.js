@@ -20,8 +20,7 @@ export default class WinningLotto {
     }
 
     static #validateBonusNumber(bonusNumber) {
-        if (!(bonusNumber instanceof LottoNumber))
-            throw new BonusNumberNotLottoNumberInstanceError();
+        if (!(bonusNumber instanceof LottoNumber)) throw new BonusNumberNotLottoNumberInstanceError();
     }
 
     static #validateDuplicateBonusNumber(lotto, bonusNumber) {
@@ -49,8 +48,7 @@ export default class WinningLotto {
         const winningLottoNumbers = new Set(this.#lotto.getNumbers());
         const targetLottoNumbers = targetLotto.getNumbers();
         const matchCount = targetLottoNumbers.reduce(
-            (count, number) =>
-                winningLottoNumbers.has(number) ? count + 1 : count,
+            (count, number) => (winningLottoNumbers.has(number) ? count + 1 : count),
             0,
         );
         return matchCount;
