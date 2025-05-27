@@ -1,18 +1,18 @@
+import { STEPS } from '../utils.js';
 import View from '../UI/index.js';
-import { step1, step2, step3, step4 } from './steps.js';
+import { issueLottosWithBudget, setWinningLottoNumbers, setBonusNumbers, getStatistics } from './controller.js';
 import ValidationError from '../ValidationError.js';
 
 export default async function runOnce() {
     try {
-        await View.addPurchasingPriceHandler((budget) => {
-            step1(budget);
-        });
-
-        await View.addWinningNumberHandler((winningLottoNumbers) => step2(winningLottoNumbers));
-
-        await View.addBonusNumberHandler((bonusNumber) => step3(bonusNumber));
-
-        step4();
+        const stepSequence = [STEPS.PURCHASE, STEPS.WINNING_NUMBERS, STEPS.BONUS_NUMBER, STEPS.STATISTICS];
+        const logicRegistry = {
+            [STEPS.PURCHASE]: issueLottosWithBudget,
+            [STEPS.WINNING_NUMBERS]: setWinningLottoNumbers,
+            [STEPS.BONUS_NUMBER]: setBonusNumbers,
+            [STEPS.STATISTICS]: getStatistics,
+        };
+        await View.createStepper(stepSequence)(logicRegistry);
     } catch (error) {
         if (error instanceof ValidationError) {
             // 예상 가능한 에러 - 에러 출력

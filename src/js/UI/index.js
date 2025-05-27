@@ -1,10 +1,7 @@
 import {
-    addPurchasingPriceHandler,
-    addWinningNumberHandler,
-    addBonusNumberHandler,
-    addRetryHandler,
+    createStepper,
     close,
-} from './consoleReader.js';
+} from './inputReader.js';
 import {
     dividerTemplate,
     purchasedTemplate,
@@ -16,11 +13,7 @@ import {
 } from './consoleWritter.js';
 
 export default {
-    // reader,
-    addPurchasingPriceHandler,
-    addWinningNumberHandler,
-    addBonusNumberHandler,
-    addRetryHandler,
+    createStepper,
     close,
     // writter
     dividerTemplate,

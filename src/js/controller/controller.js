@@ -7,7 +7,7 @@ let firstRankLotto;
 let winningLotto;
 let lottos = [];
 
-export const step1 = (budget) => {
+export const issueLottosWithBudget = (budget) => {
     lottos = Lottos.issue(budget);
 
     const issuedCount = lottos.length;
@@ -21,16 +21,16 @@ export const step1 = (budget) => {
 };
 
 // [ ] step2에서는 유효성 검사만 하면 되는게 아닐까? -> 현재구조에서는 constructor만 가져다 써야한다.
-export const step2 = (winningLottoNumbers) => {
+export const setWinningLottoNumbers = (winningLottoNumbers) => {
     firstRankLotto = LottoBroadCast.getFirstRankLotto(winningLottoNumbers);
 };
 
 // [ ] 실제로 lotto를 생성하는 부분을 step3로 옮기는 것이 나을 것 같다.
-export const step3 = (bonusNumber) => {
+export const setBonusNumbers = (bonusNumber) => {
     winningLotto = LottoBroadCast.getWinningLotto(firstRankLotto, bonusNumber);
 };
 
-export const step4 = () => {
+export const getStatistics = () => {
     const ranks = Lottos.determineRanks(lottos, winningLotto);
 
     View.statisticsGuideTemplate();
