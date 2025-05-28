@@ -1,7 +1,0 @@
-export const STEPS = Object.freeze({
-    PURCHASE: 'PURCHASE',
-    WINNING_NUMBERS: 'WINNING_NUMBERS',
-    BONUS_NUMBER: 'BONUS_NUMBER',
-    RETRY: 'RETRY',
-    STATISTICS: 'STATISTICS',
-});

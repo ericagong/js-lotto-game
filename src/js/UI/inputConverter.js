@@ -1,6 +1,4 @@
-import { STEPS } from '../utils.js';
-
-const convertToMatchingDataType = (input) => {
+export const convertToMatchingDataType = (input) => {
     if (input === 'null') {
         return null;
     } else if (input === 'undefined') {
@@ -19,13 +17,6 @@ const convertToMatchingDataType = (input) => {
 };
 
 const DEFAULT_SEPERATOR = ',';
-const convertToArray = (input) => {
+export const convertToArray = (input) => {
     return input.split(DEFAULT_SEPERATOR).map(convertToMatchingDataType);
 };
-
-export const converterReigstry = Object.freeze({
-    [STEPS.PURCHASE]: convertToMatchingDataType,
-    [STEPS.WINNING_NUMBERS]: convertToArray,
-    [STEPS.BONUS_NUMBER]: convertToMatchingDataType,
-    [STEPS.RETRY]: convertToMatchingDataType,
-});

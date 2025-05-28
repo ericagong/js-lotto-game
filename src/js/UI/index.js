@@ -1,8 +1,4 @@
-import {
-    readlineFromConsole,
-    createStepper,
-    close,
-} from './inputReader.js';
+import { readlineFromConsole, close } from './consoleReader.js';
 import {
     dividerTemplate,
     purchasedTemplate,
@@ -14,8 +10,8 @@ import {
 } from './consoleWritter.js';
 
 export default {
+    // reader
     readlineFromConsole,
-    createStepper,
     close,
     // writter
     dividerTemplate,
