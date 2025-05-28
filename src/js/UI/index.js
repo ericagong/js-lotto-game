@@ -1,24 +1,7 @@
-import { readlineFromConsole, close } from './consoleReader.js';
-import {
-    dividerTemplate,
-    purchasedTemplate,
-    lottoNumberTemplate,
-    statisticsGuideTemplate,
-    rankSummaryTemplate,
-    totalRevenueTemplate,
-    errorMessageTemplate,
-} from './consoleWritter.js';
+import { ask, write, terminate } from './console/interface.js';
 
 export default {
-    // reader
-    readlineFromConsole,
-    close,
-    // writter
-    dividerTemplate,
-    purchasedTemplate,
-    lottoNumberTemplate,
-    statisticsGuideTemplate,
-    rankSummaryTemplate,
-    totalRevenueTemplate,
-    errorMessageTemplate,
+    ask,
+    write,
+    terminate,
 };

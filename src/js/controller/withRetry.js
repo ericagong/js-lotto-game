@@ -1,5 +1,5 @@
+import ValidationError from '../ValidationError.js';
 import View from '../UI/index.js';
-import RetryError from './RetryError.js';
 
 const converter = (input) => {
     return input.trim().toLowerCase();
@@ -20,18 +20,27 @@ const handler = (input) => {
     }
 };
 
+class RetryError extends ValidationError {
+    static #TYPE = 'RetryError';
+    static #MESSAGE = 'Retry 입력값은 y나 n 중 하나여야합니다.';
+
+    constructor() {
+        super(RetryError.#TYPE, RetryError.#MESSAGE);
+    }
+}
+
 const GUIDE_MESSAGE = '\n> 다시 시작하시겠습니까? (y/n) ';
 const askRetry = async () => {
     // eslint-disable-next-line no-constant-condition
     while (true) {
-        const input = await View.readlineFromConsole(GUIDE_MESSAGE);
+        const input = await View.ask(GUIDE_MESSAGE);
         const convertedInput = converter(input);
 
         try {
             return handler(convertedInput);
         } catch (error) {
             if (error instanceof RetryError) {
-                View.errorMessageTemplate(error.type, error.message);
+                View.write(`[${error.type}] ${error.message}`);
                 continue;
             }
             // 예상 불가능한 에러 - 프로그램 종료
@@ -49,5 +58,5 @@ export default async function withRetry(runFunc, ...args) {
         if (!shouldRetry) break;
     }
 
-    View.close();
+    View.terminate();
 }

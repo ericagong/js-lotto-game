@@ -5,12 +5,16 @@ const readlineInterface = readline.createInterface({
     output: process.stdout,
 });
 
-export const readlineFromConsole = async (guideMessage) => {
+export const ask = async (guideMessage) => {
     return new Promise((resolve) => {
         readlineInterface.question(guideMessage, resolve);
     });
 };
 
-export const close = () => {
+export const write = (...args) => {
+    args.forEach((arg) => console.log(arg));
+};
+
+export const terminate = () => {
     readlineInterface.close();
 };
