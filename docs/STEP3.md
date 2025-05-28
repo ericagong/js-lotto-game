@@ -2,45 +2,26 @@
 
 ## 1. Web UI 추가
 
-[step1] Web UI만 View/ 에 추가
+[step1] Web View 빠르게 구현
 
+-   진입점: index.js
+-   UI/web/\* 코드 작성
 -   도메인 로직 변경 금지
--   index.js에 코드 작성
--   runUntilFinish 처럼 사용자가 no 라고 하기 전까지 동작하는 방식으로 구현
 
 1. 로또 구매
 
--   input-price-form
-    -   구입 금액 읽어오기
-        [ ] 최초에는 onSubmit 전까지 반응 X
-        [ ] onSubmit Handler - 오류 시, 구입 금액 관련 오류 input alert - 정상 시, 로또 발행하며 purchased-lottos , input-lotto-nums form display
-        [ ] onSubmit 이후에는 실시간 유효성 체크
--   purchased-lottos
-    -   display 시,
-        [ ] 총 n개를 구매하였습니다. 가이드 display
-        [ ] default = toggle off
-        [ ] 이미지만
-        [ ] 가로 정렬
-    -   onToggle: on
-        [ ] 세로 정렬
-        [ ] 이미지 + 번호
+-   input-price-form onSubmit 이벤트 핸들러 추가
+-   정상 흐름 -> purchased-lottos 렌더링, input-winning-lotto-nums 렌더링
+-   오류 발생 -> window alert
+-   lotto-numbers-toggle-button 토글 기능 추가
 
 2. 로또 당첨 여부 확인
 
--   input-lotto-nums
-
-    -   로또 당첨 번호 읽어오기
-        [ ] 최초에는 onSubmit 전까지 반응 X
-        [ ] onSumbit Handler - 오류 시,
-        [ ] LottoNumber 관련 오류: 각 input alert
-        [ ] Lotto, BonusNumber 중복 관련 오류: window alert - 성공 시, 당첨 통계 결과 모달 display
-        [ ] onSubmit 이후에는 실시간 유효성 체크
-
--   당첨 통계 모달
-    [ ] modal close 기능 추가
-    [ ] 당첨 통계 display
-    [ ] 수익률 display
-    [ ] onRetry 다시하기 버튼 - 다시 시작하기 클릭 시, 구입 금액 입력 초기화 상태로 복귀
+-   input-lotto-nums onSubmit 이벤트 핸들러 추가
+-   정상 흐름 -> modal 렌더링
+-   오류 발생 -> window alert 처리
+-   모달 open/close 기능 추가
+-   onRetry 시, 페이지 재방문?
 
 [step2] Web, Console 공통 인터페이스 추출
 [ ] 리팩토링 전 데모 링크 먼저 보고 방향성 검토하기
