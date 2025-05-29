@@ -1,8 +1,18 @@
-// output views
+import { render } from './interface.js';
+// utils
 
 // PURCHASE
-export const purchasedResultRenderer = ({ issuedCount, issuedLottosNumbers }) => `
-    <section id="purchased-lottos-section" class="mt-9" aria-label="purchase-items">
+const issuedLottoRenderer = ({ lottoNumbers }) => `
+    <div class="lotto-item d-flex flex-row my-2">
+        <div class="lotto-icon mx-1 text-4xl">🎟️</div>
+        <div class="lotto-numbers none text-base mt-2">${lottoNumbers.join(', ')}</div>
+    </div>
+`;
+
+const purchasedResultRenderer = ({ issuedCount, issuedLottosNumbers }) => {
+    const issuedLottos = issuedLottosNumbers.map((lottoNumbers) => issuedLottoRenderer({ lottoNumbers })).join('');
+
+    return `<section id="purchased-lottos-section" class="mt-9" aria-label="purchase-items">
         <div class="d-flex">
             <label class="flex-auto my-0">
                 총
@@ -21,37 +31,55 @@ export const purchasedResultRenderer = ({ issuedCount, issuedLottosNumbers }) =>
             </div>
         </div>
         <div class="d-flex flex-wrap" id="lottos-container">
-            ${issuedLottosNumbers
-                .map(
-                    (lottoNumbers) => `
-              <div class="lotto-item d-flex flex-row my-2">
-                <div class="lotto-icon mx-1 text-4xl">🎟️</div>
-                <div class="lotto-numbers none text-base mt-2">${lottoNumbers.join(', ')}</div>
-              </div>
-            `,
-                )
-                .join('')}
+            ${issuedLottos}
         </div>
     </section>
-`;
+    `;
+};
+
+const bindLottoNumberSwitchEvents = () => {
+    const $lottoSwitchButton = document.querySelector('#lotto-switch-button');
+
+    const onToggle = (event) => {
+        const showNumbers = event.target.checked;
+
+        document.querySelectorAll('.lotto-item').forEach(($item) => {
+            $item.classList.toggle('w-100', showNumbers);
+        });
+
+        document.querySelectorAll('.lotto-numbers').forEach(($number) => {
+            $number.classList.toggle('none', !showNumbers);
+        });
+    };
+
+    $lottoSwitchButton.addEventListener('change', onToggle);
+};
+
+export const purchasedResultView = ({ issuedCount, issuedLottosNumbers }) => {
+    const resultView = purchasedResultRenderer({ issuedCount, issuedLottosNumbers });
+    render(resultView);
+    bindLottoNumberSwitchEvents();
+};
 
 // STATISTICS
-export const statisticsResultRenderer = ({ rankSummary, revenueRate }) => {
+const statisticTableRowRenderer = ({ matchCount, isBonusMatch, prize, count }) => `
+    <tr class="text-center">
+        <td class="p-3">${matchCount}개${isBonusMatch ? ' + 보너스볼' : ''}</td>
+        <td class="p-3">${prize.toLocaleString()}</td>
+        <td class="p-3">
+            <span class="match-count">${count}</span> 개
+        </td>
+    </tr>
+`;
+
+const statisticsResultRenderer = ({ rankSummary, revenueRate }) => {
     const statisticsTableRows = rankSummary
         .reverse()
-        .map(
-            ({ matchCount, isBonusMatch, prize, count }) =>
-                `
-                    <tr class="text-center">
-                        <td class="p-3">${matchCount}개${isBonusMatch ? ' + 보너스볼' : ''}</td>
-                        <td class="p-3">${prize.toLocaleString()}</td>
-                        <td class="p-3">
-                            <span class="match-count">${count}</span> 개
-                        </td>
-                    </tr>
-                `,
+        .map(({ matchCount, isBonusMatch, prize, count }) =>
+            statisticTableRowRenderer({ matchCount, isBonusMatch, prize, count }),
         )
         .join('');
+
     return `<section class="modal open" role="dialog" aria-modal="true" aria-labelledby="title-dialog">
         <div class="modal-inner p-10">
             <button type="button" class="modal-close" aria-label="close-button">
@@ -85,5 +113,35 @@ export const statisticsResultRenderer = ({ rankSummary, revenueRate }) => {
             </div>
         </div>
     </section>
-`;
+    `;
+};
+
+const bindModalEvents = () => {
+    const $modalCloseButton = document.querySelector('.modal-close');
+
+    const onToggle = () => {
+        const $modal = document.querySelector('.modal.open');
+        $modal.classList.remove('open');
+        $modal.remove();
+    };
+
+    $modalCloseButton.addEventListener('click', onToggle);
+};
+
+const bindResetEvents = () => {
+    const $resetButton = document.querySelector('#reset-btn');
+
+    const onReset = () => {
+        window.location.reload();
+    };
+
+    $resetButton.addEventListener('click', onReset);
+};
+
+export const statisticResultView = ({ rankSummary, revenueRate }) => {
+    const modal = statisticsResultRenderer({ rankSummary, revenueRate });
+    const $app = document.querySelector('#app');
+    render(modal, $app);
+    bindModalEvents();
+    bindResetEvents();
 };
