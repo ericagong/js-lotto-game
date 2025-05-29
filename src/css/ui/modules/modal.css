@@ -19,7 +19,7 @@
 
 .modal-inner {
     transition: top 0.25s ease;
-    max-width: 350px;
+    max-width: 400px;
     margin: auto;
     overflow: auto;
     background: #fff;
@@ -28,6 +28,7 @@
 }
 
 .modal-close {
+    all: unset; /* 초기화 */
     margin: 20px;
     width: 20px;
     position: absolute;

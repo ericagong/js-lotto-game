@@ -10,18 +10,25 @@
 
 1. 로또 구매
 
--   input-price-form onSubmit 이벤트 핸들러 추가
--   정상 흐름 -> purchased-lottos 렌더링, input-winning-lotto-nums 렌더링
--   오류 발생 -> window alert
--   lotto-numbers-toggle-button 토글 기능 추가
+[V] input-price-form onSubmit 이벤트 핸들러 추가
+
+[V] 정상 흐름 -> purchased-lottos 렌더링, input-winning-lotto-nums 렌더링
+
+[V] 오류 발생 -> window alert
+
+[V] lotto-numbers-toggle-button 토글 기능 추가
 
 2. 로또 당첨 여부 확인
 
--   input-lotto-nums onSubmit 이벤트 핸들러 추가
--   정상 흐름 -> modal 렌더링
--   오류 발생 -> window alert 처리
--   모달 open/close 기능 추가
--   onRetry 시, 페이지 재방문?
+[V] input-lotto-nums onSubmit 이벤트 핸들러 추가
+
+[V] 정상 흐름 -> modal 렌더링
+
+[V] 오류 발생 -> window alert 처리
+
+[V] 모달 open/close 기능 추가
+
+[V] onRetry 시, 페이지 재방문
 
 [step2] Web, Console 공통 인터페이스 추출
 [ ] 리팩토링 전 데모 링크 먼저 보고 방향성 검토하기
