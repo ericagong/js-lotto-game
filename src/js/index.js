@@ -1,4 +1,4 @@
 // web
-import { initialize } from './UI/web/index.js';
+import { runStateMachine } from './controller/webStateMachine.js';
 
-initialize();
+runStateMachine();

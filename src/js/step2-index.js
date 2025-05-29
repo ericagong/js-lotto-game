@@ -3,7 +3,7 @@
  * 브라우저 환경에서 사용하는 css 파일 등을 불러올 경우 정상적으로 빌드할 수 없습니다.
  */
 
-import { runStateMachine } from './controller/stateMachine.js';
+import { runStateMachine } from './controller/consoleStateMachine.js';
 import withRetry from './controller/withRetry.js';
 
 withRetry(runStateMachine, { haltOnError: false });
