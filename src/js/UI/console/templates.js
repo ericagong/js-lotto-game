@@ -7,7 +7,7 @@ export const purchaseResultTemplate = ({ issuedCount, issuedLottosNumbers }) => 
 };
 
 // STATISTICS
-export const statisticResultTemplate = ({ rankSummary, revenueRate }) => {
+export const statisticsResultTemplate = ({ rankSummary, revenueRate }) => {
     write('\n', '당첨 통계', '-'.repeat(20));
     rankSummary.forEach(({ matchCount, isBonusMatch, prize, count }) => {
         write(`${matchCount}개 일치${isBonusMatch ? ', 보너스 볼 일치' : ''} (${prize}원) - ${count}개`);

@@ -31,15 +31,20 @@
 [V] onRetry 시, 페이지 재방문
 
 [step2] Web, Console 공통 인터페이스 추출
-[ ] 리팩토링 전 데모 링크 먼저 보고 방향성 검토하기
 
-[ ] Controller 코드를 console/web 구현체에 관계없이 사용할 수 있도록, View -> HTMLView / ConsoleView 상속 방식 도입
+1. 관심사에 따라 Web index.js 코드 분리 -> InputView / OutputView
 
-```javascript
-class View {}
-class HTMLView extends View {}
-class ConsoleView extends View {}
-```
+-   InputView 출력(form 렌더링) + onSubmit 이벤트 등록
+-   OutputView 출력(데이터 기반 뷰 렌더링) + 웹뷰 특성상의 특수 이벤트 등록(로또 번호 토글, 모달토글)
+-   웹뷰 인터페이스 interface.js로 추출
+
+2. WebView 전용 상태머신 코드 작성
+
+-   상태머신 코드(콘솔, 웹)에서 View 의존성 DIP -> 목적: 뷰와 비즈니스 로직의 완전 분리!!
+
+3. InputView를 View.ask, OutputView를 View.write 형식으로 변환할지 여부 결정(View 추상화 필요 여부 결정)
+
+-   핵심은 복잡성이 감소하는가?
 
 ### 2. 배포
 

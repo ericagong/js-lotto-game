@@ -1,6 +1,6 @@
 import { issueLottosWithBudget, setWinningLottoNumbers, setBonusNumbers, getStatistics } from './stateHandlers.js';
 import { convertToMatchingDataType, convertToArray } from '../UI/converter.js';
-import { purchaseResultTemplate, statisticResultTemplate } from '../UI/console/templates.js';
+import { purchaseResultTemplate, statisticsResultTemplate } from '../UI/console/templates.js';
 import View from '../UI/index.js';
 import ValidationError from '../ValidationError.js';
 
@@ -42,7 +42,7 @@ const stateHandlerRegistry = Object.freeze({
 
 const templateRegistry = Object.freeze({
     [STATE.PURCHASE]: purchaseResultTemplate,
-    [STATE.STATISTICS]: statisticResultTemplate,
+    [STATE.STATISTICS]: statisticsResultTemplate,
 });
 
 export async function runStateMachine({ haltOnError = false }) {
