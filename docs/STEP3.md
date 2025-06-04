@@ -43,6 +43,10 @@
 -   상태머신 코드(콘솔, 웹)에서 View 의존성 DIP -> 목적: 뷰와 비즈니스 로직의 완전 분리!!
 
 3. InputView를 View.ask, OutputView를 View.write 형식으로 변환할지 여부 결정(View 추상화 필요 여부 결정)
+   [ ] console/template -> outputView로 변경
+   [ ] console/stateMachine의 converter, message reg -> inputView 부분 분리
+   [ ] View 추상클래스 상속 구조 도입
+   [ ] 상태머신 단일화 + next 메소드를 통해 view에 상태 전이 책임 위임
 
 -   핵심은 복잡성이 감소하는가?
 
