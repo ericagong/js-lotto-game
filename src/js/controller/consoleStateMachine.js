@@ -1,30 +1,9 @@
+import { STATE } from './state.js';
 import { issueLottosWithBudget, setWinningLottoNumbers, setBonusNumbers, getStatistics } from './stateHandlers.js';
-import { convertToMatchingDataType, convertToArray } from '../UI/converter.js';
 import { purchaseResultTemplate, statisticsResultTemplate } from '../UI/console/templates.js';
 import View from '../UI/index.js';
 import ValidationError from '../ValidationError.js';
-
-const STATE = Object.freeze({
-    PURCHASE: 'PURCHASE',
-    WINNING_NUMBERS: 'WINNING_NUMBERS',
-    BONUS_NUMBER: 'BONUS_NUMBER',
-    STATISTICS: 'STATISTICS',
-    END: 'END',
-});
-
-const messageRegistry = Object.freeze({
-    [STATE.PURCHASE]: '> 구입금액을 입력해 주세요. ',
-    [STATE.WINNING_NUMBERS]: '\n> 당첨 번호를 입력해 주세요. ',
-    [STATE.BONUS_NUMBER]: '\n> 보너스 번호를 입력해 주세요. ',
-    // [STATE.STATISTICS]: '',
-});
-
-const converterReigstry = Object.freeze({
-    [STATE.PURCHASE]: convertToMatchingDataType,
-    [STATE.WINNING_NUMBERS]: convertToArray,
-    [STATE.BONUS_NUMBER]: convertToMatchingDataType,
-    // [STATE.STATISTICS]: () => {},
-});
+import { messageRegistry, converterReigstry } from '../UI/console/inputViews.js';
 
 const transitionRegistry = Object.freeze({
     [STATE.PURCHASE]: STATE.WINNING_NUMBERS,
