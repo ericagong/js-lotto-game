@@ -1,15 +1,12 @@
 import ValidationError from '../ValidationError.js';
-import View from '../UI/index.js';
-
-const converter = (input) => {
-    return input.trim().toLowerCase();
-};
+import { STATE } from './state.js';
 
 const RETRY_OPTIONS = Object.freeze({
     YES: 'y',
     NO: 'n',
 });
-const handler = (input) => {
+
+const retryHandler = (input) => {
     switch (input) {
         case RETRY_OPTIONS.YES:
             return true;
@@ -29,18 +26,16 @@ class RetryError extends ValidationError {
     }
 }
 
-const GUIDE_MESSAGE = '\n> 다시 시작하시겠습니까? (y/n) ';
-const askRetry = async () => {
+const askRetry = async (view) => {
     // eslint-disable-next-line no-constant-condition
     while (true) {
-        const input = await View.ask(GUIDE_MESSAGE);
-        const convertedInput = converter(input);
+        const input = await view.ask(STATE.RETRY);
 
         try {
-            return handler(convertedInput);
+            return retryHandler(input);
         } catch (error) {
             if (error instanceof RetryError) {
-                View.write(`[${error.type}] ${error.message}`);
+                view.handleError(error);
                 continue;
             }
             // 예상 불가능한 에러 - 프로그램 종료
@@ -49,14 +44,14 @@ const askRetry = async () => {
     }
 };
 
-export default async function withRetry(runFunc, ...args) {
+export default async function withRetry(runFunc, view, ...args) {
     // eslint-disable-next-line no-constant-condition
     while (true) {
-        await runFunc(...args);
+        await runFunc(view, ...args);
 
-        const shouldRetry = await askRetry();
+        const shouldRetry = await askRetry(view);
         if (!shouldRetry) break;
     }
 
-    View.terminate();
+    view.terminate();
 }

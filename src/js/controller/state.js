@@ -4,4 +4,5 @@ export const STATE = Object.freeze({
     BONUS_NUMBER: 'BONUS_NUMBER',
     STATISTICS: 'STATISTICS',
     END: 'END',
+    RETRY: 'RETRY',
 });

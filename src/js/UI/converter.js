@@ -20,3 +20,7 @@ const DEFAULT_SEPERATOR = ',';
 export const convertToArray = (input) => {
     return input.split(DEFAULT_SEPERATOR).map(convertToMatchingDataType);
 };
+
+export const convertToLowerCase = (input) => {
+    return input.trim().toLowerCase();
+};
