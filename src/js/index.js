@@ -1,4 +1,7 @@
 // web
-import { runStateMachine } from './controller/webStateMachine.js';
+import { runWebStateMachine } from './controller/webStateMachine.js';
+import WebView from './UI/web/View.js';
 
-runStateMachine();
+const view = new WebView();
+
+runWebStateMachine(view);

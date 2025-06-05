@@ -1,16 +1,12 @@
-import { render } from './interface.js';
-// utils
-
-// PURCHASE
-const issuedLottoRenderer = ({ lottoNumbers }) => `
+const issuedLottosTemplate = ({ lottoNumbers }) => `
     <div class="lotto-item d-flex flex-row my-2">
         <div class="lotto-icon mx-1 text-4xl">🎟️</div>
         <div class="lotto-numbers none text-base mt-2">${lottoNumbers.join(', ')}</div>
     </div>
 `;
 
-const purchasedResultRenderer = ({ issuedCount, issuedLottosNumbers }) => {
-    const issuedLottos = issuedLottosNumbers.map((lottoNumbers) => issuedLottoRenderer({ lottoNumbers })).join('');
+export const purchasedOutputTemplate = ({ issuedCount, issuedLottosNumbers }) => {
+    const issuedLottos = issuedLottosNumbers.map((lottoNumbers) => issuedLottosTemplate({ lottoNumbers })).join('');
 
     return `<section id="purchased-lottos-section" class="mt-9" aria-label="purchase-items">
         <div class="d-flex">
@@ -37,32 +33,7 @@ const purchasedResultRenderer = ({ issuedCount, issuedLottosNumbers }) => {
     `;
 };
 
-const bindLottoNumberSwitchEvents = () => {
-    const $lottoSwitchButton = document.querySelector('#lotto-switch-button');
-
-    const onToggle = (event) => {
-        const showNumbers = event.target.checked;
-
-        document.querySelectorAll('.lotto-item').forEach(($item) => {
-            $item.classList.toggle('w-100', showNumbers);
-        });
-
-        document.querySelectorAll('.lotto-numbers').forEach(($number) => {
-            $number.classList.toggle('none', !showNumbers);
-        });
-    };
-
-    $lottoSwitchButton.addEventListener('change', onToggle);
-};
-
-export const purchasedResultView = ({ issuedCount, issuedLottosNumbers }) => {
-    const resultView = purchasedResultRenderer({ issuedCount, issuedLottosNumbers });
-    render(resultView);
-    bindLottoNumberSwitchEvents();
-};
-
-// STATISTICS
-const statisticTableRowRenderer = ({ matchCount, isBonusMatch, prize, count }) => `
+const RankRowTemplate = ({ matchCount, isBonusMatch, prize, count }) => `
     <tr class="text-center">
         <td class="p-3">${matchCount}개${isBonusMatch ? ' + 보너스볼' : ''}</td>
         <td class="p-3">${prize.toLocaleString()}</td>
@@ -72,11 +43,11 @@ const statisticTableRowRenderer = ({ matchCount, isBonusMatch, prize, count }) =
     </tr>
 `;
 
-const statisticsResultRenderer = ({ rankSummary, revenueRate }) => {
+export const statisticsOutputTemplate = ({ rankSummary, revenueRate }) => {
     const statisticsTableRows = rankSummary
         .reverse()
         .map(({ matchCount, isBonusMatch, prize, count }) =>
-            statisticTableRowRenderer({ matchCount, isBonusMatch, prize, count }),
+            RankRowTemplate({ matchCount, isBonusMatch, prize, count }),
         )
         .join('');
 
@@ -114,34 +85,4 @@ const statisticsResultRenderer = ({ rankSummary, revenueRate }) => {
         </div>
     </section>
     `;
-};
-
-const bindModalEvents = () => {
-    const $modalCloseButton = document.querySelector('.modal-close');
-
-    const onToggle = () => {
-        const $modal = document.querySelector('.modal.open');
-        $modal.classList.remove('open');
-        $modal.remove();
-    };
-
-    $modalCloseButton.addEventListener('click', onToggle);
-};
-
-const bindResetEvents = () => {
-    const $resetButton = document.querySelector('#reset-btn');
-
-    const onReset = () => {
-        window.location.reload();
-    };
-
-    $resetButton.addEventListener('click', onReset);
-};
-
-export const statisticResultView = ({ rankSummary, revenueRate }) => {
-    const modal = statisticsResultRenderer({ rankSummary, revenueRate });
-    const $app = document.querySelector('#app');
-    render(modal, $app);
-    bindModalEvents();
-    bindResetEvents();
 };

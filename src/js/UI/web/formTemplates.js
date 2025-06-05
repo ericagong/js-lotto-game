@@ -1,19 +1,4 @@
-import { render } from './interface.js';
-import { convertToMatchingDataType } from '../converter.js';
-
-// utils
-const setHandlerToForm = (formSelector, extractDataFunc, handler) => {
-    const $form = document.querySelector(formSelector);
-
-    $form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const data = extractDataFunc($form);
-        await handler(data);
-    });
-};
-
-// INITIALIZE STATE
-const priceFormTemplate = () => `
+export const priceFormTemplate = () => `
     <form id="input-price-form" class="mt-5" aria-labelledby="input-price">
         <label for="input-price" class="mb-2 d-inline-block">구입할 금액을 입력해주세요.</label>
         <div class="d-flex">
@@ -32,24 +17,7 @@ const priceFormTemplate = () => `
     </form>
 `;
 
-const extractPriceData = () => {
-    const input = document.querySelector('#input-price').value;
-    const price = convertToMatchingDataType(input);
-
-    return { price };
-};
-
-export const setHandlerToPriceForm = (handler) => {
-    setHandlerToForm('#input-price-form', extractPriceData, handler);
-};
-
-export const priceFormView = () => {
-    const priceForm = priceFormTemplate();
-    render(priceForm);
-};
-
-// PURCHASED STATTE
-const winningLottoFormTemplate = () =>
+export const winningLottoFormTemplate = () =>
     `<form class="mt-9" id="input-winning-lotto-nums" aria-labelledby="input-winning-numbers">
         <label id="input-winning-numbers" class="flex-auto d-inline-block mb-3">
             지난 주 당첨번호 6개와 보너스 넘버 1개를 입력해주세요.
@@ -138,24 +106,3 @@ const winningLottoFormTemplate = () =>
         </button>
     </form>
 `;
-
-const extractWinningLottoData = () => {
-    const $inputWinningNumbers = document.querySelectorAll('.winning-number.lotto-number');
-    const $bonusNumber = document.querySelector('.winning-number.bonus-number');
-
-    const winningNumbers = Array.from($inputWinningNumbers).map(($lottoNumber) =>
-        convertToMatchingDataType($lottoNumber.value),
-    );
-    const bonusNumber = convertToMatchingDataType($bonusNumber.value);
-
-    return { winningNumbers, bonusNumber };
-};
-
-export const setHandlerToWinningLottoForm = (handler) => {
-    setHandlerToForm('#input-winning-lotto-nums', extractWinningLottoData, handler);
-};
-
-export const winningLottoFormView = () => {
-    const winningLottoForm = winningLottoFormTemplate();
-    render(winningLottoForm);
-};
