@@ -1,10 +1,5 @@
 import { isNumber, isBoolean } from '../../../utils/utils.js';
-import {
-    // PrivateConstructorError,
-    MatchCountNotNumberError,
-    IsBonusMatchNotBooleanError,
-    PrizeNotNumberError,
-} from './errors.js';
+import { MatchCountNotNumberError, IsBonusMatchNotBooleanError, PrizeNotNumberError } from './errors.js';
 
 export default class Rank {
     #matchCount;

@@ -8,14 +8,6 @@ class RankError extends ValidationError {
     }
 }
 
-export class PrivateConstructorError extends RankError {
-    static #MESSAGE = 'Rank는 new 키워드로 인스턴스를 생성할 수 없습니다.';
-
-    constructor() {
-        super(PrivateConstructorError.#MESSAGE);
-    }
-}
-
 export class MatchCountNotNumberError extends RankError {
     static #MESSAGE = 'matchCount는 number 타입이어야합니다.';
 
