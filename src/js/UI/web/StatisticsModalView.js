@@ -23,6 +23,7 @@ export default class StatisticsModalView {
             )
             .join('');
 
+        this.#$appContainer.querySelector('.modal')?.remove();
         this.#$appContainer.insertAdjacentHTML(
             'beforeend',
             `<section class="modal open" role="dialog" aria-modal="true" aria-labelledby="title-dialog">

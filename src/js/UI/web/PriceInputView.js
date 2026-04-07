@@ -9,6 +9,7 @@ export default class PriceInputView {
     }
 
     #render() {
+        this.#$container.querySelector('#input-price-form')?.remove();
         this.#$container.insertAdjacentHTML(
             'beforeend',
             `

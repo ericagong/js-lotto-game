@@ -18,6 +18,7 @@ export default class PurchasedLottosView {
             )
             .join('');
 
+        this.#$container.querySelector('#purchased-lottos-section')?.remove();
         this.#$container.insertAdjacentHTML(
             'beforeend',
             `

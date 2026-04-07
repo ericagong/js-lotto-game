@@ -9,6 +9,7 @@ export default class WinningNumberInputView {
     }
 
     #render() {
+        this.#$container.querySelector('#input-winning-lotto-nums')?.remove();
         this.#$container.insertAdjacentHTML(
             'beforeend',
             `
