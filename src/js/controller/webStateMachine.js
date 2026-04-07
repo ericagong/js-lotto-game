@@ -1,38 +1,29 @@
-import { STATE } from './state.js';
 import { issueLottosWithBudget, setWinningLottoNumbers, setBonusNumbers, getStatistics } from './stateHandlers.js';
+import PurchaseView from '../UI/web/PurchaseView.js';
+import WinningNumbersView from '../UI/web/WinningNumbersView.js';
 
-const transitionRegistry = Object.freeze({
-    [STATE.PURCHASE]: STATE.WINNING_NUMBERS,
-    [STATE.WINNING_NUMBERS]: STATE.STATISTICS,
-});
+export function initApp() {
+    const purchaseView = new PurchaseView();
+    const winningNumbersView = new WinningNumbersView();
 
-const domainHandlerRegistry = Object.freeze({
-    [STATE.PURCHASE]: ({ price }) => issueLottosWithBudget(price),
-    [STATE.WINNING_NUMBERS]: ({ winningNumbers, bonusNumber }) => {
-        setWinningLottoNumbers(winningNumbers);
-        setBonusNumbers(bonusNumber);
-        return getStatistics();
-    },
-});
-
-let currentState = STATE.PURCHASE;
-export async function runWebStateMachine(view) {
-    if (currentState === STATE.STATISTICS) return;
-
-    await view.ask(currentState);
-
-    view.bindDomainLogicHandler(currentState, async (inputData) => {
+    purchaseView.renderForm();
+    purchaseView.onSubmit(({ price }) => {
         try {
-            const domainHandler = domainHandlerRegistry[currentState];
-            const result = domainHandler(inputData);
+            const result = issueLottosWithBudget(price);
+            purchaseView.renderResult(result);
 
-            view.render(currentState, result);
-            currentState = transitionRegistry[currentState];
-
-            await runWebStateMachine(view);
+            winningNumbersView.renderForm();
+            winningNumbersView.onSubmit(({ winningNumbers, bonusNumber }) => {
+                try {
+                    setWinningLottoNumbers(winningNumbers);
+                    setBonusNumbers(bonusNumber);
+                    winningNumbersView.renderResult(getStatistics());
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
         } catch (error) {
-            // TODO 에러 발생 시 직전 상태로 되돌리기 처리 필요
-            view.handleError(error);
+            alert(error.message);
         }
     });
 }

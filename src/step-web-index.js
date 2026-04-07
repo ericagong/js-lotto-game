@@ -4,9 +4,6 @@
  */
 
 import './css/index.css';
-import { runWebStateMachine } from './js/controller/webStateMachine.js';
-import WebView from './js/UI/web/View.js';
+import { initApp } from './js/controller/webStateMachine.js';
 
-const view = new WebView();
-
-runWebStateMachine(view);
+initApp();
