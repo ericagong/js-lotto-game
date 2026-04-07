@@ -1,29 +1,22 @@
 import { issueLottosWithBudget, setWinningLottoNumbers, setBonusNumbers, getStatistics } from './stateHandlers.js';
-import PurchaseView from '../UI/web/PurchaseView.js';
-import WinningNumbersView from '../UI/web/WinningNumbersView.js';
+import PriceInputView from '../UI/web/PriceInputView.js';
+import PurchasedLottosView from '../UI/web/PurchasedLottosView.js';
+import WinningNumberInputView from '../UI/web/WinningNumberInputView.js';
+import StatisticsModalView from '../UI/web/StatisticsModalView.js';
 
 export function initApp() {
-    const purchaseView = new PurchaseView();
-    const winningNumbersView = new WinningNumbersView();
-
-    purchaseView.renderForm();
-    purchaseView.onSubmit(({ price }) => {
-        try {
+    new PriceInputView({
+        onSubmit: (price) => {
             const result = issueLottosWithBudget(price);
-            purchaseView.renderResult(result);
+            new PurchasedLottosView(result);
 
-            winningNumbersView.renderForm();
-            winningNumbersView.onSubmit(({ winningNumbers, bonusNumber }) => {
-                try {
+            new WinningNumberInputView({
+                onSubmit: ({ winningNumbers, bonusNumber }) => {
                     setWinningLottoNumbers(winningNumbers);
                     setBonusNumbers(bonusNumber);
-                    winningNumbersView.renderResult(getStatistics());
-                } catch (error) {
-                    alert(error.message);
-                }
+                    new StatisticsModalView(getStatistics());
+                },
             });
-        } catch (error) {
-            alert(error.message);
-        }
+        },
     });
 }
