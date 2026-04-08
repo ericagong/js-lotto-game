@@ -1,6 +1,6 @@
-import Lottos from '../domain/models/service/Lottos/index.js';
-import LottoBroadCast from '../domain/models/service/LottoBroadCast/index.js';
-import Ranks from '../domain/models/service/Ranks/index.js';
+import Lottos from './domain/models/service/Lottos/index.js';
+import LottoBroadCast from './domain/models/service/LottoBroadCast/index.js';
+import Ranks from './domain/models/service/Ranks/index.js';
 
 export default class LottoGame {
     #lottos = [];

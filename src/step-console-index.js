@@ -4,7 +4,7 @@
  */
 import { runConsoleLotto } from './js/console/controller.js';
 import ConsoleView from './js/console/View.js';
-import LottoGame from './js/controller/LottoGame.js';
+import LottoGame from './js/LottoGame.js';
 import withRetry from './js/console/withRetry.js';
 
 const view = new ConsoleView();

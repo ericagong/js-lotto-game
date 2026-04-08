@@ -4,8 +4,8 @@
  */
 
 import './css/index.css';
-import { runWebLotto } from './js/controller/runWebLotto.js';
-import WebView from './js/UI/web/View.js';
-import LottoGame from './js/controller/LottoGame.js';
+import { runWebLotto } from './js/web/controller.js';
+import WebView from './js/web/View.js';
+import LottoGame from './js/LottoGame.js';
 
 runWebLotto(new WebView(), new LottoGame());
