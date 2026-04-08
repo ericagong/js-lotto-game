@@ -1,7 +1,6 @@
 {
   "name": "lotto",
   "version": "1.0.0",
-  "main": "index.js",
   "type": "module",
   "author": "Erica Gong",
   "license": "ISC",
