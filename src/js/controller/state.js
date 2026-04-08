@@ -1,8 +1,0 @@
-export const STATE = Object.freeze({
-    PURCHASE: 'PURCHASE',
-    WINNING_NUMBERS: 'WINNING_NUMBERS',
-    BONUS_NUMBER: 'BONUS_NUMBER',
-    STATISTICS: 'STATISTICS',
-    END: 'END',
-    RETRY: 'RETRY',
-});

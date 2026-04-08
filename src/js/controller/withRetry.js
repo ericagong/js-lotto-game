@@ -1,21 +1,4 @@
 import ValidationError from '../ValidationError.js';
-import { STATE } from './state.js';
-
-const RETRY_OPTIONS = Object.freeze({
-    YES: 'y',
-    NO: 'n',
-});
-
-const retryHandler = (input) => {
-    switch (input) {
-        case RETRY_OPTIONS.YES:
-            return true;
-        case RETRY_OPTIONS.NO:
-            return false;
-        default:
-            throw new RetryError();
-    }
-};
 
 class RetryError extends ValidationError {
     static #TYPE = 'RetryError';
@@ -26,32 +9,20 @@ class RetryError extends ValidationError {
     }
 }
 
-const askRetry = async (view) => {
+export default async function withRetry(runGame, view) {
     // eslint-disable-next-line no-constant-condition
     while (true) {
-        const input = await view.ask(STATE.RETRY);
+        await runGame();
 
-        try {
-            return retryHandler(input);
-        } catch (error) {
-            if (error instanceof RetryError) {
-                view.handleError(error);
-                continue;
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+            const input = await view.askRetry();
+            if (input === 'y') break;
+            if (input === 'n') {
+                view.close();
+                return;
             }
-            // 예상 불가능한 에러 - 프로그램 종료
-            throw error;
+            view.showError(new RetryError());
         }
     }
-};
-
-export default async function withRetry(runFunc, view, ...args) {
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-        await runFunc(view, ...args);
-
-        const shouldRetry = await askRetry(view);
-        if (!shouldRetry) break;
-    }
-
-    view.terminate();
 }
