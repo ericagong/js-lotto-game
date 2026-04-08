@@ -1,79 +1,58 @@
 import readline from 'readline';
-import { STATE } from '../../controller/state.js';
 import { convertToMatchingDataType, convertToArray, convertToLowerCase } from '../converter.js';
 
-export default class View {
-    constructor() {
-        this.interface = View.#createConsoleInterface();
-    }
+export default class ConsoleView {
+    #rl;
 
-    static #createConsoleInterface() {
-        return readline.createInterface({
+    constructor() {
+        this.#rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
         });
     }
 
-    static #messageRegistry = Object.freeze({
-        [STATE.PURCHASE]: '> 구입금액을 입력해 주세요. ',
-        [STATE.WINNING_NUMBERS]: '\n> 당첨 번호를 입력해 주세요. ',
-        [STATE.BONUS_NUMBER]: '\n> 보너스 번호를 입력해 주세요. ',
-        [STATE.RETRY]: '\n> 다시 시작하시겠습니까? (y/n) ',
-    });
-
-    static #converterReigstry = Object.freeze({
-        [STATE.PURCHASE]: convertToMatchingDataType,
-        [STATE.WINNING_NUMBERS]: convertToArray,
-        [STATE.BONUS_NUMBER]: convertToMatchingDataType,
-        [STATE.RETRY]: convertToLowerCase,
-    });
-
-    static #write(...args) {
-        args.forEach((arg) => console.log(arg));
+    #question(message) {
+        return new Promise((resolve) => this.#rl.question(message, resolve));
     }
 
-    static #outputTemplateRegistry = Object.freeze({
-        [STATE.PURCHASE]: ({ issuedCount, issuedLottosNumbers }) => {
-            View.#write(`총 ${issuedCount}개를 구매했습니다.`);
-            View.#write(...issuedLottosNumbers);
-        },
-        [STATE.STATISTICS]: ({ rankSummary, revenueRate }) => {
-            View.#write('\n', '당첨 통계', '-'.repeat(20));
-            rankSummary.forEach(({ matchCount, isBonusMatch, prize, count }) => {
-                View.#write(`${matchCount}개 일치${isBonusMatch ? ', 보너스 볼 일치' : ''} (${prize}원) - ${count}개`);
-            });
-            View.#write(`총 수익률은 ${revenueRate}%입니다.`);
-        },
-    });
+    async askBudget() {
+        const input = await this.#question('> 구입금액을 입력해 주세요. ');
+        return convertToMatchingDataType(input);
+    }
 
-    async ask(state) {
-        const guideMessage = View.#messageRegistry[state];
-        const converter = View.#converterReigstry[state];
+    async askWinningNumbers() {
+        const input = await this.#question('\n> 당첨 번호를 입력해 주세요. ');
+        return convertToArray(input);
+    }
 
-        if (!guideMessage || !converter) {
-            return;
-        }
+    async askBonusNumber() {
+        const input = await this.#question('\n> 보너스 번호를 입력해 주세요. ');
+        return convertToMatchingDataType(input);
+    }
 
-        return new Promise((resolve) => {
-            this.interface.question(guideMessage, (userInput) => {
-                const convertedInput = converter(userInput);
-                resolve(convertedInput);
-            });
+    async askRetry() {
+        const input = await this.#question('\n> 다시 시작하시겠습니까? (y/n) ');
+        return convertToLowerCase(input);
+    }
+
+    showIssuedLottos({ issuedCount, issuedLottosNumbers }) {
+        console.log(`총 ${issuedCount}개를 구매했습니다.`);
+        issuedLottosNumbers.forEach((nums) => console.log(nums));
+    }
+
+    showStatistics({ rankSummary, revenueRate }) {
+        console.log('\n', '당첨 통계', '-'.repeat(20));
+        rankSummary.forEach(({ matchCount, isBonusMatch, prize, count }) => {
+            console.log(`${matchCount}개 일치${isBonusMatch ? ', 보너스 볼 일치' : ''} (${prize}원) - ${count}개`);
         });
+        console.log(`총 수익률은 ${revenueRate}%입니다.`);
     }
 
-    render(state, data) {
-        const outputTemplate = View.#outputTemplateRegistry[state];
-        if (outputTemplate) {
-            outputTemplate(data);
-        }
+    showError(error) {
+        console.log(`[${error.type}] ${error.message}`);
     }
 
-    handleError(error) {
-        View.#write(`[${error.type}] ${error.message}`);
-    }
-
-    terminate() {
-        this.interface.close();
+    close() {
+        this.#rl.close();
     }
 }
