@@ -1,83 +1,85 @@
-import { STATE } from '../../controller/state.js';
 import { priceFormTemplate, winningLottoFormTemplate } from './formTemplates.js';
-import { getPurchasedPrice, getWinningLottoNumbers } from './getUserInputFromForm.js';
 import { purchasedOutputTemplate, statisticsOutputTemplate } from './outputTemplates.js';
-import { setPurchasedStateEvents, setWinningNumbersStateEvents } from './eventHandlers.js';
+import { convertToMatchingDataType } from '../converter.js';
 
 export default class WebView {
-    constructor() {}
+    #mainContainer = document.querySelector('#main-container');
+    #appContainer = document.querySelector('#app');
 
-    static display($element, $container = WebView.#MAIN_CONTAINER) {
-        $container.insertAdjacentHTML('beforeend', $element);
+    #display(html, container = this.#mainContainer) {
+        container.insertAdjacentHTML('beforeend', html);
     }
 
-    static inputTemplateRegistry = Object.freeze({
-        [STATE.PURCHASE]: priceFormTemplate,
-        [STATE.WINNING_NUMBERS]: winningLottoFormTemplate,
-    });
+    showPurchaseForm() {
+        this.#display(priceFormTemplate());
+    }
 
-    static eventTargetRegistry = Object.freeze({
-        [STATE.PURCHASE]: '#input-price-form',
-        [STATE.WINNING_NUMBERS]: '#input-winning-lotto-nums',
-    });
+    showWinningLottoForm() {
+        this.#display(winningLottoFormTemplate());
+    }
 
-    static getUserInputRegistry = Object.freeze({
-        [STATE.PURCHASE]: getPurchasedPrice,
-        [STATE.WINNING_NUMBERS]: getWinningLottoNumbers,
-    });
-
-    static outputTemplateRegistry = Object.freeze({
-        [STATE.PURCHASE]: purchasedOutputTemplate,
-        [STATE.WINNING_NUMBERS]: statisticsOutputTemplate,
-    });
-
-    static extraEventHandlerRegistry = Object.freeze({
-        [STATE.PURCHASE]: setPurchasedStateEvents,
-        [STATE.WINNING_NUMBERS]: setWinningNumbersStateEvents,
-    });
-
-    bindDomainLogicHandler(state, handler) {
-        const selector = WebView.eventTargetRegistry[state];
-        const $formElement = document.querySelector(selector);
-
-        $formElement.addEventListener('submit', async (event) => {
+    onPurchaseSubmit(handler) {
+        const $form = document.querySelector('#input-price-form');
+        $form.addEventListener('submit', (event) => {
             event.preventDefault();
-            const userInput = WebView.getUserInputRegistry[state]();
-            await handler(userInput);
+            const price = convertToMatchingDataType(document.querySelector('#input-price').value);
+            handler(price);
         });
     }
 
-    async ask(state) {
-        const inputTemplate = WebView.inputTemplateRegistry[state];
-
-        if (!inputTemplate) {
-            return;
-        }
-
-        WebView.display(inputTemplate());
+    onWinningLottoSubmit(handler) {
+        const $form = document.querySelector('#input-winning-lotto-nums');
+        $form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const winningNumbers = Array.from(
+                document.querySelectorAll('.winning-number.lotto-number'),
+            ).map(($el) => convertToMatchingDataType($el.value));
+            const bonusNumber = convertToMatchingDataType(
+                document.querySelector('.winning-number.bonus-number').value,
+            );
+            handler({ winningNumbers, bonusNumber });
+        });
     }
 
-    static #MAIN_CONTAINER = document.querySelector('#main-container');
-    static #APP_CONTAINER = document.querySelector('#app');
-    render(state, data) {
-        const outputTemplate = WebView.outputTemplateRegistry[state];
-
-        if (!outputTemplate || data === undefined) {
-            return;
-        }
-
-        const $container = state === STATE.WINNING_NUMBERS ? WebView.#APP_CONTAINER : WebView.#MAIN_CONTAINER;
-        WebView.display(outputTemplate(data), $container);
-
-        const setExtraEventHandler = WebView.extraEventHandlerRegistry[state];
-        setExtraEventHandler();
+    showIssuedLottos(data) {
+        this.#display(purchasedOutputTemplate(data));
+        this.#bindLottoToggle();
     }
 
-    handleError(error) {
+    showStatistics(data) {
+        this.#display(statisticsOutputTemplate(data), this.#appContainer);
+        this.#bindModalClose();
+        this.#bindResetGame();
+    }
+
+    showError(error) {
         alert(error.message);
     }
 
-    terminate() {
-        window.location.reload();
+    #bindLottoToggle() {
+        const $btn = document.querySelector('#lotto-switch-button');
+        $btn.addEventListener('change', (event) => {
+            const show = event.target.checked;
+            document
+                .querySelectorAll('.lotto-item')
+                .forEach(($item) => $item.classList.toggle('w-100', show));
+            document
+                .querySelectorAll('.lotto-numbers')
+                .forEach(($number) => $number.classList.toggle('none', !show));
+        });
+    }
+
+    #bindModalClose() {
+        document.querySelector('.modal-close').addEventListener('click', () => {
+            const $modal = document.querySelector('.modal.open');
+            $modal.classList.remove('open');
+            $modal.remove();
+        });
+    }
+
+    #bindResetGame() {
+        document.querySelector('#reset-btn').addEventListener('click', () => {
+            window.location.reload();
+        });
     }
 }
