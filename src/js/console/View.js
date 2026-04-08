@@ -1,5 +1,5 @@
 import readline from 'readline';
-import { convertToMatchingDataType, convertToArray, convertToLowerCase } from '../converter.js';
+import { convertToMatchingDataType, convertToArray, convertToLowerCase } from './converter.js';
 
 export default class ConsoleView {
     #rl;
