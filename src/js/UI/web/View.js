@@ -1,28 +1,71 @@
-import { priceFormTemplate, winningLottoFormTemplate } from './formTemplates.js';
-import { purchasedOutputTemplate, statisticsOutputTemplate } from './outputTemplates.js';
-import { convertToMatchingDataType } from '../converter.js';
+import {
+    priceFormTemplate,
+    winningLottoFormTemplate,
+    purchasedOutputTemplate,
+    statisticsOutputTemplate,
+} from './templates.js';
 
 export default class WebView {
-    #mainContainer = document.querySelector('#main-container');
-    #appContainer = document.querySelector('#app');
+    #container = document.querySelector('#main-container');
 
-    #display(html, container = this.#mainContainer) {
-        container.insertAdjacentHTML('beforeend', html);
+    #render(html) {
+        this.#container.insertAdjacentHTML('beforeend', html);
     }
 
-    showPurchaseForm() {
-        this.#display(priceFormTemplate());
+    #cleanupRenderedAfter($element) {
+        while ($element.nextElementSibling) {
+            $element.nextElementSibling.remove();
+        }
     }
 
-    showWinningLottoForm() {
-        this.#display(winningLottoFormTemplate());
+    #enableLottoToggle() {
+        const $btn = document.querySelector('#lotto-switch-button');
+        $btn.addEventListener('change', (event) => {
+            const show = event.target.checked;
+            document.querySelectorAll('.lotto-item').forEach(($item) => $item.classList.toggle('w-100', show));
+            document.querySelectorAll('.lotto-numbers').forEach(($number) => $number.classList.toggle('none', !show));
+        });
+    }
+
+    #enableModalClose() {
+        document.querySelector('.modal-close').addEventListener('click', () => {
+            const $modal = document.querySelector('.modal.open');
+            $modal.classList.remove('open');
+            $modal.remove();
+        });
+    }
+
+    #enableResetGame() {
+        document.querySelector('#reset-btn').addEventListener('click', () => {
+            window.location.reload();
+        });
+    }
+
+    renderPurchaseForm() {
+        this.#render(priceFormTemplate());
+    }
+
+    renderIssuedLottos(data) {
+        this.#render(purchasedOutputTemplate(data));
+        this.#enableLottoToggle();
+    }
+
+    renderWinningLottoForm() {
+        this.#render(winningLottoFormTemplate());
+    }
+
+    renderStatistics(data) {
+        this.#render(statisticsOutputTemplate(data));
+        this.#enableModalClose();
+        this.#enableResetGame();
     }
 
     onPurchaseSubmit(handler) {
         const $form = document.querySelector('#input-price-form');
         $form.addEventListener('submit', (event) => {
             event.preventDefault();
-            const price = convertToMatchingDataType(document.querySelector('#input-price').value);
+            this.#cleanupRenderedAfter($form);
+            const price = Number(document.querySelector('#input-price').value);
             handler(price);
         });
     }
@@ -31,55 +74,15 @@ export default class WebView {
         const $form = document.querySelector('#input-winning-lotto-nums');
         $form.addEventListener('submit', (event) => {
             event.preventDefault();
-            const winningNumbers = Array.from(
-                document.querySelectorAll('.winning-number.lotto-number'),
-            ).map(($el) => convertToMatchingDataType($el.value));
-            const bonusNumber = convertToMatchingDataType(
-                document.querySelector('.winning-number.bonus-number').value,
+            const winningNumbers = Array.from(document.querySelectorAll('.winning-number.lotto-number')).map(($el) =>
+                Number($el.value),
             );
+            const bonusNumber = Number(document.querySelector('.winning-number.bonus-number').value);
             handler({ winningNumbers, bonusNumber });
         });
     }
 
-    showIssuedLottos(data) {
-        this.#display(purchasedOutputTemplate(data));
-        this.#bindLottoToggle();
-    }
-
-    showStatistics(data) {
-        this.#display(statisticsOutputTemplate(data), this.#appContainer);
-        this.#bindModalClose();
-        this.#bindResetGame();
-    }
-
-    showError(error) {
+    alertError(error) {
         alert(error.message);
-    }
-
-    #bindLottoToggle() {
-        const $btn = document.querySelector('#lotto-switch-button');
-        $btn.addEventListener('change', (event) => {
-            const show = event.target.checked;
-            document
-                .querySelectorAll('.lotto-item')
-                .forEach(($item) => $item.classList.toggle('w-100', show));
-            document
-                .querySelectorAll('.lotto-numbers')
-                .forEach(($number) => $number.classList.toggle('none', !show));
-        });
-    }
-
-    #bindModalClose() {
-        document.querySelector('.modal-close').addEventListener('click', () => {
-            const $modal = document.querySelector('.modal.open');
-            $modal.classList.remove('open');
-            $modal.remove();
-        });
-    }
-
-    #bindResetGame() {
-        document.querySelector('#reset-btn').addEventListener('click', () => {
-            window.location.reload();
-        });
     }
 }
