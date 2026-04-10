@@ -1,4 +1,4 @@
-import { hasDuplicated } from '../../../../utils.js';
+import { hasDuplicated } from '../../utils.js';
 import {
     NumbersNotArrayError,
     NumbersLengthNotSixError,

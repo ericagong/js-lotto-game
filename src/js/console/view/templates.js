@@ -1,3 +1,5 @@
+import { toPercentage } from '../../utils.js';
+
 // 입력 프롬프트
 export const BUDGET_PROMPT = '> 구입금액을 입력해 주세요. ';
 export const WINNING_NUMBERS_PROMPT = '\n> 당첨 번호를 입력해 주세요. ';
@@ -12,6 +14,6 @@ export const STATISTICS_HEADER = `\n 당첨 통계 ${'-'.repeat(20)}`;
 export const formatRankRow = ({ matchCount, isBonusMatch, prize, count }) =>
     `${matchCount}개 일치${isBonusMatch ? ', 보너스 볼 일치' : ''} (${prize}원) - ${count}개`;
 
-export const formatRevenueRate = (rate) => `총 수익률은 ${rate}%입니다.`;
+export const formatRevenueRate = (revenueRate) => `총 수익률은 ${toPercentage(revenueRate)}%입니다.`;
 
 export const formatError = (type, message) => `[${type}] ${message}`;

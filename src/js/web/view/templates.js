@@ -103,6 +103,8 @@ export const purchasedOutputTemplate = ({ issuedCount, issuedLottosNumbers }) =>
     `;
 };
 
+import { toPercentage } from '../../utils.js';
+
 const RankRowTemplate = ({ matchCount, isBonusMatch, prize, count }) => `
     <tr class="text-center">
         <td class="p-3">${matchCount}개${isBonusMatch ? ' + 보너스볼' : ''}</td>
@@ -146,7 +148,7 @@ export const statisticsOutputTemplate = ({ rankSummary, revenueRate }) => {
             </div>
             <p class="text-center font-bold p-10">
                 당신의 총 수익률은
-                <span id="profit">${revenueRate}</span>
+                <span id="profit">${toPercentage(revenueRate)}</span>
                 % 입니다.
             </p>
             <div class="d-flex justify-center mt-5">

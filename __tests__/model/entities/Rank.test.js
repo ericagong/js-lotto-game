@@ -1,9 +1,9 @@
-import Rank from '../../../src/js/domain/models/entities/Rank/Rank.js';
+import Rank from '../../../src/js/domain/Rank/Rank.js';
 import {
     PrizeNotNumberError,
     IsBonusMatchNotBooleanError,
     MatchCountNotNumberError,
-} from '../../../src/js/domain/models/entities/Rank/errors.js';
+} from '../../../src/js/domain/Rank/errors.js';
 
 describe('static from(matchCount, isBonusMatch) 테스트', () => {
     describe('matchCount와 isBonusMatch 기반으로 Rank 인스턴스를 반환한다.', () => {

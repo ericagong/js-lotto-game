@@ -37,14 +37,10 @@ export default class WinningLotto {
     }
 
     #matchBonusNumber(targetLotto) {
-        WinningLotto.#validateLotto(targetLotto);
-
         return targetLotto.contains(this.#bonusNumber);
     }
 
     #countMatchingNumbers(targetLotto) {
-        WinningLotto.#validateLotto(targetLotto);
-
         const winningLottoNumbers = new Set(this.#lotto.getNumbers());
         const targetLottoNumbers = targetLotto.getNumbers();
         const matchCount = targetLottoNumbers.reduce(
@@ -55,6 +51,8 @@ export default class WinningLotto {
     }
 
     getRank(targetLotto) {
+        WinningLotto.#validateLotto(targetLotto);
+
         const matchCount = this.#countMatchingNumbers(targetLotto);
         const isBonusMatch = this.#matchBonusNumber(targetLotto);
 

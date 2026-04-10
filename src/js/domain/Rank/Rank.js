@@ -1,4 +1,4 @@
-import { isNumber, isBoolean } from '../../../../utils.js';
+import { isNumber, isBoolean } from '../../utils.js';
 import { MatchCountNotNumberError, IsBonusMatchNotBooleanError, PrizeNotNumberError } from './errors.js';
 
 export default class Rank {

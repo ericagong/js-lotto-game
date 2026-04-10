@@ -1,42 +1,41 @@
-import Lottos from './domain/models/service/Lottos/index.js';
-import LottoBroadCast from './domain/models/service/LottoBroadCast/index.js';
-import Ranks from './domain/models/service/Ranks/index.js';
+import Budget from './domain/Budget/Budget.js';
+import Lotto from './domain/Lotto/Lotto.js';
+import LottoNumber from './domain/LottoNumber/LottoNumber.js';
+import Lottos from './domain/Lottos/Lottos.js';
+import RankStatistics from './domain/RankStatistics/RankStatistics.js';
+import WinningLotto from './domain/WinningLotto/WinningLotto.js';
 
 export default class LottoGame {
-    #lottos = [];
+    #budget = null;
+    #lottos = null;
     #firstRankLotto = null;
     #winningLotto = null;
 
-    issueLottos(budget) {
-        this.#lottos = Lottos.issue(budget);
+    issueLottos(budgetAmount) {
+        this.#budget = Budget.of(budgetAmount);
+        this.#lottos = Lottos.issue(this.#budget);
 
-        const issuedCount = this.#lottos.length;
-        const issuedLottosNumbers = this.#lottos.map((lotto) => lotto.getNumbers());
-
-        return { issuedCount, issuedLottosNumbers };
+        return {
+            issuedCount: this.#lottos.count,
+            issuedLottosNumbers: this.#lottos.snapshot,
+        };
     }
 
     setWinningNumbers(winningNumbers) {
-        this.#firstRankLotto = LottoBroadCast.getFirstRankLotto(winningNumbers);
+        this.#firstRankLotto = Lotto.of(winningNumbers);
     }
 
     setBonusNumber(bonusNumber) {
-        this.#winningLotto = LottoBroadCast.getWinningLotto(this.#firstRankLotto, bonusNumber);
+        this.#winningLotto = WinningLotto.from(this.#firstRankLotto, LottoNumber.of(bonusNumber));
     }
 
     getStatistics() {
-        const ranks = Lottos.determineRanks(this.#lottos, this.#winningLotto);
+        const ranks = this.#lottos.determineRanks(this.#winningLotto);
+        const statistics = RankStatistics.from(ranks, this.#budget.totalCost);
 
-        const winningRankCounter = Ranks.getRankStatistic(ranks);
-
-        const rankSummary = [];
-        winningRankCounter.forEach((count, rank) => {
-            const { matchCount, isBonusMatch, prize } = rank;
-            rankSummary.push({ matchCount, isBonusMatch, prize, count });
-        });
-
-        const revenueRate = Ranks.getRevenueRate(ranks);
-
-        return { rankSummary, revenueRate };
+        return {
+            rankSummary: statistics.summary,
+            revenueRate: statistics.revenueRate,
+        };
     }
 }

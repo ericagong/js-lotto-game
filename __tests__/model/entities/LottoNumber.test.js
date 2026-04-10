@@ -1,9 +1,9 @@
-import LottoNumber from '../../../src/js/domain/models/entities/LottoNumber/LottoNumber.js';
+import LottoNumber from '../../../src/js/domain/LottoNumber/LottoNumber.js';
 import {
     ValueNotNumberError,
     ValueNotIntegerError,
     ValueOutOfRangeError,
-} from '../../../src/js/domain/models/entities/LottoNumber/errors.js';
+} from '../../../src/js/domain/LottoNumber/errors.js';
 
 describe('static of(value) 테스트', () => {
     it('LottoNumber 인스턴스를 반환한다.', () => {

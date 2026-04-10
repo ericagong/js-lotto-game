@@ -1,4 +1,4 @@
-import DomainError from '../../../DomainError.js';
+import DomainError from '../DomainError.js';
 
 class RankError extends DomainError {
     static #TYPE = '[RankError]';
