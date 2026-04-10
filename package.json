@@ -43,18 +43,7 @@
   "jest": {
     "transform": {
       "^.+\\.js$": "babel-jest"
-    },
-    "modulePathIgnorePatterns": [
-      "<rootDir>/\\.claude/"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "<rootDir>/\\.claude/"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "<rootDir>/\\.claude/"
-    ]
+    }
   },
   "babel": {
     "presets": [
