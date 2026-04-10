@@ -24,7 +24,6 @@ async function playConsoleLottoGame() {
     const game = new LottoGame();
 
     // 1. 구입금액 입력
-    // eslint-disable-next-line no-constant-condition
     while (true) {
         try {
             const budgetInput = await view.askBudget();
@@ -38,7 +37,6 @@ async function playConsoleLottoGame() {
     }
 
     // 2. 당첨 번호 입력
-    // eslint-disable-next-line no-constant-condition
     while (true) {
         try {
             const winningNumbersInput = await view.askWinningNumbers();
@@ -51,7 +49,6 @@ async function playConsoleLottoGame() {
     }
 
     // 3. 보너스 번호 입력
-    // eslint-disable-next-line no-constant-condition
     while (true) {
         try {
             const bonusNumberInput = await view.askBonusNumber();
@@ -83,7 +80,6 @@ function convertStringToRetryAnswer(input) {
 }
 
 async function askShouldRetry() {
-    // eslint-disable-next-line no-constant-condition
     while (true) {
         try {
             const input = await view.askRetry();

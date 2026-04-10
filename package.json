@@ -10,7 +10,7 @@
     "test": "jest -i --no-cache",
     "coverage": "jest --coverage",
     "prepare": "husky",
-    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint --cache ./src",
+    "lint": "eslint --cache ./src",
     "format": "prettier --cache --write --log-level warn ./src",
     "commitlint": "commitlint --edit"
   },
@@ -30,6 +30,7 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jest": "^29.15.1",
     "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.4.0",
     "html-webpack-plugin": "^5.6.6",
     "husky": "^9.1.7",
     "jest": "^30.3.0",
@@ -43,9 +44,17 @@
     "transform": {
       "^.+\\.js$": "babel-jest"
     },
-    "modulePathIgnorePatterns": ["<rootDir>/\\.claude/"],
-    "testPathIgnorePatterns": ["/node_modules/", "<rootDir>/\\.claude/"],
-    "coveragePathIgnorePatterns": ["/node_modules/", "<rootDir>/\\.claude/"]
+    "modulePathIgnorePatterns": [
+      "<rootDir>/\\.claude/"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/\\.claude/"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/\\.claude/"
+    ]
   },
   "babel": {
     "presets": [
