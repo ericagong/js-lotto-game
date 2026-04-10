@@ -3,6 +3,7 @@ import {
     winningLottoFormTemplate,
     purchasedOutputTemplate,
     statisticsOutputTemplate,
+    errorMessageTemplate,
 } from './templates.js';
 
 export default class WebView {
@@ -60,13 +61,24 @@ export default class WebView {
         this.#enableResetGame();
     }
 
+    getPurchasePrice() {
+        return Number(document.querySelector('#input-price').value);
+    }
+
+    getWinningLottoInput() {
+        const winningNumbers = Array.from(document.querySelectorAll('.winning-number.lotto-number')).map(($el) =>
+            Number($el.value),
+        );
+        const bonusNumber = Number(document.querySelector('.winning-number.bonus-number').value);
+        return { winningNumbers, bonusNumber };
+    }
+
     onPurchaseSubmit(handler) {
         const $form = document.querySelector('#input-price-form');
         $form.addEventListener('submit', (event) => {
             event.preventDefault();
             this.#cleanupRenderedAfter($form);
-            const price = Number(document.querySelector('#input-price').value);
-            handler(price);
+            handler();
         });
     }
 
@@ -74,15 +86,13 @@ export default class WebView {
         const $form = document.querySelector('#input-winning-lotto-nums');
         $form.addEventListener('submit', (event) => {
             event.preventDefault();
-            const winningNumbers = Array.from(document.querySelectorAll('.winning-number.lotto-number')).map(($el) =>
-                Number($el.value),
-            );
-            const bonusNumber = Number(document.querySelector('.winning-number.bonus-number').value);
-            handler({ winningNumbers, bonusNumber });
+            handler();
         });
     }
 
-    alertError(error) {
-        alert(error.message);
+    showError(error) {
+        this.#container.querySelector('.error-message')?.remove();
+        const activeForm = this.#container.querySelector('form:last-of-type');
+        activeForm?.insertAdjacentHTML('afterend', errorMessageTemplate(error.type, error.message));
     }
 }

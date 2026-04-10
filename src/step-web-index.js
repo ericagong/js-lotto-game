@@ -5,7 +5,7 @@
 
 import './css/index.css';
 import { runWebLotto } from './js/web/controller.js';
-import WebView from './js/web/View.js';
+import WebView from './js/web/view/index.js';
 import LottoGame from './js/LottoGame.js';
 
 runWebLotto(new WebView(), new LottoGame());

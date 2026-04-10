@@ -17,69 +17,29 @@ export const priceFormTemplate = () => `
     </form>
 `;
 
-export const winningLottoFormTemplate = () =>
-    `<form class="mt-9" id="input-winning-lotto-nums" aria-labelledby="input-winning-numbers">
+const lottoNumberInput = (index) => `
+                    <input
+                        type="number"
+                        class="winning-number lotto-number mx-1 text-center"
+                        aria-label="winning-number-${index + 1}"
+                        data-index-num="${index}"
+                        required
+                        min="1"
+                        max="45"
+                    />`;
+
+const WINNING_NUMBER_COUNT = 6;
+export const winningLottoFormTemplate = () => {
+    const winningNumberInputs = Array.from({ length: WINNING_NUMBER_COUNT }, (_, i) => lottoNumberInput(i)).join('');
+
+    return `<form class="mt-9" id="input-winning-lotto-nums" aria-labelledby="input-winning-numbers">
         <label id="input-winning-numbers" class="flex-auto d-inline-block mb-3">
             지난 주 당첨번호 6개와 보너스 넘버 1개를 입력해주세요.
         </label>
         <div class="d-flex">
             <div>
                 <p class="mt-0 mb-3 text-center font-bold">당첨 번호</p>
-                <div>
-                    <input
-                        type="number"
-                        class="winning-number lotto-number mx-1 text-center"
-                        aria-label="winning-number-1"
-                        data-index-num="0"
-                        required
-                        min="1"
-                        max="45"
-                    />
-                    <input
-                        type="number"
-                        class="winning-number lotto-number mx-1 text-center"
-                        aria-label="winning-number-2"
-                        data-index-num="1"
-                        required
-                        min="1"
-                        max="45"
-                    />
-                    <input
-                        type="number"
-                        class="winning-number lotto-number mx-1 text-center"
-                        aria-label="winning-number-3"
-                        data-index-num="2"
-                        required
-                        min="1"
-                        max="45"
-                    />
-                    <input
-                        type="number"
-                        class="winning-number lotto-number mx-1 text-center"
-                        aria-label="winning-number-4"
-                        data-index-num="3"
-                        required
-                        min="1"
-                        max="45"
-                    />
-                    <input
-                        type="number"
-                        class="winning-number lotto-number mx-1 text-center"
-                        aria-label="winning-number-5"
-                        data-index-num="4"
-                        required
-                        min="1"
-                        max="45"
-                    />
-                    <input
-                        type="number"
-                        class="winning-number lotto-number mx-1 text-center"
-                        aria-label="winning-number-6"
-                        data-index-num="5"
-                        required
-                        min="1"
-                        max="45"
-                    />
+                <div>${winningNumberInputs}
                 </div>
             </div>
             <div class="bonus-number-container flex-grow">
@@ -106,6 +66,7 @@ export const winningLottoFormTemplate = () =>
         </button>
     </form>
 `;
+};
 
 const issuedLottosTemplate = ({ lottoNumbers }) => `
     <div class="lotto-item d-flex flex-row my-2">
@@ -152,9 +113,11 @@ const RankRowTemplate = ({ matchCount, isBonusMatch, prize, count }) => `
     </tr>
 `;
 
+export const errorMessageTemplate = (type, message) =>
+    `<p class="error-message text-center" style="color: red;">[${type}] ${message}</p>`;
+
 export const statisticsOutputTemplate = ({ rankSummary, revenueRate }) => {
     const statisticsTableRows = rankSummary
-        .reverse()
         .map(({ matchCount, isBonusMatch, prize, count }) =>
             RankRowTemplate({ matchCount, isBonusMatch, prize, count }),
         )
