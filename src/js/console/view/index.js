@@ -38,7 +38,11 @@ const ConsoleView = {
         validateNotEmpty(input, '보너스 번호');
         return input;
     },
-    askRetry: () => readLine(RETRY_PROMPT),
+    async askRetry() {
+        const input = await readLine(RETRY_PROMPT);
+        validateNotEmpty(input, '재시작 여부');
+        return input;
+    },
 
     printIssuedLottos({ issuedCount, issuedLottosNumbers }) {
         printLine(formatIssuedCount(issuedCount));
