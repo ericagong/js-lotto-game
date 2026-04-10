@@ -1,10 +1,10 @@
-import ValidationError from '../../../../ValidationError.js';
+import DomainError from '../../../DomainError.js';
 
-class RankError extends ValidationError {
-    static #TYPE = 'RankError';
+class RankError extends DomainError {
+    static #TYPE = '[RankError]';
 
     constructor(message) {
-        super(RankError.#TYPE, message);
+        super(`${RankError.#TYPE} ${message}`);
     }
 }
 

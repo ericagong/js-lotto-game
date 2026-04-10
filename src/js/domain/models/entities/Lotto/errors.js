@@ -1,10 +1,10 @@
-import ValidationError from '../../../../ValidationError.js';
+import DomainError from '../../../DomainError.js';
 
-export class LottoError extends ValidationError {
-    static #TYPE = 'LottoError';
+class LottoError extends DomainError {
+    static #TYPE = '[LottoError]';
 
     constructor(message) {
-        super(LottoError.#TYPE, message);
+        super(`${LottoError.#TYPE} ${message}`);
     }
 }
 
