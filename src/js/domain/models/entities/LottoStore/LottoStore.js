@@ -1,4 +1,4 @@
-import { isNumber } from '../../../utils/utils.js';
+import { isNumber } from '../../../../utils.js';
 import { BudgetNotNumberError, BudgetBelowMinError, BudgetAboveMaxError } from './errors.js';
 import generateLottoNumbers from './generateLottoNumbers.js';
 import Lotto from '../Lotto/Lotto.js';

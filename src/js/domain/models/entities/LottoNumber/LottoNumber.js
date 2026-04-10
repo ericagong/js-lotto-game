@@ -1,4 +1,4 @@
-import { isNumber } from '../../../utils/utils.js';
+import { isNumber } from '../../../../utils.js';
 import { ValueNotNumberError, ValueNotIntegerError, ValueOutOfRangeError } from './errors.js';
 
 export default class LottoNumber {
