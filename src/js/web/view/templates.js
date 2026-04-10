@@ -113,9 +113,6 @@ const RankRowTemplate = ({ matchCount, isBonusMatch, prize, count }) => `
     </tr>
 `;
 
-export const errorMessageTemplate = (type, message) =>
-    `<p class="error-message text-center" style="color: red;">[${type}] ${message}</p>`;
-
 export const statisticsOutputTemplate = ({ rankSummary, revenueRate }) => {
     const statisticsTableRows = [...rankSummary]
         .reverse()

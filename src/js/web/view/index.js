@@ -3,7 +3,6 @@ import {
     winningLottoFormTemplate,
     purchasedOutputTemplate,
     statisticsOutputTemplate,
-    errorMessageTemplate,
 } from './templates.js';
 
 export default class WebView {
@@ -61,41 +60,29 @@ export default class WebView {
         this.#enableResetGame();
     }
 
-    #waitForSubmit($form, extractValue) {
-        return new Promise((resolve) => {
-            $form.addEventListener(
-                'submit',
-                (event) => {
-                    event.preventDefault();
-                    resolve(extractValue());
-                },
-                { once: true },
-            );
-        });
-    }
-
-    askPurchasePrice() {
+    onPurchaseSubmit(handler) {
         const $form = document.querySelector('#input-price-form');
-        return this.#waitForSubmit($form, () => {
+        $form.addEventListener('submit', (event) => {
+            event.preventDefault();
             this.#cleanupRenderedAfter($form);
-            return document.querySelector('#input-price').value;
+            const priceInput = document.querySelector('#input-price').value;
+            handler(priceInput);
         });
     }
 
-    askWinningLotto() {
+    onWinningLottoSubmit(handler) {
         const $form = document.querySelector('#input-winning-lotto-nums');
-        return this.#waitForSubmit($form, () => {
+        $form.addEventListener('submit', (event) => {
+            event.preventDefault();
             const winningNumbers = Array.from(document.querySelectorAll('.winning-number.lotto-number')).map(
                 ($el) => $el.value,
             );
             const bonusNumber = document.querySelector('.winning-number.bonus-number').value;
-            return { winningNumbers, bonusNumber };
+            handler({ winningNumbers, bonusNumber });
         });
     }
 
     showError(error) {
-        this.#container.querySelector('.error-message')?.remove();
-        const activeForm = this.#container.querySelector('form:last-of-type');
-        activeForm?.insertAdjacentHTML('afterend', errorMessageTemplate(error.type, error.message));
+        alert(error.message);
     }
 }
