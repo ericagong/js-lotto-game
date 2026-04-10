@@ -1,6 +1,7 @@
 import AppError from '../AppError.js';
 import ConsoleError from './ConsoleError.js';
 import LottoGame from '../LottoGame.js';
+import view from './view/index.js';
 
 const convertStringToNumber = (input) => Number(input.trim());
 
@@ -19,7 +20,7 @@ const convertStringToArray = (input) => input.split(SEPARATOR).map(convertToMatc
 
 const convertStringToLowerCase = (input) => input.trim().toLowerCase();
 
-async function playConsoleLottoGame(view) {
+async function playConsoleLottoGame() {
     const game = new LottoGame();
 
     // 1. 구입금액 입력
@@ -81,7 +82,7 @@ function convertStringToRetryAnswer(input) {
     throw new RetryError();
 }
 
-async function askShouldRetry(view) {
+async function askShouldRetry() {
     // eslint-disable-next-line no-constant-condition
     while (true) {
         try {
@@ -96,10 +97,10 @@ async function askShouldRetry(view) {
 
 // step1에서는 재시작 없이 한 판만 진행한다.
 // step2에서는 재시작 기능을 추가해 사용자 입력에 따라 반복 진행 여부를 결정한다.
-export default async function runConsoleLottoGame(view, withRetry = false) {
+export default async function runConsoleLottoGame(withRetry = false) {
     do {
-        await playConsoleLottoGame(view);
-    } while (withRetry && (await askShouldRetry(view)));
+        await playConsoleLottoGame();
+    } while (withRetry && (await askShouldRetry()));
 
     view.close();
 }

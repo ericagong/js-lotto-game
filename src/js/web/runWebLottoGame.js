@@ -1,6 +1,11 @@
 import AppError from '../AppError.js';
+import LottoGame from '../LottoGame.js';
+import WebView from './view/index.js';
 
-export function runWebLottoGame(view, game) {
+export default function runWebLottoGame() {
+    const view = new WebView();
+    const game = new LottoGame();
+
     function handlePurchase(priceInput) {
         try {
             const result = game.issueLottos(Number(priceInput));
