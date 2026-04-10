@@ -117,7 +117,8 @@ export const errorMessageTemplate = (type, message) =>
     `<p class="error-message text-center" style="color: red;">[${type}] ${message}</p>`;
 
 export const statisticsOutputTemplate = ({ rankSummary, revenueRate }) => {
-    const statisticsTableRows = rankSummary
+    const statisticsTableRows = [...rankSummary]
+        .reverse()
         .map(({ matchCount, isBonusMatch, prize, count }) =>
             RankRowTemplate({ matchCount, isBonusMatch, prize, count }),
         )

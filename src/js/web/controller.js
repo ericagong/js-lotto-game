@@ -8,32 +8,36 @@ function handleError(view, error) {
     throw error;
 }
 
-export function runWebLotto(view, game) {
+export async function runWebLotto(view, game) {
     view.renderPurchaseForm();
 
-    view.onPurchaseSubmit(() => {
+    // 1. 구입금액
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const priceInput = await view.askPurchasePrice();
         try {
-            const price = view.getPurchasePrice();
-            const result = game.issueLottos(price);
+            const result = game.issueLottos(Number(priceInput));
             view.renderIssuedLottos(result);
-            view.renderWinningLottoForm();
-
-            view.onWinningLottoSubmit(() => {
-                try {
-                    const { winningNumbers, bonusNumber } = view.getWinningLottoInput();
-                    game.setWinningNumbers(winningNumbers);
-                    game.setBonusNumber(bonusNumber);
-                    const statistics = game.getStatistics();
-                    view.renderStatistics({
-                        ...statistics,
-                        rankSummary: [...statistics.rankSummary].reverse(),
-                    });
-                } catch (error) {
-                    handleError(view, error);
-                }
-            });
+            break;
         } catch (error) {
             handleError(view, error);
         }
-    });
+    }
+
+    // 2. 당첨번호 + 보너스번호
+    view.renderWinningLottoForm();
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const { winningNumbers, bonusNumber } = await view.askWinningLotto();
+        try {
+            game.setWinningNumbers(winningNumbers.map(Number));
+            game.setBonusNumber(Number(bonusNumber));
+            const statistics = game.getStatistics();
+            view.renderStatistics(statistics);
+            break;
+        } catch (error) {
+            handleError(view, error);
+        }
+    }
 }

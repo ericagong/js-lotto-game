@@ -61,32 +61,35 @@ export default class WebView {
         this.#enableResetGame();
     }
 
-    getPurchasePrice() {
-        return Number(document.querySelector('#input-price').value);
-    }
-
-    getWinningLottoInput() {
-        const winningNumbers = Array.from(document.querySelectorAll('.winning-number.lotto-number')).map(($el) =>
-            Number($el.value),
-        );
-        const bonusNumber = Number(document.querySelector('.winning-number.bonus-number').value);
-        return { winningNumbers, bonusNumber };
-    }
-
-    onPurchaseSubmit(handler) {
-        const $form = document.querySelector('#input-price-form');
-        $form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            this.#cleanupRenderedAfter($form);
-            handler();
+    #waitForSubmit($form, extractValue) {
+        return new Promise((resolve) => {
+            $form.addEventListener(
+                'submit',
+                (event) => {
+                    event.preventDefault();
+                    resolve(extractValue());
+                },
+                { once: true },
+            );
         });
     }
 
-    onWinningLottoSubmit(handler) {
+    askPurchasePrice() {
+        const $form = document.querySelector('#input-price-form');
+        return this.#waitForSubmit($form, () => {
+            this.#cleanupRenderedAfter($form);
+            return document.querySelector('#input-price').value;
+        });
+    }
+
+    askWinningLotto() {
         const $form = document.querySelector('#input-winning-lotto-nums');
-        $form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            handler();
+        return this.#waitForSubmit($form, () => {
+            const winningNumbers = Array.from(document.querySelectorAll('.winning-number.lotto-number')).map(
+                ($el) => $el.value,
+            );
+            const bonusNumber = document.querySelector('.winning-number.bonus-number').value;
+            return { winningNumbers, bonusNumber };
         });
     }
 
