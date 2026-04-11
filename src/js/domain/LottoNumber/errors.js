@@ -25,9 +25,7 @@ export class ValueNotIntegerError extends LottoNumberError {
 }
 
 export class ValueOutOfRangeError extends LottoNumberError {
-    static #MESSAGE = `value는 [1, 45] 사이의 정수 형태이어야합니다.`;
-
-    constructor() {
-        super(ValueOutOfRangeError.#MESSAGE);
+    constructor(lowerBound, upperBound) {
+        super(`value는 [${lowerBound}, ${upperBound}] 사이의 정수 형태이어야합니다.`);
     }
 }

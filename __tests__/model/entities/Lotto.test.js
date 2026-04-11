@@ -6,6 +6,11 @@ import {
     TargetNotLottoNumberInstanceError,
 } from '../../../src/js/domain/Lotto/errors.js';
 import LottoNumber from '../../../src/js/domain/LottoNumber/LottoNumber.js';
+import {
+    ValueNotNumberError,
+    ValueNotIntegerError,
+    ValueOutOfRangeError,
+} from '../../../src/js/domain/LottoNumber/errors.js';
 
 describe('static of(numbers) 테스트', () => {
     it('Lotto 인스턴스를 반환한다.', () => {
@@ -54,6 +59,40 @@ describe('new Lotto(numbers) 테스트', () => {
                 ])('$numbers', ({ numbers }) => {
                     expect(() => new Lotto(numbers)).toThrow(
                         NumbersDuplicatedError,
+                    );
+                });
+            });
+
+            describe('numbers의 원소가 [1, 45] 범위를 벗어난 경우', () => {
+                it.each([
+                    { numbers: [1, 2, 3, 4, 5, 100] },
+                    { numbers: [0, 2, 3, 4, 5, 6] },
+                    { numbers: [1, 2, 3, 4, 5, 46] },
+                ])('$numbers', ({ numbers }) => {
+                    expect(() => new Lotto(numbers)).toThrow(
+                        ValueOutOfRangeError,
+                    );
+                });
+            });
+
+            describe('numbers의 원소가 정수가 아닌 경우', () => {
+                it.each([
+                    { numbers: [1, 2, 3, 4, 5, 6.5] },
+                    { numbers: [1.1, 2, 3, 4, 5, 6] },
+                ])('$numbers', ({ numbers }) => {
+                    expect(() => new Lotto(numbers)).toThrow(
+                        ValueNotIntegerError,
+                    );
+                });
+            });
+
+            describe('numbers의 원소가 Number 타입이 아닌 경우', () => {
+                it.each([
+                    { numbers: ['1', 2, 3, 4, 5, 6] },
+                    { numbers: [1, 2, 3, 4, 5, null] },
+                ])('$numbers', ({ numbers }) => {
+                    expect(() => new Lotto(numbers)).toThrow(
+                        ValueNotNumberError,
                     );
                 });
             });

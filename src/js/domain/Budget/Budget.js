@@ -17,8 +17,8 @@ export default class Budget {
 
     static #validate(amount) {
         if (!isNumber(amount)) throw new BudgetNotNumberError();
-        if (Budget.#isBelowMin(amount)) throw new BudgetBelowMinError();
-        if (Budget.#isAboveMax(amount)) throw new BudgetAboveMaxError();
+        if (Budget.#isBelowMin(amount)) throw new BudgetBelowMinError(Budget.UNIT_PRICE * Budget.#MIN_COUNT);
+        if (Budget.#isAboveMax(amount)) throw new BudgetAboveMaxError(Budget.UNIT_PRICE * Budget.#MAX_COUNT);
     }
 
     constructor(amount) {

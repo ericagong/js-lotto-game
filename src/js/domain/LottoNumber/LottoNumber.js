@@ -13,6 +13,7 @@ export default class LottoNumber {
     );
 
     static of(value) {
+        LottoNumber.#validate(value);
         return LottoNumber.#LOTTO_NUMBERS[value - 1];
     }
 
@@ -23,7 +24,8 @@ export default class LottoNumber {
     static #validate(value) {
         if (!isNumber(value)) throw new ValueNotNumberError();
         if (!Number.isInteger(value)) throw new ValueNotIntegerError();
-        if (!LottoNumber.#isInRange(value)) throw new ValueOutOfRangeError();
+        if (!LottoNumber.#isInRange(value))
+            throw new ValueOutOfRangeError(LottoNumber.LOWER_BOUND, LottoNumber.UPPER_BOUND);
     }
 
     constructor(value) {

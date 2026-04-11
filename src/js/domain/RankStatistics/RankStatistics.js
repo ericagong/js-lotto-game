@@ -1,4 +1,6 @@
+import { isNumber } from '../../utils.js';
 import Rank from '../Rank/Rank.js';
+import { RanksNotArrayError, RankNotRankInstanceError, TotalCostNotPositiveNumberError } from './errors.js';
 
 export default class RankStatistics {
     #ranks;
@@ -8,7 +10,14 @@ export default class RankStatistics {
         return new RankStatistics(ranks, totalCost);
     }
 
+    static #validate(ranks, totalCost) {
+        if (!Array.isArray(ranks)) throw new RanksNotArrayError();
+        if (!ranks.every((rank) => rank instanceof Rank)) throw new RankNotRankInstanceError();
+        if (!isNumber(totalCost) || totalCost <= 0) throw new TotalCostNotPositiveNumberError();
+    }
+
     constructor(ranks, totalCost) {
+        RankStatistics.#validate(ranks, totalCost);
         this.#ranks = ranks;
         this.#totalCost = totalCost;
     }

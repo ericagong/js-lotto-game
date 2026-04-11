@@ -1,8 +1,53 @@
 import RankStatistics from '../../src/js/domain/RankStatistics/RankStatistics.js';
 import Rank from '../../src/js/domain/Rank/Rank.js';
+import {
+    RanksNotArrayError,
+    RankNotRankInstanceError,
+    TotalCostNotPositiveNumberError,
+} from '../../src/js/domain/RankStatistics/errors.js';
 
 const LOTTO_UNIT_PRICE = 1_000;
 const totalCostFor = (lottoCount) => lottoCount * LOTTO_UNIT_PRICE;
+
+describe('new RankStatistics(ranks, totalCost) 유효성 검사 테스트', () => {
+    describe('ranks가 배열이 아닌 경우, 에러를 발생시킨다.', () => {
+        it.each([null, undefined, '1', 1, {}])('ranks: %p', (ranks) => {
+            expect(() => RankStatistics.from(ranks, 1_000)).toThrow(
+                RanksNotArrayError,
+            );
+        });
+    });
+
+    describe('ranks의 원소 중 Rank 인스턴스가 아닌 값이 있는 경우, 에러를 발생시킨다.', () => {
+        it.each([
+            [[Rank.FIRST, null]],
+            [[Rank.FIRST, 'NONE']],
+            [[Rank.FIRST, {}]],
+            [[Rank.FIRST, 1]],
+        ])('ranks: %p', (ranks) => {
+            expect(() => RankStatistics.from(ranks, 1_000)).toThrow(
+                RankNotRankInstanceError,
+            );
+        });
+    });
+
+    describe('totalCost가 양수 Number가 아닌 경우, 에러를 발생시킨다.', () => {
+        it.each([0, -1, '1000', null, undefined, {}])(
+            'totalCost: %p',
+            (totalCost) => {
+                expect(() => RankStatistics.from([Rank.NONE], totalCost)).toThrow(
+                    TotalCostNotPositiveNumberError,
+                );
+            },
+        );
+    });
+
+    it('유효한 인자라면, 에러를 발생시키지 않는다.', () => {
+        expect(() =>
+            RankStatistics.from([Rank.FIRST, Rank.NONE], 2_000),
+        ).not.toThrow();
+    });
+});
 
 describe('RankStatistics.from(ranks, totalCost).summary 테스트', () => {
     describe('당첨 등수(1~5등)별 개수를 [1등, 2등, 3등, 4등, 5등] 순서의 배열로 반환한다.', () => {

@@ -7,10 +7,6 @@ import {
 } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
 
-const sortNumbersAscending = (targets) => {
-    return targets.sort((a, b) => Number(a) - Number(b));
-};
-
 export default class Lotto {
     #numbers;
 
@@ -30,12 +26,14 @@ export default class Lotto {
         if (hasDuplicated(numbers)) throw new NumbersDuplicatedError();
     }
 
+    static #sortAscending(numbers) {
+        return [...numbers].sort((a, b) => a - b);
+    }
+
     constructor(numbers) {
         Lotto.#validate(numbers);
 
-        numbers = sortNumbersAscending(numbers);
-
-        this.#numbers = numbers.map(LottoNumber.of);
+        this.#numbers = Lotto.#sortAscending(numbers).map(LottoNumber.of);
     }
 
     contains(target) {

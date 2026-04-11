@@ -17,17 +17,13 @@ export class BudgetNotNumberError extends BudgetError {
 }
 
 export class BudgetBelowMinError extends BudgetError {
-    static #MESSAGE = 'budget은 1_000 이상의 값이어야합니다.';
-
-    constructor() {
-        super(BudgetBelowMinError.#MESSAGE);
+    constructor(minAmount) {
+        super(`budget은 ${minAmount.toLocaleString()} 이상의 값이어야합니다.`);
     }
 }
 
 export class BudgetAboveMaxError extends BudgetError {
-    static #MESSAGE = 'budget은 100_000 이하의 값이어야합니다.';
-
-    constructor() {
-        super(BudgetAboveMaxError.#MESSAGE);
+    constructor(maxAmount) {
+        super(`budget은 ${maxAmount.toLocaleString()} 이하의 값이어야합니다.`);
     }
 }

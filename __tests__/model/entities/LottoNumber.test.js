@@ -10,6 +10,32 @@ describe('static of(value) 테스트', () => {
         const value = 1;
         expect(LottoNumber.of(value)).toEqual(new LottoNumber(value));
     });
+
+    describe('value 유효성 검사 테스트', () => {
+        describe('Number 타입이 아닌 경우, 에러를 발생시킨다.', () => {
+            it.each(['1', true, null, undefined, {}])('%p', (value) => {
+                expect(() => LottoNumber.of(value)).toThrow(
+                    ValueNotNumberError,
+                );
+            });
+        });
+
+        describe('정수 형태가 아닌 경우, 에러를 발생시킨다.', () => {
+            it.each([0.1, 1.5, 44.9])('%p', (value) => {
+                expect(() => LottoNumber.of(value)).toThrow(
+                    ValueNotIntegerError,
+                );
+            });
+        });
+
+        describe('[1, 45] 사이 값이 아닌 경우, 에러를 발생시킨다.', () => {
+            it.each([-1, 0, 46, 100])('%p', (value) => {
+                expect(() => LottoNumber.of(value)).toThrow(
+                    ValueOutOfRangeError,
+                );
+            });
+        });
+    });
 });
 
 describe('new LottoNumber(value)', () => {
