@@ -1,16 +1,16 @@
-import Lotto from '../../../src/js/domain/Lotto/Lotto.js';
+import Lotto from '../../src/js/domain/Lotto/Lotto.js';
 import {
     NumbersNotArrayError,
     NumbersLengthNotSixError,
     NumbersDuplicatedError,
     TargetNotLottoNumberInstanceError,
-} from '../../../src/js/domain/Lotto/errors.js';
-import LottoNumber from '../../../src/js/domain/LottoNumber/LottoNumber.js';
+} from '../../src/js/domain/Lotto/errors.js';
+import LottoNumber from '../../src/js/domain/LottoNumber/LottoNumber.js';
 import {
     ValueNotNumberError,
     ValueNotIntegerError,
     ValueOutOfRangeError,
-} from '../../../src/js/domain/LottoNumber/errors.js';
+} from '../../src/js/domain/LottoNumber/errors.js';
 
 describe('static of(numbers) 테스트', () => {
     it('Lotto 인스턴스를 반환한다.', () => {

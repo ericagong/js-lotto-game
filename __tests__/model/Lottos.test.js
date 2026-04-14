@@ -1,6 +1,6 @@
-import Budget from '../../../src/js/domain/Budget/Budget.js';
-import Lotto from '../../../src/js/domain/Lotto/Lotto.js';
-import Lottos from '../../../src/js/domain/Lottos/Lottos.js';
+import Budget from '../../src/js/domain/Budget/Budget.js';
+import Lotto from '../../src/js/domain/Lotto/Lotto.js';
+import Lottos from '../../src/js/domain/Lottos/Lottos.js';
 
 describe('static issue(budget) 테스트', () => {
     describe('budget.maxIssueCount만큼 무작위 Lotto를 발행한 Lottos 인스턴스를 반환한다.', () => {

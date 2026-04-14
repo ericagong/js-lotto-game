@@ -1,12 +1,12 @@
-import Lotto from '../../../src/js/domain/Lotto/Lotto.js';
-import WinningLotto from '../../../src/js/domain/WinningLotto/WinningLotto.js';
-import LottoNumber from '../../../src/js/domain/LottoNumber/LottoNumber.js';
+import Lotto from '../../src/js/domain/Lotto/Lotto.js';
+import WinningLotto from '../../src/js/domain/WinningLotto/WinningLotto.js';
+import LottoNumber from '../../src/js/domain/LottoNumber/LottoNumber.js';
 import {
     LottoNotLottoInstanceError,
     BonusNumberNotLottoNumberInstanceError,
     BonusNumberDuplicatedError,
-} from '../../../src/js/domain/WinningLotto/errors.js';
-import Rank from '../../../src/js/domain/Rank/Rank.js';
+} from '../../src/js/domain/WinningLotto/errors.js';
+import Rank from '../../src/js/domain/Rank/Rank.js';
 
 describe('static from(lotto, bonusNumber) 테스트', () => {
     it('WinningLotto 인스턴스를 반환한다.', () => {

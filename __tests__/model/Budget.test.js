@@ -1,9 +1,9 @@
-import Budget from '../../../src/js/domain/Budget/Budget.js';
+import Budget from '../../src/js/domain/Budget/Budget.js';
 import {
     BudgetNotNumberError,
     BudgetBelowMinError,
     BudgetAboveMaxError,
-} from '../../../src/js/domain/Budget/errors.js';
+} from '../../src/js/domain/Budget/errors.js';
 
 describe('static of(amount) 테스트', () => {
     describe('Budget 인스턴스를 반환한다.', () => {
