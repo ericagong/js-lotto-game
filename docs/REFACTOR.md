@@ -49,9 +49,9 @@
 
 ---
 
-## Phase 1: OOP 내에서 멘탈 모델 바로잡기
+## Phase 0: Rank 멘탈 모델 왜곡 해소
 
-### 문제 1. Rank의 멘탈 모델이 구조에 의해 왜곡되어 있다
+### 문제. Rank의 멘탈 모델이 구조에 의해 왜곡되어 있다
 
 Rank의 본질은 "등수 + 상금"이다. 그런데 판정 조건인 matchCount와 isBonusMatch까지 Rank의 인스턴스 속성으로 구겨넣다 보니, `NONE = new Rank(2, false, 0)`처럼 거짓말을 하거나 `FIRST`의 `isBonusMatch: false`처럼 의미 없는 값을 채워야 한다. 또한 이 값들은 뷰에서 "3개 일치" 같은 텍스트를 렌더링하기 위해 존재하는 것이므로, Rank가 도메인 책임이 아닌 뷰 책임까지 갖고 있는 상태다.
 
@@ -60,4 +60,5 @@ Rank의 본질은 "등수 + 상금"이다. 그런데 판정 조건인 matchCount
 - Rank 생성자를 `constructor(prize)`로 단순화
 - `from(matchCount, isBonusMatch)` switch 판정 로직은 유지 (입력값으로만 사용, 저장하지 않음)
 - RankStatistics.summary는 Rank 인스턴스를 직접 포함하도록 변경
-- matchCount/isBonusMatch 표시 데이터는 뷰 레이어가 직접 관리
+- matchCount/isBonusMatch 표시 데이터는 뷰 레이어가 직접
+
