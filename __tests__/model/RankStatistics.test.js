@@ -57,33 +57,33 @@ describe('RankStatistics.from(ranks, totalCost).summary 테스트', () => {
                     name: 'ranks: [FIRST]',
                     ranks: [Rank.FIRST],
                     expected: [
-                        { matchCount: 6, isBonusMatch: false, prize: 2_000_000_000, count: 1 },
-                        { matchCount: 5, isBonusMatch: true, prize: 30_000_000, count: 0 },
-                        { matchCount: 5, isBonusMatch: false, prize: 1_500_000, count: 0 },
-                        { matchCount: 4, isBonusMatch: false, prize: 50_000, count: 0 },
-                        { matchCount: 3, isBonusMatch: false, prize: 5_000, count: 0 },
+                        { rank: Rank.FIRST, count: 1 },
+                        { rank: Rank.SECOND, count: 0 },
+                        { rank: Rank.THIRD, count: 0 },
+                        { rank: Rank.FOURTH, count: 0 },
+                        { rank: Rank.FIFTH, count: 0 },
                     ],
                 },
                 {
                     name: 'ranks: [SECOND]',
                     ranks: [Rank.SECOND],
                     expected: [
-                        { matchCount: 6, isBonusMatch: false, prize: 2_000_000_000, count: 0 },
-                        { matchCount: 5, isBonusMatch: true, prize: 30_000_000, count: 1 },
-                        { matchCount: 5, isBonusMatch: false, prize: 1_500_000, count: 0 },
-                        { matchCount: 4, isBonusMatch: false, prize: 50_000, count: 0 },
-                        { matchCount: 3, isBonusMatch: false, prize: 5_000, count: 0 },
+                        { rank: Rank.FIRST, count: 0 },
+                        { rank: Rank.SECOND, count: 1 },
+                        { rank: Rank.THIRD, count: 0 },
+                        { rank: Rank.FOURTH, count: 0 },
+                        { rank: Rank.FIFTH, count: 0 },
                     ],
                 },
                 {
                     name: 'ranks: [NONE]',
                     ranks: [Rank.NONE],
                     expected: [
-                        { matchCount: 6, isBonusMatch: false, prize: 2_000_000_000, count: 0 },
-                        { matchCount: 5, isBonusMatch: true, prize: 30_000_000, count: 0 },
-                        { matchCount: 5, isBonusMatch: false, prize: 1_500_000, count: 0 },
-                        { matchCount: 4, isBonusMatch: false, prize: 50_000, count: 0 },
-                        { matchCount: 3, isBonusMatch: false, prize: 5_000, count: 0 },
+                        { rank: Rank.FIRST, count: 0 },
+                        { rank: Rank.SECOND, count: 0 },
+                        { rank: Rank.THIRD, count: 0 },
+                        { rank: Rank.FOURTH, count: 0 },
+                        { rank: Rank.FIFTH, count: 0 },
                     ],
                 },
             ])('$name', ({ ranks, expected }) => {
@@ -97,11 +97,11 @@ describe('RankStatistics.from(ranks, totalCost).summary 테스트', () => {
                 const ranks = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH, Rank.NONE];
                 const stats = RankStatistics.from(ranks, totalCostFor(ranks.length));
                 expect(stats.summary).toEqual([
-                    { matchCount: 6, isBonusMatch: false, prize: 2_000_000_000, count: 1 },
-                    { matchCount: 5, isBonusMatch: true, prize: 30_000_000, count: 1 },
-                    { matchCount: 5, isBonusMatch: false, prize: 1_500_000, count: 1 },
-                    { matchCount: 4, isBonusMatch: false, prize: 50_000, count: 1 },
-                    { matchCount: 3, isBonusMatch: false, prize: 5_000, count: 1 },
+                    { rank: Rank.FIRST, count: 1 },
+                    { rank: Rank.SECOND, count: 1 },
+                    { rank: Rank.THIRD, count: 1 },
+                    { rank: Rank.FOURTH, count: 1 },
+                    { rank: Rank.FIFTH, count: 1 },
                 ]);
             });
 
@@ -109,11 +109,11 @@ describe('RankStatistics.from(ranks, totalCost).summary 테스트', () => {
                 const ranks = [Rank.FIRST, Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE];
                 const stats = RankStatistics.from(ranks, totalCostFor(ranks.length));
                 expect(stats.summary).toEqual([
-                    { matchCount: 6, isBonusMatch: false, prize: 2_000_000_000, count: 1 },
-                    { matchCount: 5, isBonusMatch: true, prize: 30_000_000, count: 0 },
-                    { matchCount: 5, isBonusMatch: false, prize: 1_500_000, count: 0 },
-                    { matchCount: 4, isBonusMatch: false, prize: 50_000, count: 0 },
-                    { matchCount: 3, isBonusMatch: false, prize: 5_000, count: 1 },
+                    { rank: Rank.FIRST, count: 1 },
+                    { rank: Rank.SECOND, count: 0 },
+                    { rank: Rank.THIRD, count: 0 },
+                    { rank: Rank.FOURTH, count: 0 },
+                    { rank: Rank.FIFTH, count: 1 },
                 ]);
             });
         });

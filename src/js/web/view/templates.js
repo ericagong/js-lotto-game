@@ -1,3 +1,6 @@
+import { toPercentage } from '../../utils.js';
+import Rank from '../../domain/Rank/Rank.js';
+
 export const priceFormTemplate = () => `
     <form id="input-price-form" class="mt-5" aria-labelledby="input-price">
         <label for="input-price" class="mb-2 d-inline-block">구입할 금액을 입력해주세요.</label>
@@ -103,12 +106,18 @@ export const purchasedOutputTemplate = ({ issuedCount, issuedLottosNumbers }) =>
     `;
 };
 
-import { toPercentage } from '../../utils.js';
+const RANK_LABELS = new Map([
+    [Rank.FIFTH, '3개'],
+    [Rank.FOURTH, '4개'],
+    [Rank.THIRD, '5개'],
+    [Rank.SECOND, '5개 + 보너스볼'],
+    [Rank.FIRST, '6개'],
+]);
 
-const RankRowTemplate = ({ matchCount, isBonusMatch, prize, count }) => `
+const RankRowTemplate = ({ rank, count }) => `
     <tr class="text-center">
-        <td class="p-3">${matchCount}개${isBonusMatch ? ' + 보너스볼' : ''}</td>
-        <td class="p-3">${prize.toLocaleString()}</td>
+        <td class="p-3">${RANK_LABELS.get(rank)}</td>
+        <td class="p-3">${rank.prize.toLocaleString()}</td>
         <td class="p-3">
             <span class="match-count">${count}</span> 개
         </td>
@@ -118,9 +127,7 @@ const RankRowTemplate = ({ matchCount, isBonusMatch, prize, count }) => `
 export const statisticsOutputTemplate = ({ rankSummary, revenueRate }) => {
     const statisticsTableRows = [...rankSummary]
         .reverse()
-        .map(({ matchCount, isBonusMatch, prize, count }) =>
-            RankRowTemplate({ matchCount, isBonusMatch, prize, count }),
-        )
+        .map(({ rank, count }) => RankRowTemplate({ rank, count }))
         .join('');
 
     return `<section class="modal open" role="dialog" aria-modal="true" aria-labelledby="title-dialog">

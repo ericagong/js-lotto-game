@@ -37,12 +37,7 @@ export default class RankStatistics {
             }
         });
 
-        return Array.from(counter.entries()).map(([rank, count]) => ({
-            matchCount: rank.matchCount,
-            isBonusMatch: rank.isBonusMatch,
-            prize: rank.prize,
-            count,
-        }));
+        return Array.from(counter.entries()).map(([rank, count]) => ({ rank, count }));
     }
 
     get revenueRate() {

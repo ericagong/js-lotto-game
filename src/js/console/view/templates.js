@@ -1,4 +1,5 @@
 import { toPercentage } from '../../utils.js';
+import Rank from '../../domain/Rank/Rank.js';
 
 // 입력 프롬프트
 export const BUDGET_PROMPT = '> 구입금액을 입력해 주세요. ';
@@ -11,8 +12,14 @@ export const formatIssuedCount = (count) => `총 ${count}개를 구매했습니�
 
 export const STATISTICS_HEADER = `\n 당첨 통계 ${'-'.repeat(20)}`;
 
-export const formatRankRow = ({ matchCount, isBonusMatch, prize, count }) =>
-    `${matchCount}개 일치${isBonusMatch ? ', 보너스 볼 일치' : ''} (${prize}원) - ${count}개`;
+const RANK_LABELS = new Map([
+    [Rank.FIFTH, '3개 일치'],
+    [Rank.FOURTH, '4개 일치'],
+    [Rank.THIRD, '5개 일치'],
+    [Rank.SECOND, '5개 일치, 보너스 볼 일치'],
+    [Rank.FIRST, '6개 일치'],
+]);
+export const formatRankRow = ({ rank, count }) => `${RANK_LABELS.get(rank)} (${rank.prize}원) - ${count}개`;
 
 export const formatRevenueRate = (revenueRate) => `총 수익률은 ${toPercentage(revenueRate)}%입니다.`;
 
