@@ -1,5 +1,5 @@
 import { toPercentage } from '../../utils.js';
-import Rank from '../../domain/Rank/Rank.js';
+import Rank from '../../domain/entity/Rank/Rank.js';
 
 // 입력 프롬프트
 export const BUDGET_PROMPT = '> 구입금액을 입력해 주세요. ';

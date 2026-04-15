@@ -1,5 +1,5 @@
 import AppError from '../AppError.js';
-import LottoGame from '../LottoGame.js';
+import LottoGame from '../domain/LottoGame.js';
 import WebView from './view/index.js';
 
 export default function runWebLottoGame() {
@@ -20,8 +20,7 @@ export default function runWebLottoGame() {
 
     function handleWinningLotto({ winningNumbers, bonusNumber }) {
         try {
-            game.setWinningNumbers(winningNumbers.map(Number));
-            game.setBonusNumber(Number(bonusNumber));
+            game.setWinningLotto(winningNumbers.map(Number), Number(bonusNumber));
             view.renderStatistics(game.getStatistics());
         } catch (error) {
             if (!(error instanceof AppError)) throw error;

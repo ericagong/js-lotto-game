@@ -1,5 +1,5 @@
 import { toPercentage } from '../../utils.js';
-import Rank from '../../domain/Rank/Rank.js';
+import Rank from '../../domain/entity/Rank/Rank.js';
 
 export const priceFormTemplate = () => `
     <form id="input-price-form" class="mt-5" aria-labelledby="input-price">

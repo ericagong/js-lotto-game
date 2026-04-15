@@ -1,6 +1,6 @@
 import AppError from '../AppError.js';
 import ConsoleError from './ConsoleError.js';
-import LottoGame from '../LottoGame.js';
+import LottoGame from '../domain/LottoGame.js';
 import view from './view/index.js';
 
 const convertStringToNumber = (input) => Number(input.trim());
@@ -37,10 +37,11 @@ async function playConsoleLottoGame() {
     }
 
     // 2. 당첨 번호 입력
+    let winningNumbers;
     while (true) {
         try {
             const winningNumbersInput = await view.askWinningNumbers();
-            game.setWinningNumbers(convertStringToArray(winningNumbersInput));
+            winningNumbers = convertStringToArray(winningNumbersInput);
             break;
         } catch (error) {
             if (!(error instanceof AppError)) throw error;
@@ -48,11 +49,11 @@ async function playConsoleLottoGame() {
         }
     }
 
-    // 3. 보너스 번호 입력
+    // 3. 보너스 번호 입력 → 당첨 결과 설정
     while (true) {
         try {
             const bonusNumberInput = await view.askBonusNumber();
-            game.setBonusNumber(convertStringToNumber(bonusNumberInput));
+            game.setWinningLotto(winningNumbers, convertStringToNumber(bonusNumberInput));
             break;
         } catch (error) {
             if (!(error instanceof AppError)) throw error;
