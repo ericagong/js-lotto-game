@@ -1,5 +1,6 @@
 import Lotto from '../../entity/Lotto/Lotto.js';
 import Ranks from '../Ranks/Ranks.js';
+import { LottosNotArrayError, LottoNotLottoInstanceError } from './errors.js';
 
 export default class Lottos {
     #lottos;
@@ -13,7 +14,13 @@ export default class Lottos {
         return new Lottos([...lottos]);
     }
 
+    static #validate(lottos) {
+        if (!Array.isArray(lottos)) throw new LottosNotArrayError();
+        if (!lottos.every((lotto) => lotto instanceof Lotto)) throw new LottoNotLottoInstanceError();
+    }
+
     constructor(lottos) {
+        Lottos.#validate(lottos);
         this.#lottos = lottos;
     }
 
