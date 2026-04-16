@@ -126,7 +126,7 @@ describe('new Lotto(numbers) 테스트', () => {
                 },
             ])('$numbers', ({ numbers, expected }) => {
                 const lotto = new Lotto(numbers);
-                expect(lotto.getNumbers()).toEqual(expected);
+                expect(lotto.numbers).toEqual(expected);
             });
         });
     });
@@ -194,7 +194,7 @@ describe('getMatchCount(other) 테스트', () => {
     });
 });
 
-describe('getNumbers() 테스트', () => {
+describe('numbers 테스트', () => {
     describe('오름차순으로 정렬되어 있는 numbers 배열을 반환한다.', () => {
         it.each([
             { numbers: [6, 5, 4, 3, 2, 1], expected: [1, 2, 3, 4, 5, 6] },
@@ -205,7 +205,7 @@ describe('getNumbers() 테스트', () => {
             },
         ])('$numbers', ({ numbers, expected }) => {
             const lotto = new Lotto(numbers);
-            expect(lotto.getNumbers()).toEqual(expected);
+            expect(lotto.numbers).toEqual(expected);
         });
     });
 });

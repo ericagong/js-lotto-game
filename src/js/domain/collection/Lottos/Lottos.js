@@ -29,7 +29,7 @@ export default class Lottos {
     }
 
     get snapshot() {
-        return this.#lottos.map((lotto) => lotto.getNumbers());
+        return this.#lottos.map((lotto) => lotto.numbers);
     }
 
     determineRanks(winningLotto) {

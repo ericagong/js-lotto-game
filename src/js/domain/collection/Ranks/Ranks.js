@@ -18,7 +18,7 @@ export default class Ranks {
         this.#ranks = ranks;
     }
 
-    get rankCounter() {
+    get countByRank() {
         const counter = new Map(Rank.PRIZE_RANKS.map((rank) => [rank, 0]));
 
         this.#ranks.forEach((rank) => {
@@ -28,7 +28,7 @@ export default class Ranks {
         return Array.from(counter.entries()).map(([rank, count]) => ({ rank, count }));
     }
 
-    totalPrize() {
+    get totalPrize() {
         return this.#ranks.reduce((acc, rank) => acc + rank.prize, 0);
     }
 }

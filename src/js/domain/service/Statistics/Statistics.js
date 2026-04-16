@@ -22,10 +22,10 @@ export default class Statistics {
     }
 
     get summary() {
-        return this.#ranks.rankCounter;
+        return this.#ranks.countByRank;
     }
 
     get revenueRate() {
-        return this.#ranks.totalPrize() / this.#totalCost;
+        return this.#ranks.totalPrize / this.#totalCost;
     }
 }
