@@ -25,13 +25,13 @@ export default class Lotto {
         return new Lotto(Array.from(numbers));
     }
 
-    static #hasSixDigits(target) {
+    static #isValidDigits(target) {
         return target.length !== Lotto.DIGITS;
     }
 
     static #validate(numbers) {
         if (!Array.isArray(numbers)) throw new NumbersNotArrayError();
-        if (Lotto.#hasSixDigits(numbers)) throw new NumbersLengthNotSixError();
+        if (Lotto.#isValidDigits(numbers)) throw new NumbersLengthNotSixError();
         if (hasDuplicated(numbers)) throw new NumbersDuplicatedError();
     }
 
@@ -47,8 +47,7 @@ export default class Lotto {
 
     contains(target) {
         if (!(target instanceof LottoNumber)) throw new TargetNotLottoNumberInstanceError();
-        const targetNumber = target.value;
-        return this.#numbers.some((number) => number.value === targetNumber);
+        return this.#numbers.includes(target);
     }
 
     getNumbers() {
