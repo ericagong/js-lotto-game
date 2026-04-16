@@ -1,5 +1,10 @@
 import Rank from '../../src/js/domain/entity/Rank/Rank.js';
-import { PrizeNotNumberError } from '../../src/js/domain/entity/Rank/errors.js';
+
+describe('Rank 추상 클래스 테스트', () => {
+    it('직접 인스턴스화하면 에러를 발생시킨다.', () => {
+        expect(() => new Rank()).toThrow('Rank는 직접 인스턴스화할 수 없습니다.');
+    });
+});
 
 describe('static from(matchCount, isBonusMatch) 테스트', () => {
     describe('matchCount와 isBonusMatch 기반으로 Rank 인스턴스를 반환한다.', () => {
@@ -10,28 +15,23 @@ describe('static from(matchCount, isBonusMatch) 테스트', () => {
             { matchCount: 5, isBonusMatch: false, expected: Rank.THIRD },
             { matchCount: 4, isBonusMatch: false, expected: Rank.FOURTH },
             { matchCount: 3, isBonusMatch: false, expected: Rank.FIFTH },
-            { matchCount: 2, isBonusMatch: false, expected: Rank.NONE },
-            { matchCount: 1, isBonusMatch: false, expected: Rank.NONE },
-            { matchCount: 0, isBonusMatch: false, expected: Rank.NONE },
         ])('matchCount: $matchCount, isBonusMatch: $isBonusMatch', ({ matchCount, isBonusMatch, expected }) => {
             expect(Rank.from(matchCount, isBonusMatch)).toBe(expected);
         });
     });
-});
 
-describe('new Rank(prize) 유효성 검사 테스트', () => {
-    describe('prize가 Number 타입이 아닌 경우, 에러를 발생시킨다.', () => {
-        it.each(['1', 'erica', true, null, undefined, function () {}, {}, []])('prize: %p', (prize) => {
-            expect(() => new Rank(prize)).toThrow(PrizeNotNumberError);
+    describe('매칭 3개 미만이면 null을 반환한다.', () => {
+        it.each([
+            { matchCount: 2, isBonusMatch: false },
+            { matchCount: 1, isBonusMatch: false },
+            { matchCount: 0, isBonusMatch: false },
+        ])('matchCount: $matchCount', ({ matchCount, isBonusMatch }) => {
+            expect(Rank.from(matchCount, isBonusMatch)).toBeNull();
         });
     });
-
-    it('prize가 Number 타입이면, 에러를 발생시키지 않는다.', () => {
-        expect(() => new Rank(0)).not.toThrow();
-    });
 });
 
-describe('get prize 테스트', () => {
+describe('서브클래스 속성 테스트', () => {
     describe('prize를 반환한다.', () => {
         it.each([
             { rank: Rank.FIRST, expected: 2_000_000_000 },
@@ -39,9 +39,50 @@ describe('get prize 테스트', () => {
             { rank: Rank.THIRD, expected: 1_500_000 },
             { rank: Rank.FOURTH, expected: 50_000 },
             { rank: Rank.FIFTH, expected: 5_000 },
-            { rank: Rank.NONE, expected: 0 },
         ])('prize: $expected', ({ rank, expected }) => {
             expect(rank.prize).toBe(expected);
         });
+    });
+
+    describe('matchCount를 반환한다.', () => {
+        it.each([
+            { rank: Rank.FIRST, expected: 6 },
+            { rank: Rank.SECOND, expected: 5 },
+            { rank: Rank.THIRD, expected: 5 },
+            { rank: Rank.FOURTH, expected: 4 },
+            { rank: Rank.FIFTH, expected: 3 },
+        ])('matchCount: $expected', ({ rank, expected }) => {
+            expect(rank.matchCount).toBe(expected);
+        });
+    });
+
+    describe('hasBonusCondition을 반환한다.', () => {
+        it.each([
+            { rank: Rank.FIRST, expected: false },
+            { rank: Rank.SECOND, expected: true },
+            { rank: Rank.THIRD, expected: false },
+            { rank: Rank.FOURTH, expected: false },
+            { rank: Rank.FIFTH, expected: false },
+        ])('hasBonusCondition: $expected', ({ rank, expected }) => {
+            expect(rank.hasBonusCondition).toBe(expected);
+        });
+    });
+
+    it('SecondRank만 isBonusMatch를 가진다.', () => {
+        expect(Rank.SECOND.isBonusMatch).toBe(true);
+    });
+
+    it('isBonusMatch가 없는 Rank에서 접근하면 에러를 발생시킨다.', () => {
+        expect(() => Rank.FIRST.isBonusMatch).toThrow();
+        expect(() => Rank.THIRD.isBonusMatch).toThrow();
+        expect(() => Rank.FOURTH.isBonusMatch).toThrow();
+        expect(() => Rank.FIFTH.isBonusMatch).toThrow();
+    });
+});
+
+describe('PRIZE_RANKS 테스트', () => {
+    it('5개의 등수를 포함한다.', () => {
+        expect(Rank.PRIZE_RANKS).toHaveLength(5);
+        expect(Rank.PRIZE_RANKS).toEqual([Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH]);
     });
 });

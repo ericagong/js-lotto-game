@@ -84,14 +84,14 @@ describe('getRank(targetLotto) 테스트', () => {
             { targetLottoNumbers: [1, 2, 3, 4, 5, 45], expected: Rank.THIRD },
             { targetLottoNumbers: [1, 2, 3, 4, 44, 45], expected: Rank.FOURTH },
             { targetLottoNumbers: [1, 2, 3, 43, 44, 45], expected: Rank.FIFTH },
-            { targetLottoNumbers: [1, 2, 42, 43, 44, 45], expected: Rank.NONE },
+            { targetLottoNumbers: [1, 2, 42, 43, 44, 45], expected: null },
             {
                 targetLottoNumbers: [1, 41, 42, 43, 44, 45],
-                expected: Rank.NONE,
+                expected: null,
             },
             {
                 targetLottoNumbers: [40, 41, 42, 43, 44, 45],
-                expected: Rank.NONE,
+                expected: null,
             },
         ])(
             'targetLottoNumbers: $targetLottoNumbers, ',

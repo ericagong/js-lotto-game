@@ -16,14 +16,14 @@ describe('new RankStatistics(ranks, totalCost) 유효성 검사 테스트', () =
 
     describe('totalCost가 양수 Number가 아닌 경우, 에러를 발생시킨다.', () => {
         it.each([0, -1, '1000', null, undefined, {}])('totalCost: %p', (totalCost) => {
-            expect(() => Statistics.from(ranksFrom([Rank.NONE]), totalCost)).toThrow(
+            expect(() => Statistics.from(ranksFrom([]), totalCost)).toThrow(
                 TotalCostNotPositiveNumberError,
             );
         });
     });
 
     it('유효한 인자라면, 에러를 발생시키지 않는다.', () => {
-        expect(() => Statistics.from(ranksFrom([Rank.FIRST, Rank.NONE]), 2_000)).not.toThrow();
+        expect(() => Statistics.from(ranksFrom([Rank.FIRST]), 2_000)).not.toThrow();
     });
 });
 
@@ -54,8 +54,8 @@ describe('Statistics.from(ranks, totalCost).summary 테스트', () => {
                     ],
                 },
                 {
-                    name: 'ranks: [NONE]',
-                    ranks: [Rank.NONE],
+                    name: 'ranks: [] (꽝만 있었을 때)',
+                    ranks: [],
                     expected: [
                         { rank: Rank.FIRST, count: 0 },
                         { rank: Rank.SECOND, count: 0 },
@@ -65,15 +65,16 @@ describe('Statistics.from(ranks, totalCost).summary 테스트', () => {
                     ],
                 },
             ])('$name', ({ ranks, expected }) => {
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(ranks.length));
+                const lottoCount = Math.max(ranks.length, 1);
+                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(lottoCount));
                 expect(stats.summary).toEqual(expected);
             });
         });
 
         describe('로또가 여러 개인 경우', () => {
-            it('ranks: [FIRST, SECOND, THIRD, FOURTH, FIFTH, NONE]', () => {
-                const ranks = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH, Rank.NONE];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(ranks.length));
+            it('ranks: [FIRST, SECOND, THIRD, FOURTH, FIFTH]', () => {
+                const ranks = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];
+                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(6));
                 expect(stats.summary).toEqual([
                     { rank: Rank.FIRST, count: 1 },
                     { rank: Rank.SECOND, count: 1 },
@@ -83,9 +84,9 @@ describe('Statistics.from(ranks, totalCost).summary 테스트', () => {
                 ]);
             });
 
-            it('ranks: [FIRST, FIFTH, NONE, NONE, NONE, NONE] — NONE은 카운트되지 않는다', () => {
-                const ranks = [Rank.FIRST, Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(ranks.length));
+            it('ranks: [FIRST, FIFTH] — 꽝은 필터링되어 Ranks에 포함되지 않는다', () => {
+                const ranks = [Rank.FIRST, Rank.FIFTH];
+                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(6));
                 expect(stats.summary).toEqual([
                     { rank: Rank.FIRST, count: 1 },
                     { rank: Rank.SECOND, count: 0 },
@@ -107,29 +108,29 @@ describe('Statistics.from(ranks, totalCost).revenueRate 테스트', () => {
                 { name: 'ranks: [THIRD]', ranks: [Rank.THIRD], expected: 1_500 },
                 { name: 'ranks: [FOURTH]', ranks: [Rank.FOURTH], expected: 50 },
                 { name: 'ranks: [FIFTH]', ranks: [Rank.FIFTH], expected: 5 },
-                { name: 'ranks: [NONE]', ranks: [Rank.NONE], expected: 0 },
+                { name: 'ranks: [] (꽝)', ranks: [], expected: 0 },
             ])('$name', ({ ranks, expected }) => {
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(ranks.length));
+                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(1));
                 expect(stats.revenueRate).toBe(expected);
             });
         });
 
         describe('로또가 여러 개인 경우', () => {
-            it('ranks: [FIRST, SECOND, THIRD, FOURTH, FIFTH, NONE]', () => {
-                const ranks = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH, Rank.NONE];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(ranks.length));
+            it('ranks: [FIRST, SECOND, THIRD, FOURTH, FIFTH] (6장 구매)', () => {
+                const ranks = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];
+                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(6));
                 expect(stats.revenueRate).toBe(338_592.5);
             });
 
-            it('ranks: [FIRST, FIFTH, NONE x4]', () => {
-                const ranks = [Rank.FIRST, Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(ranks.length));
+            it('ranks: [FIRST, FIFTH] (6장 구매)', () => {
+                const ranks = [Rank.FIRST, Rank.FIFTH];
+                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(6));
                 expect(stats.revenueRate).toBeCloseTo(333_334.1667, 4);
             });
 
-            it('ranks: [FIFTH, NONE x7]', () => {
-                const ranks = [Rank.FIFTH, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(ranks.length));
+            it('ranks: [FIFTH] (8장 구매)', () => {
+                const ranks = [Rank.FIFTH];
+                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(8));
                 expect(stats.revenueRate).toBe(0.625);
             });
         });

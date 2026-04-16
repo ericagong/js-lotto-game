@@ -22,7 +22,7 @@ export default class Statistics {
     }
 
     get summary() {
-        return this.#ranks.countByRank();
+        return this.#ranks.rankCounter;
     }
 
     get revenueRate() {

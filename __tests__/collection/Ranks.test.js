@@ -19,14 +19,18 @@ describe('new Ranks(ranks) 유효성 검사 테스트', () => {
     });
 
     it('유효한 Rank 배열이라면, 에러를 발생시키지 않는다.', () => {
-        expect(() => Ranks.from([Rank.FIRST, Rank.NONE])).not.toThrow();
+        expect(() => Ranks.from([Rank.FIRST, Rank.FIFTH])).not.toThrow();
+    });
+
+    it('빈 배열도 유효하다.', () => {
+        expect(() => Ranks.from([])).not.toThrow();
     });
 });
 
-describe('countByRank() 테스트', () => {
-    it('당첨 등수(1~5등)별 개수를 반환한다. NONE은 제외된다.', () => {
-        const ranks = Ranks.from([Rank.FIRST, Rank.FIFTH, Rank.NONE, Rank.NONE]);
-        expect(ranks.countByRank()).toEqual([
+describe('rankCounter 테스트', () => {
+    it('당첨 등수(1~5등)별 개수를 반환한다.', () => {
+        const ranks = Ranks.from([Rank.FIRST, Rank.FIFTH]);
+        expect(ranks.rankCounter).toEqual([
             { rank: Rank.FIRST, count: 1 },
             { rank: Rank.SECOND, count: 0 },
             { rank: Rank.THIRD, count: 0 },
@@ -35,9 +39,9 @@ describe('countByRank() 테스트', () => {
         ]);
     });
 
-    it('모두 NONE이면 전부 0이다.', () => {
-        const ranks = Ranks.from([Rank.NONE, Rank.NONE]);
-        expect(ranks.countByRank()).toEqual([
+    it('빈 배열이면 전부 0이다.', () => {
+        const ranks = Ranks.from([]);
+        expect(ranks.rankCounter).toEqual([
             { rank: Rank.FIRST, count: 0 },
             { rank: Rank.SECOND, count: 0 },
             { rank: Rank.THIRD, count: 0 },
@@ -53,8 +57,8 @@ describe('totalPrize() 테스트', () => {
         expect(ranks.totalPrize()).toBe(2_000_005_000);
     });
 
-    it('NONE만 있으면 0이다.', () => {
-        const ranks = Ranks.from([Rank.NONE, Rank.NONE]);
+    it('빈 배열이면 0이다.', () => {
+        const ranks = Ranks.from([]);
         expect(ranks.totalPrize()).toBe(0);
     });
 });

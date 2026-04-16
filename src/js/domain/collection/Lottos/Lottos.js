@@ -26,7 +26,7 @@ export default class Lottos {
     }
 
     determineRanks(winningLotto) {
-        const ranks = this.#lottos.map((lotto) => winningLotto.getRank(lotto));
+        const ranks = this.#lottos.map((lotto) => winningLotto.getRank(lotto)).filter((rank) => rank !== null);
         return Ranks.from(ranks);
     }
 }

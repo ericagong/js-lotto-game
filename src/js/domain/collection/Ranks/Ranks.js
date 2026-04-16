@@ -18,19 +18,11 @@ export default class Ranks {
         this.#ranks = ranks;
     }
 
-    countByRank() {
-        const counter = new Map([
-            [Rank.FIRST, 0],
-            [Rank.SECOND, 0],
-            [Rank.THIRD, 0],
-            [Rank.FOURTH, 0],
-            [Rank.FIFTH, 0],
-        ]);
+    get rankCounter() {
+        const counter = new Map(Rank.PRIZE_RANKS.map((rank) => [rank, 0]));
 
         this.#ranks.forEach((rank) => {
-            if (rank !== Rank.NONE) {
-                counter.set(rank, counter.get(rank) + 1);
-            }
+            counter.set(rank, counter.get(rank) + 1);
         });
 
         return Array.from(counter.entries()).map(([rank, count]) => ({ rank, count }));
