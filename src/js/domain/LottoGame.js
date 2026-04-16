@@ -1,3 +1,4 @@
+import DomainError from './DomainError.js';
 import LottoBroadcast from './service/LottoBroadcast/LottoBroadcast.js';
 import LottoMachine from './service/LottoMachine/LottoMachine.js';
 import Statistics from './service/Statistics/Statistics.js';
@@ -35,6 +36,9 @@ export default class LottoGame {
     }
 
     getStatistics() {
+        if (!this.#lottos || !this.#winningLotto) {
+            throw new DomainError('로또 발행과 당첨 번호 설정이 먼저 완료되어야 합니다.');
+        }
         const ranks = this.#determineRanks();
         return this.#summarize(ranks);
     }
