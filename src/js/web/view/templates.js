@@ -105,7 +105,8 @@ export const purchasedOutputTemplate = ({ issuedCount, issuedLottosNumbers }) =>
     `;
 };
 
-const formatRankLabel = (rank) => (rank.hasBonusCondition ? `${rank.matchCount}개 + 보너스볼` : `${rank.matchCount}개`);
+const formatRankLabel = (rank) =>
+    rank.isBonusMatch ? `${rank.matchCount}개 + 보너스볼` : `${rank.matchCount}개`;
 
 const RankRowTemplate = ({ rank, count }) => `
     <tr class="text-center">

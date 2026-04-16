@@ -1,25 +1,33 @@
 export default class Rank {
-    constructor() {
-        if (new.target === Rank) {
-            throw new Error('Rank는 직접 인스턴스화할 수 없습니다.');
-        }
-    }
+    #prize;
+    #matchCount;
+    #isBonusMatch;
 
-    get matchCount() {
-        throw new Error('서브클래스에서 오버라이드해야 합니다.');
-    }
-
-    get isBonusMatch() {
-        throw new Error('서브클래스에서 오버라이드해야 합니다.');
+    constructor(prize, matchCount, isBonusMatch) {
+        this.#prize = prize;
+        this.#matchCount = matchCount;
+        this.#isBonusMatch = isBonusMatch;
     }
 
     get prize() {
-        throw new Error('서브클래스에서 오버라이드해야 합니다.');
+        return this.#prize;
     }
 
-    get hasBonusCondition() {
-        return false;
+    get matchCount() {
+        return this.#matchCount;
     }
+
+    get isBonusMatch() {
+        return this.#isBonusMatch;
+    }
+
+    static FIRST = new Rank(2_000_000_000, 6);
+    static SECOND = new Rank(30_000_000, 5, true);
+    static THIRD = new Rank(1_500_000, 5, false);
+    static FOURTH = new Rank(50_000, 4);
+    static FIFTH = new Rank(5_000, 3);
+
+    static PRIZE_RANKS = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];
 
     static from(matchCount, isBonusMatch) {
         switch (matchCount) {
@@ -36,62 +44,3 @@ export default class Rank {
         }
     }
 }
-
-class FirstRank extends Rank {
-    get matchCount() {
-        return 6;
-    }
-    get prize() {
-        return 2_000_000_000;
-    }
-}
-
-class SecondRank extends Rank {
-    get matchCount() {
-        return 5;
-    }
-    get isBonusMatch() {
-        return true;
-    }
-    get hasBonusCondition() {
-        return true;
-    }
-    get prize() {
-        return 30_000_000;
-    }
-}
-
-class ThirdRank extends Rank {
-    get matchCount() {
-        return 5;
-    }
-    get prize() {
-        return 1_500_000;
-    }
-}
-
-class FourthRank extends Rank {
-    get matchCount() {
-        return 4;
-    }
-    get prize() {
-        return 50_000;
-    }
-}
-
-class FifthRank extends Rank {
-    get matchCount() {
-        return 3;
-    }
-    get prize() {
-        return 5_000;
-    }
-}
-
-Rank.FIRST = new FirstRank();
-Rank.SECOND = new SecondRank();
-Rank.THIRD = new ThirdRank();
-Rank.FOURTH = new FourthRank();
-Rank.FIFTH = new FifthRank();
-
-Rank.PRIZE_RANKS = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];

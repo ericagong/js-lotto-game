@@ -65,12 +65,19 @@
 
 이로 인해 `NONE = new Rank(2, false, 0)`처럼 거짓말을 하거나, `FIRST`의 `isBonusMatch: false`처럼 의미 없는 값을 채워야 했다. 이 값들은 뷰에서 "3개 일치" 텍스트를 렌더링하기 위해 존재하는 것이므로, Rank가 도메인 책임이 아닌 뷰 책임까지 갖고 있는 상태였다.
 
-**해결**: Rank에서 판정 조건을 제거하고 prize만 남긴다. 뷰 표시 책임은 뷰 레이어로 분리한다.
+**해결 (초기 방향)**: Rank에서 판정 조건을 제거하고 prize만 남긴다. 뷰 표시 책임은 뷰 레이어로 분리한다.
 
 - Rank 생성자를 `constructor(prize)`로 단순화
 - `from(matchCount, isBonusMatch)` switch 판정 로직은 유지 (입력값으로만 사용, 저장하지 않음)
 - RankStatistics.summary는 Rank 인스턴스를 직접 포함하도록 변경
 - matchCount/isBonusMatch 표시 데이터는 뷰 레이어가 직접 관리
+
+**해결 (수정)**: matchCount와 isBonusMatch는 뷰 표시만을 위한 것이 아니라 Rank의 도메인 지식이므로 유지하되, 행위 없이 데이터만 다른 서브클래스 구조를 제거하고 단일 값 객체로 단순화한다.
+
+- Rank 생성자를 `constructor(prize, matchCount, isBonusMatch)`로 통합
+- isBonusMatch는 보너스 판정이 관여하는 등급(2등, 3등)만 전달, 나머지는 undefined
+- `hasBonusCondition` 제거 — `isBonusMatch`의 존재 여부로 충분
+- NONE(꽝) 제거 — 꽝은 Rank 인스턴스가 아닌 null로 표현
 
 ### 문제 2. WinningLotto의 생성 인터페이스가 뷰 표시를 위해 분리되어 있다
 
@@ -97,7 +104,7 @@
 | 로또 티켓     | Lotto        | 6개 번호의 정렬·중복 검사, "이 번호를 포함하는가?"에 답한다              |
 | 구매 금액     | Budget       | 발행 가능 수량과 실제 비용을 스스로 계산한다                             |
 | 추첨 결과     | WinningLotto | 당첨 번호 + 보너스를 하나의 덩어리로 갖고, **티켓의 등수를 판정**한다    |
-| 등수          | Rank         | 상금을 알고, 판정 조건(matchCount, isBonusMatch)으로부터 자신을 결정한다 |
+| 등수          | Rank         | 상금·일치 개수·보너스 일치 여부를 값 객체로 갖고, `from()`으로 자신을 결정한다 |
 
 > WinningLotto에 판정 로직(`getRank`)을 둔 이유: OOP는 현실을 그대로 복사하는 게 아닌, 영감을 받아 가상의 세계를 만드는 것이다. 현실에서 종이가 판정할 수 없더라도, 가상 세계에서는 책임을 가진 능동적인 객체를 설계할 수 있다.
 

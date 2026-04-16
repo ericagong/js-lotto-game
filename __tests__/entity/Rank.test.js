@@ -1,11 +1,5 @@
 import Rank from '../../src/js/domain/entity/Rank/Rank.js';
 
-describe('Rank 추상 클래스 테스트', () => {
-    it('직접 인스턴스화하면 에러를 발생시킨다.', () => {
-        expect(() => new Rank()).toThrow('Rank는 직접 인스턴스화할 수 없습니다.');
-    });
-});
-
 describe('static from(matchCount, isBonusMatch) 테스트', () => {
     describe('matchCount와 isBonusMatch 기반으로 Rank 인스턴스를 반환한다.', () => {
         it.each([
@@ -31,7 +25,7 @@ describe('static from(matchCount, isBonusMatch) 테스트', () => {
     });
 });
 
-describe('서브클래스 속성 테스트', () => {
+describe('Rank 속성 테스트', () => {
     describe('prize를 반환한다.', () => {
         it.each([
             { rank: Rank.FIRST, expected: 2_000_000_000 },
@@ -56,27 +50,21 @@ describe('서브클래스 속성 테스트', () => {
         });
     });
 
-    describe('hasBonusCondition을 반환한다.', () => {
+    describe('isBonusMatch를 반환한다.', () => {
         it.each([
-            { rank: Rank.FIRST, expected: false },
             { rank: Rank.SECOND, expected: true },
             { rank: Rank.THIRD, expected: false },
-            { rank: Rank.FOURTH, expected: false },
-            { rank: Rank.FIFTH, expected: false },
-        ])('hasBonusCondition: $expected', ({ rank, expected }) => {
-            expect(rank.hasBonusCondition).toBe(expected);
+        ])('보너스 조건이 있는 등급은 isBonusMatch를 가진다.', ({ rank, expected }) => {
+            expect(rank.isBonusMatch).toBe(expected);
         });
-    });
 
-    it('SecondRank만 isBonusMatch를 가진다.', () => {
-        expect(Rank.SECOND.isBonusMatch).toBe(true);
-    });
-
-    it('isBonusMatch가 없는 Rank에서 접근하면 에러를 발생시킨다.', () => {
-        expect(() => Rank.FIRST.isBonusMatch).toThrow();
-        expect(() => Rank.THIRD.isBonusMatch).toThrow();
-        expect(() => Rank.FOURTH.isBonusMatch).toThrow();
-        expect(() => Rank.FIFTH.isBonusMatch).toThrow();
+        it.each([
+            { rank: Rank.FIRST },
+            { rank: Rank.FOURTH },
+            { rank: Rank.FIFTH },
+        ])('보너스 조건이 없는 등급은 isBonusMatch가 undefined이다.', ({ rank }) => {
+            expect(rank.isBonusMatch).toBeUndefined();
+        });
     });
 });
 

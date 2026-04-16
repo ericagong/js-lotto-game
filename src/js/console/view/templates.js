@@ -12,7 +12,7 @@ export const formatIssuedCount = (count) => `총 ${count}개를 구매했습니�
 export const STATISTICS_HEADER = `\n 당첨 통계 ${'-'.repeat(20)}`;
 
 const formatRankLabel = (rank) =>
-    rank.hasBonusCondition ? `${rank.matchCount}개 일치, 보너스 볼 일치` : `${rank.matchCount}개 일치`;
+    rank.isBonusMatch ? `${rank.matchCount}개 일치, 보너스 볼 일치` : `${rank.matchCount}개 일치`;
 
 export const formatRankRow = ({ rank, count }) => `${formatRankLabel(rank)} (${rank.prize}원) - ${count}개`;
 
