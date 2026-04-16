@@ -36,7 +36,7 @@ export default class WinningLotto {
         this.#bonusNumber = bonusNumber;
     }
 
-    #matchBonusNumber(targetLotto) {
+    #hasBonusMatch(targetLotto) {
         return targetLotto.hasNumber(this.#bonusNumber);
     }
 
@@ -48,7 +48,7 @@ export default class WinningLotto {
         WinningLotto.#validateLotto(targetLotto);
 
         const matchCount = this.#countMatchingNumbers(targetLotto);
-        const isBonusMatch = this.#matchBonusNumber(targetLotto);
+        const isBonusMatch = this.#hasBonusMatch(targetLotto);
 
         return Rank.from(matchCount, isBonusMatch);
     }

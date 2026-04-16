@@ -105,10 +105,9 @@ export const purchasedOutputTemplate = ({ issuedCount, issuedLottosNumbers }) =>
     `;
 };
 
-const formatRankLabel = (rank) =>
-    rank.isBonusMatch ? `${rank.matchCount}개 + 보너스볼` : `${rank.matchCount}개`;
+const formatRankLabel = (rank) => (rank.isBonusMatch ? `${rank.matchCount}개 + 보너스볼` : `${rank.matchCount}개`);
 
-const RankRowTemplate = ({ rank, count }) => `
+const rankRowTemplate = ({ rank, count }) => `
     <tr class="text-center">
         <td class="p-3">${formatRankLabel(rank)}</td>
         <td class="p-3">${rank.prize.toLocaleString()}</td>
@@ -121,7 +120,7 @@ const RankRowTemplate = ({ rank, count }) => `
 export const statisticsOutputTemplate = ({ rankSummary, revenueRate }) => {
     const statisticsTableRows = [...rankSummary]
         .reverse()
-        .map(({ rank, count }) => RankRowTemplate({ rank, count }))
+        .map(({ rank, count }) => rankRowTemplate({ rank, count }))
         .join('');
 
     return `<section class="modal open" role="dialog" aria-modal="true" aria-labelledby="title-dialog">

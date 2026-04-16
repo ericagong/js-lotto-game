@@ -5,7 +5,7 @@ import view from './view/index.js';
 
 const convertStringToNumber = (input) => Number(input.trim());
 
-const convertToMatchingDataType = (input) => {
+const convertStringToMatchingDataType = (input) => {
     if (input === 'null') return null;
     if (input === 'undefined') return undefined;
     if (/^-?\d+(\.\d+)?$/.test(input)) return parseFloat(input);
@@ -15,10 +15,9 @@ const convertToMatchingDataType = (input) => {
         return input;
     }
 };
-const SEPARATOR = ',';
-const convertStringToArray = (input) => input.split(SEPARATOR).map(convertToMatchingDataType);
 
-const convertStringToLowerCase = (input) => input.trim().toLowerCase();
+const SEPARATOR = ',';
+const convertStringToArray = (input) => input.split(SEPARATOR).map(convertStringToMatchingDataType);
 
 async function playConsoleLottoGame() {
     const game = new LottoGame();
@@ -72,6 +71,8 @@ class RetryError extends ConsoleError {
         super(RetryError.#MESSAGE);
     }
 }
+
+const convertStringToLowerCase = (input) => input.trim().toLowerCase();
 
 function convertStringToRetryAnswer(input) {
     const answer = convertStringToLowerCase(input);
