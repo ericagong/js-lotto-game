@@ -24,7 +24,7 @@ export default class WinningLotto {
     }
 
     static #validateDuplicateBonusNumber(lotto, bonusNumber) {
-        if (lotto.contains(bonusNumber)) throw new BonusNumberDuplicatedError();
+        if (lotto.hasNumber(bonusNumber)) throw new BonusNumberDuplicatedError();
     }
 
     constructor(lotto, bonusNumber) {
@@ -37,17 +37,11 @@ export default class WinningLotto {
     }
 
     #matchBonusNumber(targetLotto) {
-        return targetLotto.contains(this.#bonusNumber);
+        return targetLotto.hasNumber(this.#bonusNumber);
     }
 
     #countMatchingNumbers(targetLotto) {
-        const winningLottoNumbers = new Set(this.#lotto.getNumbers());
-        const targetLottoNumbers = targetLotto.getNumbers();
-        const matchCount = targetLottoNumbers.reduce(
-            (count, number) => (winningLottoNumbers.has(number) ? count + 1 : count),
-            0,
-        );
-        return matchCount;
+        return this.#lotto.getMatchCount(targetLotto);
     }
 
     getRank(targetLotto) {

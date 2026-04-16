@@ -4,6 +4,7 @@ import {
     NumbersLengthNotSixError,
     NumbersDuplicatedError,
     TargetNotLottoNumberInstanceError,
+    TargetNotLottoInstanceError,
 } from '../../src/js/domain/entity/Lotto/errors.js';
 import LottoNumber from '../../src/js/domain/entity/LottoNumber/LottoNumber.js';
 import {
@@ -131,14 +132,14 @@ describe('new Lotto(numbers) 테스트', () => {
     });
 });
 
-describe('contains(target) 테스트', () => {
+describe('hasNumber(lottoNumber) 테스트', () => {
     describe('target 유효성 검사 테스트', () => {
         describe('target이 LottoNumber 인스턴스가 아닌 경우, 에러를 발생시킨다.', () => {
             it.each([1, 'erica', true, null, undefined, function () {}, {}])(
                 'target: %p',
                 (target) => {
                     const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-                    expect(() => lotto.contains(target)).toThrow(
+                    expect(() => lotto.hasNumber(target)).toThrow(
                         TargetNotLottoNumberInstanceError,
                     );
                 },
@@ -147,7 +148,7 @@ describe('contains(target) 테스트', () => {
 
         it('target이 LottoNumber 인스턴스인 경우, 에러를 발생시키지 않는다.', () => {
             const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
-            expect(() => lotto.contains(LottoNumber.of(1))).not.toThrow();
+            expect(() => lotto.hasNumber(LottoNumber.of(1))).not.toThrow();
         });
     });
 
@@ -158,7 +159,37 @@ describe('contains(target) 테스트', () => {
             { numbers: [1, 2, 3, 4, 5, 6], target: 7, expected: false },
         ])('$numbers, $target', ({ numbers, target, expected }) => {
             const lotto = new Lotto(numbers);
-            expect(lotto.contains(LottoNumber.of(target))).toBe(expected);
+            expect(lotto.hasNumber(LottoNumber.of(target))).toBe(expected);
+        });
+    });
+});
+
+describe('getMatchCount(other) 테스트', () => {
+    describe('other 유효성 검사 테스트', () => {
+        describe('other가 Lotto 인스턴스가 아닌 경우, 에러를 발생시킨다.', () => {
+            it.each([1, 'erica', true, null, undefined, function () {}, {}])(
+                'other: %p',
+                (other) => {
+                    const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
+                    expect(() => lotto.getMatchCount(other)).toThrow(
+                        TargetNotLottoInstanceError,
+                    );
+                },
+            );
+        });
+    });
+
+    describe('두 로또 간 일치하는 번호 수를 반환한다.', () => {
+        it.each([
+            { a: [1, 2, 3, 4, 5, 6], b: [1, 2, 3, 4, 5, 6], expected: 6 },
+            { a: [1, 2, 3, 4, 5, 6], b: [1, 2, 3, 4, 5, 7], expected: 5 },
+            { a: [1, 2, 3, 4, 5, 6], b: [1, 2, 3, 4, 7, 8], expected: 4 },
+            { a: [1, 2, 3, 4, 5, 6], b: [1, 2, 3, 7, 8, 9], expected: 3 },
+            { a: [1, 2, 3, 4, 5, 6], b: [7, 8, 9, 10, 11, 12], expected: 0 },
+        ])('$a vs $b → $expected', ({ a, b, expected }) => {
+            const lottoA = Lotto.of(a);
+            const lottoB = Lotto.of(b);
+            expect(lottoA.getMatchCount(lottoB)).toBe(expected);
         });
     });
 });

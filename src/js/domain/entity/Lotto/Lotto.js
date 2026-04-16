@@ -4,6 +4,7 @@ import {
     NumbersLengthNotSixError,
     NumbersDuplicatedError,
     TargetNotLottoNumberInstanceError,
+    TargetNotLottoInstanceError,
 } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
 
@@ -45,9 +46,15 @@ export default class Lotto {
         this.#numbers = Lotto.#sortAscending(numbers).map(LottoNumber.of);
     }
 
-    contains(target) {
-        if (!(target instanceof LottoNumber)) throw new TargetNotLottoNumberInstanceError();
-        return this.#numbers.includes(target);
+    hasNumber(lottoNumber) {
+        if (!(lottoNumber instanceof LottoNumber)) throw new TargetNotLottoNumberInstanceError();
+        return this.#numbers.includes(lottoNumber);
+    }
+
+    getMatchCount(other) {
+        if (!(other instanceof Lotto)) throw new TargetNotLottoInstanceError();
+        const otherSet = new Set(other.#numbers);
+        return this.#numbers.filter((n) => otherSet.has(n)).length;
     }
 
     getNumbers() {
