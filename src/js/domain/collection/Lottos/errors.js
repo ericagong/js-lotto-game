@@ -9,17 +9,17 @@ class LottosError extends DomainError {
 }
 
 export class LottosNotArrayError extends LottosError {
-    static #MESSAGE = 'lottos는 배열 형태여야합니다.';
+    static #MESSAGE = 'lottos는 배열 형태여야 합니다.';
 
     constructor() {
         super(LottosNotArrayError.#MESSAGE);
     }
 }
 
-export class LottoNotLottoInstanceError extends LottosError {
-    static #MESSAGE = 'lottos의 모든 원소는 Lotto 인스턴스여야합니다.';
+export class ElementNotLottoInstanceError extends LottosError {
+    static #MESSAGE = 'lottos의 모든 원소는 Lotto 인스턴스여야 합니다.';
 
     constructor() {
-        super(LottoNotLottoInstanceError.#MESSAGE);
+        super(ElementNotLottoInstanceError.#MESSAGE);
     }
 }

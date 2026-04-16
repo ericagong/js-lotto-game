@@ -9,41 +9,39 @@ class LottoError extends DomainError {
 }
 
 export class NumbersNotArrayError extends LottoError {
-    static #MESSAGE = 'numbers는 배열 형태여야합니다.';
+    static #MESSAGE = 'numbers는 배열 형태여야 합니다.';
 
     constructor() {
         super(NumbersNotArrayError.#MESSAGE);
     }
 }
 
-export class NumbersLengthNotSixError extends LottoError {
-    static #MESSAGE = 'numbers는 길이가 6인 배열 형태여야합니다.';
-
-    constructor() {
-        super(NumbersLengthNotSixError.#MESSAGE);
+export class NumbersInvalidLengthError extends LottoError {
+    constructor(digits) {
+        super(`numbers는 길이가 ${digits}인 배열이어야 합니다.`);
     }
 }
 
 export class NumbersDuplicatedError extends LottoError {
-    static #MESSAGE = 'numbers는 모두 중복되지 않아야합니다.';
+    static #MESSAGE = 'numbers는 모두 중복되지 않아야 합니다.';
 
     constructor() {
         super(NumbersDuplicatedError.#MESSAGE);
     }
 }
 
-export class TargetNotLottoNumberInstanceError extends LottoError {
-    static #MESSAGE = 'hasNumber의 인자 target은 LottoNumber 인스턴스여야합니다.';
+export class NotLottoNumberInstanceError extends LottoError {
+    static #MESSAGE = '인자는 LottoNumber 인스턴스여야 합니다.';
 
     constructor() {
-        super(TargetNotLottoNumberInstanceError.#MESSAGE);
+        super(NotLottoNumberInstanceError.#MESSAGE);
     }
 }
 
-export class TargetNotLottoInstanceError extends LottoError {
-    static #MESSAGE = 'getMatchCount의 인자 other는 Lotto 인스턴스여야합니다.';
+export class NotLottoInstanceError extends LottoError {
+    static #MESSAGE = '인자는 Lotto 인스턴스여야 합니다.';
 
     constructor() {
-        super(TargetNotLottoInstanceError.#MESSAGE);
+        super(NotLottoInstanceError.#MESSAGE);
     }
 }

@@ -17,7 +17,7 @@ export class RanksNotRanksInstanceError extends StatisticsError {
 }
 
 export class TotalCostNotPositiveNumberError extends StatisticsError {
-    static #MESSAGE = 'totalCost는 0보다 큰 Number 타입이어야합니다.';
+    static #MESSAGE = 'totalCost는 0보다 큰 Number 타입이어야 합니다.';
 
     constructor() {
         super(TotalCostNotPositiveNumberError.#MESSAGE);

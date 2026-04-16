@@ -1,10 +1,10 @@
 import Lotto from '../../src/js/domain/entity/Lotto/Lotto.js';
 import {
     NumbersNotArrayError,
-    NumbersLengthNotSixError,
+    NumbersInvalidLengthError,
     NumbersDuplicatedError,
-    TargetNotLottoNumberInstanceError,
-    TargetNotLottoInstanceError,
+    NotLottoNumberInstanceError,
+    NotLottoInstanceError,
 } from '../../src/js/domain/entity/Lotto/errors.js';
 import LottoNumber from '../../src/js/domain/entity/LottoNumber/LottoNumber.js';
 import {
@@ -47,7 +47,7 @@ describe('new Lotto(numbers) 테스트', () => {
                     { numbers: [1, 2, 3, 4, 5, 6, 7] },
                 ])('$numbers', ({ numbers }) => {
                     expect(() => new Lotto(numbers)).toThrow(
-                        NumbersLengthNotSixError,
+                        NumbersInvalidLengthError,
                     );
                 });
             });
@@ -140,7 +140,7 @@ describe('hasNumber(lottoNumber) 테스트', () => {
                 (target) => {
                     const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
                     expect(() => lotto.hasNumber(target)).toThrow(
-                        TargetNotLottoNumberInstanceError,
+                        NotLottoNumberInstanceError,
                     );
                 },
             );
@@ -172,7 +172,7 @@ describe('getMatchCount(other) 테스트', () => {
                 (other) => {
                     const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
                     expect(() => lotto.getMatchCount(other)).toThrow(
-                        TargetNotLottoInstanceError,
+                        NotLottoInstanceError,
                     );
                 },
             );

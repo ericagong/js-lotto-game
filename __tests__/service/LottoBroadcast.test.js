@@ -1,6 +1,6 @@
 import LottoBroadcast from '../../src/js/domain/service/LottoBroadcast/LottoBroadcast.js';
 import WinningLotto from '../../src/js/domain/entity/WinningLotto/WinningLotto.js';
-import { NumbersLengthNotSixError } from '../../src/js/domain/entity/Lotto/errors.js';
+import { NumbersInvalidLengthError } from '../../src/js/domain/entity/Lotto/errors.js';
 import { ValueOutOfRangeError } from '../../src/js/domain/entity/LottoNumber/errors.js';
 import { BonusNumberDuplicatedError } from '../../src/js/domain/entity/WinningLotto/errors.js';
 
@@ -11,7 +11,7 @@ describe('static announce(numbers, bonusNumber) 테스트', () => {
     });
 
     it('당첨 번호가 6개가 아니면, 에러를 발생시킨다.', () => {
-        expect(() => LottoBroadcast.announce([1, 2, 3], 7)).toThrow(NumbersLengthNotSixError);
+        expect(() => LottoBroadcast.announce([1, 2, 3], 7)).toThrow(NumbersInvalidLengthError);
     });
 
     it('보너스 번호가 [1, 45] 범위 밖이면, 에러를 발생시킨다.', () => {

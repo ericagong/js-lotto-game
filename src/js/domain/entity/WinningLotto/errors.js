@@ -9,7 +9,7 @@ class WinningLottoError extends DomainError {
 }
 
 export class LottoNotLottoInstanceError extends WinningLottoError {
-    static #MESSAGE = 'lotto가 Lotto 인스턴스 타입이 아닙니다.';
+    static #MESSAGE = 'lotto는 Lotto 인스턴스여야 합니다.';
 
     constructor() {
         super(LottoNotLottoInstanceError.#MESSAGE);
@@ -17,7 +17,7 @@ export class LottoNotLottoInstanceError extends WinningLottoError {
 }
 
 export class BonusNumberNotLottoNumberInstanceError extends WinningLottoError {
-    static #MESSAGE = 'bonusNumber가 LottoNumber 인스턴스 타입이 아닙니다.';
+    static #MESSAGE = 'bonusNumber는 LottoNumber 인스턴스여야 합니다.';
 
     constructor() {
         super(BonusNumberNotLottoNumberInstanceError.#MESSAGE);
@@ -25,7 +25,7 @@ export class BonusNumberNotLottoNumberInstanceError extends WinningLottoError {
 }
 
 export class BonusNumberDuplicatedError extends WinningLottoError {
-    static #MESSAGE = 'bonusNumber가 lotto의 로또 번호와 중복됩니다.';
+    static #MESSAGE = 'bonusNumber는 lotto의 번호와 중복되지 않아야 합니다.';
 
     constructor() {
         super(BonusNumberDuplicatedError.#MESSAGE);

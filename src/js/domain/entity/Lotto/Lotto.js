@@ -1,10 +1,10 @@
 import { hasDuplicated } from '../../../utils.js';
 import {
     NumbersNotArrayError,
-    NumbersLengthNotSixError,
+    NumbersInvalidLengthError,
     NumbersDuplicatedError,
-    TargetNotLottoNumberInstanceError,
-    TargetNotLottoInstanceError,
+    NotLottoNumberInstanceError,
+    NotLottoInstanceError,
 } from './errors.js';
 import LottoNumber from '../LottoNumber/LottoNumber.js';
 
@@ -27,13 +27,13 @@ export default class Lotto {
         return new Lotto(Array.from(numbers));
     }
 
-    static #isValidDigits(target) {
-        return target.length !== Lotto.DIGITS;
+    static #hasValidLength(target) {
+        return target.length === Lotto.DIGITS;
     }
 
     static #validate(numbers) {
         if (!Array.isArray(numbers)) throw new NumbersNotArrayError();
-        if (Lotto.#isValidDigits(numbers)) throw new NumbersLengthNotSixError();
+        if (!Lotto.#hasValidLength(numbers)) throw new NumbersInvalidLengthError(Lotto.DIGITS);
         if (hasDuplicated(numbers)) throw new NumbersDuplicatedError();
     }
 
@@ -48,12 +48,12 @@ export default class Lotto {
     }
 
     hasNumber(lottoNumber) {
-        if (!(lottoNumber instanceof LottoNumber)) throw new TargetNotLottoNumberInstanceError();
+        if (!(lottoNumber instanceof LottoNumber)) throw new NotLottoNumberInstanceError();
         return this.#numbers.includes(lottoNumber);
     }
 
     getMatchCount(other) {
-        if (!(other instanceof Lotto)) throw new TargetNotLottoInstanceError();
+        if (!(other instanceof Lotto)) throw new NotLottoInstanceError();
         const otherSet = new Set(other.#numbers);
         return this.#numbers.filter((n) => otherSet.has(n)).length;
     }
