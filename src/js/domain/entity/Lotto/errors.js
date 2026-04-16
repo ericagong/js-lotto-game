@@ -33,7 +33,7 @@ export class NumbersDuplicatedError extends LottoError {
 }
 
 export class TargetNotLottoNumberInstanceError extends LottoError {
-    static #MESSAGE = 'contains의 인자 target은 LottoNumber 인스턴스여야합니다.';
+    static #MESSAGE = 'hasNumber의 인자 target은 LottoNumber 인스턴스여야합니다.';
 
     constructor() {
         super(TargetNotLottoNumberInstanceError.#MESSAGE);
@@ -41,7 +41,7 @@ export class TargetNotLottoNumberInstanceError extends LottoError {
 }
 
 export class TargetNotLottoInstanceError extends LottoError {
-    static #MESSAGE = 'countMatches의 인자 other는 Lotto 인스턴스여야합니다.';
+    static #MESSAGE = 'getMatchCount의 인자 other는 Lotto 인스턴스여야합니다.';
 
     constructor() {
         super(TargetNotLottoInstanceError.#MESSAGE);
