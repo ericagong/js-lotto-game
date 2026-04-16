@@ -7,8 +7,8 @@ export default class LottoGame {
     #lottos = null;
     #winningLotto = null;
 
-    issueLottos(budgetAmount) {
-        const { lottos, totalCost } = LottoMachine.issue(budgetAmount);
+    issueLottos(budget) {
+        const { lottos, totalCost } = LottoMachine.issue(budget);
         this.#lottos = lottos;
         this.#totalCost = totalCost;
 

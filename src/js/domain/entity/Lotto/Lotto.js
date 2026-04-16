@@ -12,6 +12,7 @@ export default class Lotto {
     #numbers;
 
     static DIGITS = 6;
+    static UNIT_PRICE = 1_000;
 
     static of(numbers) {
         return new Lotto(numbers);

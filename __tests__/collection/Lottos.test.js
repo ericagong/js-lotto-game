@@ -1,4 +1,3 @@
-import Budget from '../../src/js/domain/entity/Budget/Budget.js';
 import Lotto from '../../src/js/domain/entity/Lotto/Lotto.js';
 import Lottos from '../../src/js/domain/collection/Lottos/Lottos.js';
 

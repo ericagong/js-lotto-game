@@ -1,8 +1,42 @@
 import Lotto from '../../src/js/domain/entity/Lotto/Lotto.js';
 import Lottos from '../../src/js/domain/collection/Lottos/Lottos.js';
 import LottoMachine from '../../src/js/domain/service/LottoMachine/LottoMachine.js';
+import {
+    BudgetNotNumberError,
+    BudgetBelowMinError,
+    BudgetAboveMaxError,
+} from '../../src/js/domain/service/LottoMachine/errors.js';
 
 describe('static issue(budgetAmount) 테스트', () => {
+    describe('budgetAmount 유효성 검사 테스트', () => {
+        describe('budgetAmount가 숫자 형태가 아닌 경우, 에러를 발생시킨다.', () => {
+            it.each([
+                '1',
+                'erica',
+                true,
+                null,
+                undefined,
+                function () {},
+                {},
+                [],
+            ])('budgetAmount: %p', (budgetAmount) => {
+                expect(() => LottoMachine.issue(budgetAmount)).toThrow(BudgetNotNumberError);
+            });
+        });
+
+        describe('budgetAmount가 1_000 보다 작은 경우, 에러를 발생시킨다.', () => {
+            it.each([0, 10, 100, 999])('budgetAmount: %p', (budgetAmount) => {
+                expect(() => LottoMachine.issue(budgetAmount)).toThrow(BudgetBelowMinError);
+            });
+        });
+
+        describe('budgetAmount가 100_000 보다 큰 경우, 에러를 발생시킨다.', () => {
+            it.each([100_001, 1_000_000])('budgetAmount: %p', (budgetAmount) => {
+                expect(() => LottoMachine.issue(budgetAmount)).toThrow(BudgetAboveMaxError);
+            });
+        });
+    });
+
     describe('budgetAmount에 해당하는 수량만큼 무작위 Lotto를 발행한 { lottos, totalCost }를 반환한다.', () => {
         it.each([
             { amount: 1_000, expectedCount: 1, expectedCost: 1_000 },
