@@ -1,6 +1,6 @@
-import AppError from '../AppError.js';
+import CoreError from '../CoreError.js';
 
-export default class DomainError extends AppError {
+export default class DomainError extends CoreError {
     static #type = 'DOMAIN';
 
     constructor(message) {

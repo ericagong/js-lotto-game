@@ -1,4 +1,4 @@
-import AppError from '../AppError.js';
+import CoreError from '../CoreError.js';
 import ConsoleError from './ConsoleError.js';
 import LottoGame from '../domain/LottoGame.js';
 import view from './view/index.js';
@@ -30,7 +30,7 @@ const playConsoleLottoGame = async () => {
             view.printIssuedLottos(result);
             break;
         } catch (error) {
-            if (!(error instanceof AppError)) throw error;
+            if (!(error instanceof CoreError)) throw error;
             view.printError(error);
         }
     }
@@ -43,7 +43,7 @@ const playConsoleLottoGame = async () => {
             winningNumbers = convertStringToArray(winningNumbersInput);
             break;
         } catch (error) {
-            if (!(error instanceof AppError)) throw error;
+            if (!(error instanceof CoreError)) throw error;
             view.printError(error);
         }
     }
@@ -55,7 +55,7 @@ const playConsoleLottoGame = async () => {
             game.setWinningLotto(winningNumbers, convertStringToNumber(bonusNumberInput));
             break;
         } catch (error) {
-            if (!(error instanceof AppError)) throw error;
+            if (!(error instanceof CoreError)) throw error;
             view.printError(error);
         }
     }
@@ -87,7 +87,7 @@ const askShouldRetry = async () => {
             const input = await view.askRetry();
             return convertStringToRetryAnswer(input);
         } catch (error) {
-            if (!(error instanceof AppError)) throw error;
+            if (!(error instanceof CoreError)) throw error;
             view.printError(error);
         }
     }

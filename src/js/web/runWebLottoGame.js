@@ -1,4 +1,4 @@
-import AppError from '../AppError.js';
+import CoreError from '../CoreError.js';
 import LottoGame from '../domain/LottoGame.js';
 import WebView from './view/index.js';
 
@@ -11,7 +11,7 @@ const runWebLottoGame = () => {
             game.setWinningLotto(winningNumbers.map(Number), Number(bonusNumber));
             view.renderStatistics(game.getStatistics());
         } catch (error) {
-            if (!(error instanceof AppError)) throw error;
+            if (!(error instanceof CoreError)) throw error;
             view.showError(error);
         }
     };
@@ -23,7 +23,7 @@ const runWebLottoGame = () => {
             view.renderWinningLottoForm();
             view.onWinningLottoSubmit(handleWinningLotto);
         } catch (error) {
-            if (!(error instanceof AppError)) throw error;
+            if (!(error instanceof CoreError)) throw error;
             view.showError(error);
         }
     };
