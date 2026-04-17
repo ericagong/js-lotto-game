@@ -4,9 +4,13 @@ import { RanksNotArrayError, RankNotRankInstanceError } from './errors.js';
 export default class Ranks {
     #ranks;
 
+    static isRanks(value) {
+        return value instanceof Ranks;
+    }
+
     static #validate(ranks) {
         if (!Array.isArray(ranks)) throw new RanksNotArrayError();
-        if (!ranks.every((rank) => rank instanceof Rank)) throw new RankNotRankInstanceError();
+        if (!ranks.every((rank) => Rank.isRank(rank))) throw new RankNotRankInstanceError();
     }
 
     constructor(ranks) {

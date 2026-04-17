@@ -7,7 +7,7 @@ export default class Statistics {
     #totalCost;
 
     static #validate(ranks, totalCost) {
-        if (!(ranks instanceof Ranks)) throw new RanksNotRanksInstanceError();
+        if (!Ranks.isRanks(ranks)) throw new RanksNotRanksInstanceError();
         if (!isNumber(totalCost) || totalCost <= 0) throw new TotalCostNotPositiveNumberError();
     }
 

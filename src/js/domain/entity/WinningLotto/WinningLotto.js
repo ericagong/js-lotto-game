@@ -12,11 +12,11 @@ export default class WinningLotto {
     #bonusNumber;
 
     static #validateLotto(lotto) {
-        if (!(lotto instanceof Lotto)) throw new LottoNotLottoInstanceError();
+        if (!Lotto.isLotto(lotto)) throw new LottoNotLottoInstanceError();
     }
 
     static #validateBonusNumber(bonusNumber) {
-        if (!(bonusNumber instanceof LottoNumber)) throw new BonusNumberNotLottoNumberInstanceError();
+        if (!LottoNumber.isLottoNumber(bonusNumber)) throw new BonusNumberNotLottoNumberInstanceError();
     }
 
     static #validateDuplicateBonusNumber(lotto, bonusNumber) {

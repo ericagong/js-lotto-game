@@ -3,6 +3,10 @@ export default class Rank {
     #matchCount;
     #isBonusMatch;
 
+    static isRank(value) {
+        return value instanceof Rank;
+    }
+
     constructor(prize, matchCount, isBonusMatch) {
         this.#prize = prize;
         this.#matchCount = matchCount;

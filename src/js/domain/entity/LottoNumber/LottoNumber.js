@@ -7,6 +7,10 @@ export default class LottoNumber {
     static LOWER_BOUND = 1;
     static UPPER_BOUND = 45;
 
+    static isLottoNumber(value) {
+        return value instanceof LottoNumber;
+    }
+
     static #isInRange(value) {
         return LottoNumber.LOWER_BOUND <= value && value <= LottoNumber.UPPER_BOUND;
     }

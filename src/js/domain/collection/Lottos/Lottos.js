@@ -7,7 +7,7 @@ export default class Lottos {
 
     static #validate(lottos) {
         if (!Array.isArray(lottos)) throw new LottosNotArrayError();
-        if (!lottos.every((lotto) => lotto instanceof Lotto)) throw new ElementNotLottoInstanceError();
+        if (!lottos.every((lotto) => Lotto.isLotto(lotto))) throw new ElementNotLottoInstanceError();
     }
 
     constructor(lottos) {

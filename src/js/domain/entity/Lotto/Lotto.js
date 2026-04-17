@@ -14,6 +14,10 @@ export default class Lotto {
     static DIGITS = 6;
     static UNIT_PRICE = 1_000;
 
+    static isLotto(value) {
+        return value instanceof Lotto;
+    }
+
     static #isValidLength(value) {
         return value.length === Lotto.DIGITS;
     }
@@ -47,12 +51,12 @@ export default class Lotto {
     }
 
     hasNumber(lottoNumber) {
-        if (!(lottoNumber instanceof LottoNumber)) throw new NotLottoNumberInstanceError();
+        if (!LottoNumber.isLottoNumber(lottoNumber)) throw new NotLottoNumberInstanceError();
         return this.#numbers.includes(lottoNumber);
     }
 
     getMatchCount(other) {
-        if (!(other instanceof Lotto)) throw new NotLottoInstanceError();
+        if (!Lotto.isLotto(other)) throw new NotLottoInstanceError();
         const otherSet = new Set(other.#numbers);
         return this.#numbers.filter((n) => otherSet.has(n)).length;
     }
