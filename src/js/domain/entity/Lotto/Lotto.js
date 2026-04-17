@@ -1,4 +1,4 @@
-import { hasDuplicated } from '../../../utils.js';
+import { isDuplicated } from '../../../utils.js';
 import {
     NumbersNotArrayError,
     NumbersInvalidLengthError,
@@ -14,14 +14,14 @@ export default class Lotto {
     static DIGITS = 6;
     static UNIT_PRICE = 1_000;
 
-    static #hasValidLength(target) {
-        return target.length === Lotto.DIGITS;
+    static #isValidLength(value) {
+        return value.length === Lotto.DIGITS;
     }
 
     static #validate(numbers) {
         if (!Array.isArray(numbers)) throw new NumbersNotArrayError();
-        if (!Lotto.#hasValidLength(numbers)) throw new NumbersInvalidLengthError(Lotto.DIGITS);
-        if (hasDuplicated(numbers)) throw new NumbersDuplicatedError();
+        if (!Lotto.#isValidLength(numbers)) throw new NumbersInvalidLengthError(Lotto.DIGITS);
+        if (isDuplicated(numbers)) throw new NumbersDuplicatedError();
     }
 
     static #sortAscending(numbers) {
@@ -30,7 +30,6 @@ export default class Lotto {
 
     constructor(numbers) {
         Lotto.#validate(numbers);
-
         this.#numbers = Lotto.#sortAscending(numbers).map(LottoNumber.of);
     }
 

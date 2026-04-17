@@ -1,7 +1,7 @@
 export const isNumber = (target) => typeof target === 'number';
 export const isBoolean = (target) => typeof target === 'boolean';
 
-export const hasDuplicated = (targets) => new Set(targets).size !== targets.length;
+export const isDuplicated = (targets) => new Set(targets).size !== targets.length;
 
 export const toPercentage = (ratio) => {
     const percentage = ratio * 100;
