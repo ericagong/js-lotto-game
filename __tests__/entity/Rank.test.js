@@ -14,6 +14,10 @@ describe('static from(matchCount, isBonusMatch) 테스트', () => {
         });
     });
 
+    it('matchCount가 4이고 isBonusMatch가 true여도 FOURTH를 반환한다.', () => {
+        expect(Rank.from(4, true)).toBe(Rank.FOURTH);
+    });
+
     describe('매칭 3개 미만이면 null을 반환한다.', () => {
         it.each([
             { matchCount: 2, isBonusMatch: false },
@@ -64,6 +68,16 @@ describe('Rank 속성 테스트', () => {
                 expect(rank.isBonusMatch).toBeUndefined();
             },
         );
+    });
+});
+
+describe('static isRank(value) 테스트', () => {
+    it('Rank 인스턴스이면 true를 반환한다.', () => {
+        expect(Rank.isRank(Rank.FIRST)).toBe(true);
+    });
+
+    it.each([1, 'FIRST', null, undefined, {}])('Rank 인스턴스가 아니면 false를 반환한다. (%p)', (value) => {
+        expect(Rank.isRank(value)).toBe(false);
     });
 });
 

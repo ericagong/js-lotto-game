@@ -194,6 +194,32 @@ describe('getMatchCount(other) 테스트', () => {
     });
 });
 
+describe('static random() 테스트', () => {
+    it('Lotto 인스턴스를 반환한다.', () => {
+        expect(Lotto.random()).toBeInstanceOf(Lotto);
+    });
+
+    it('6개의 유니크한 [1, 45] 범위 정수를 가진다.', () => {
+        const values = Lotto.random().toValues();
+        expect(values).toHaveLength(6);
+        expect(new Set(values).size).toBe(6);
+        values.forEach((v) => {
+            expect(Number.isInteger(v)).toBe(true);
+            expect(v).toBeGreaterThanOrEqual(1);
+            expect(v).toBeLessThanOrEqual(45);
+        });
+    });
+});
+
+describe('getMatchCount(other) 추가 케이스 테스트', () => {
+    it.each([
+        { a: [1, 2, 3, 4, 5, 6], b: [1, 8, 9, 10, 11, 12], expected: 1 },
+        { a: [1, 2, 3, 4, 5, 6], b: [1, 2, 8, 9, 10, 11], expected: 2 },
+    ])('$a vs $b → $expected', ({ a, b, expected }) => {
+        expect(Lotto.of(a).getMatchCount(Lotto.of(b))).toBe(expected);
+    });
+});
+
 describe('toValues() 테스트', () => {
     describe('오름차순으로 정렬되어 있는 numbers 배열을 반환한다.', () => {
         it.each([

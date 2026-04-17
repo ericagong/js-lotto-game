@@ -87,6 +87,23 @@ describe('new LottoNumber(value)', () => {
     });
 });
 
+describe('static of(value) 캐싱 동일성 테스트', () => {
+    it('같은 값으로 호출하면, 동일한 인스턴스를 반환한다.', () => {
+        expect(LottoNumber.of(1)).toBe(LottoNumber.of(1));
+        expect(LottoNumber.of(45)).toBe(LottoNumber.of(45));
+    });
+});
+
+describe('static isLottoNumber(value) 테스트', () => {
+    it('LottoNumber 인스턴스이면 true를 반환한다.', () => {
+        expect(LottoNumber.isLottoNumber(LottoNumber.of(1))).toBe(true);
+    });
+
+    it.each([1, '1', null, undefined, {}, []])('LottoNumber 인스턴스가 아니면 false를 반환한다. (%p)', (value) => {
+        expect(LottoNumber.isLottoNumber(value)).toBe(false);
+    });
+});
+
 describe('get value 테스트', () => {
     describe('value를 반환한다.', () => {
         it.each([

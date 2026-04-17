@@ -39,6 +39,17 @@ describe('countByRank() 테스트', () => {
         ]);
     });
 
+    it('동일 등수가 복수 개인 경우, 올바르게 카운팅한다.', () => {
+        const ranks = Ranks.from([Rank.FIFTH, Rank.FIFTH, Rank.FIFTH]);
+        expect(ranks.countByRank()).toEqual([
+            { rank: Rank.FIRST, count: 0 },
+            { rank: Rank.SECOND, count: 0 },
+            { rank: Rank.THIRD, count: 0 },
+            { rank: Rank.FOURTH, count: 0 },
+            { rank: Rank.FIFTH, count: 3 },
+        ]);
+    });
+
     it('빈 배열이면 전부 0이다.', () => {
         const ranks = Ranks.from([]);
         expect(ranks.countByRank()).toEqual([
