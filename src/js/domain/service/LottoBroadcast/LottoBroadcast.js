@@ -4,6 +4,6 @@ import WinningLotto from '../../entity/WinningLotto/WinningLotto.js';
 
 export default class LottoBroadcast {
     static announce(numbers, bonusNumber) {
-        return WinningLotto.from(Lotto.of(numbers), LottoNumber.of(bonusNumber));
+        return WinningLotto.of(Lotto.of(numbers), LottoNumber.of(bonusNumber));
     }
 }

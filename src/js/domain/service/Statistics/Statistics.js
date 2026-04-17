@@ -17,7 +17,7 @@ export default class Statistics {
         this.#totalCost = totalCost;
     }
 
-    static from(ranks, totalCost) {
+    static of(ranks, totalCost) {
         return new Statistics(ranks, totalCost);
     }
 

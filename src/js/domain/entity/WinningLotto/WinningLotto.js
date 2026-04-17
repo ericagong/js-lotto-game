@@ -32,7 +32,7 @@ export default class WinningLotto {
         this.#bonusNumber = bonusNumber;
     }
 
-    static from(lotto, bonusNumber) {
+    static of(lotto, bonusNumber) {
         return new WinningLotto(lotto, bonusNumber);
     }
 

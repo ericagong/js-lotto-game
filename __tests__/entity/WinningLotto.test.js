@@ -12,7 +12,7 @@ describe('static from(lotto, bonusNumber) 테스트', () => {
     it('WinningLotto 인스턴스를 반환한다.', () => {
         const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
         const bonusNumber = LottoNumber.of(45);
-        const winningLotto = WinningLotto.from(lotto, bonusNumber);
+        const winningLotto = WinningLotto.of(lotto, bonusNumber);
         expect(winningLotto).toEqual(new WinningLotto(lotto, bonusNumber));
     });
 });
@@ -98,7 +98,7 @@ describe('getRank(targetLotto) 테스트', () => {
             ({ targetLottoNumbers, expected }) => {
                 const lotto = Lotto.of([1, 2, 3, 4, 5, 6]);
                 const bonusLottoNumber = LottoNumber.of(7);
-                const winningLotto = WinningLotto.from(lotto, bonusLottoNumber);
+                const winningLotto = WinningLotto.of(lotto, bonusLottoNumber);
                 const targetLotto = Lotto.of(targetLottoNumbers);
                 expect(winningLotto.getRank(targetLotto, winningLotto)).toEqual(
                     expected,

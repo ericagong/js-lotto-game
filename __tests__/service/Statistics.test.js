@@ -10,24 +10,24 @@ const ranksFrom = (rankList) => Ranks.from(rankList);
 describe('new RankStatistics(ranks, totalCost) 유효성 검사 테스트', () => {
     describe('ranks가 Ranks 인스턴스가 아닌 경우, 에러를 발생시킨다.', () => {
         it.each([null, undefined, '1', 1, {}, [], [Rank.FIRST]])('ranks: %p', (ranks) => {
-            expect(() => Statistics.from(ranks, 1_000)).toThrow(RanksNotRanksInstanceError);
+            expect(() => Statistics.of(ranks, 1_000)).toThrow(RanksNotRanksInstanceError);
         });
     });
 
     describe('totalCost가 양수 Number가 아닌 경우, 에러를 발생시킨다.', () => {
         it.each([0, -1, '1000', null, undefined, {}])('totalCost: %p', (totalCost) => {
-            expect(() => Statistics.from(ranksFrom([]), totalCost)).toThrow(
+            expect(() => Statistics.of(ranksFrom([]), totalCost)).toThrow(
                 TotalCostNotPositiveNumberError,
             );
         });
     });
 
     it('유효한 인자라면, 에러를 발생시키지 않는다.', () => {
-        expect(() => Statistics.from(ranksFrom([Rank.FIRST]), 2_000)).not.toThrow();
+        expect(() => Statistics.of(ranksFrom([Rank.FIRST]), 2_000)).not.toThrow();
     });
 });
 
-describe('Statistics.from(ranks, totalCost).summary 테스트', () => {
+describe('Statistics.of(ranks, totalCost).summary 테스트', () => {
     describe('당첨 등수(1~5등)별 개수를 [1등, 2등, 3등, 4등, 5등] 순서의 배열로 반환한다.', () => {
         describe('로또가 1개인 경우', () => {
             it.each([
@@ -66,7 +66,7 @@ describe('Statistics.from(ranks, totalCost).summary 테스트', () => {
                 },
             ])('$name', ({ ranks, expected }) => {
                 const lottoCount = Math.max(ranks.length, 1);
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(lottoCount));
+                const stats = Statistics.of(ranksFrom(ranks), totalCostFor(lottoCount));
                 expect(stats.summary).toEqual(expected);
             });
         });
@@ -74,7 +74,7 @@ describe('Statistics.from(ranks, totalCost).summary 테스트', () => {
         describe('로또가 여러 개인 경우', () => {
             it('ranks: [FIRST, SECOND, THIRD, FOURTH, FIFTH]', () => {
                 const ranks = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(6));
+                const stats = Statistics.of(ranksFrom(ranks), totalCostFor(6));
                 expect(stats.summary).toEqual([
                     { rank: Rank.FIRST, count: 1 },
                     { rank: Rank.SECOND, count: 1 },
@@ -86,7 +86,7 @@ describe('Statistics.from(ranks, totalCost).summary 테스트', () => {
 
             it('ranks: [FIRST, FIFTH] — 꽝은 필터링되어 Ranks에 포함되지 않는다', () => {
                 const ranks = [Rank.FIRST, Rank.FIFTH];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(6));
+                const stats = Statistics.of(ranksFrom(ranks), totalCostFor(6));
                 expect(stats.summary).toEqual([
                     { rank: Rank.FIRST, count: 1 },
                     { rank: Rank.SECOND, count: 0 },
@@ -99,7 +99,7 @@ describe('Statistics.from(ranks, totalCost).summary 테스트', () => {
     });
 });
 
-describe('Statistics.from(ranks, totalCost).revenueRate 테스트', () => {
+describe('Statistics.of(ranks, totalCost).revenueRate 테스트', () => {
     describe('총 당첨금을 총 구매 금액으로 나눈 ratio를 반환한다 (예: 1.05 = 105%).', () => {
         describe('로또가 1개인 경우', () => {
             it.each([
@@ -110,7 +110,7 @@ describe('Statistics.from(ranks, totalCost).revenueRate 테스트', () => {
                 { name: 'ranks: [FIFTH]', ranks: [Rank.FIFTH], expected: 5 },
                 { name: 'ranks: [] (꽝)', ranks: [], expected: 0 },
             ])('$name', ({ ranks, expected }) => {
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(1));
+                const stats = Statistics.of(ranksFrom(ranks), totalCostFor(1));
                 expect(stats.revenueRate).toBe(expected);
             });
         });
@@ -118,19 +118,19 @@ describe('Statistics.from(ranks, totalCost).revenueRate 테스트', () => {
         describe('로또가 여러 개인 경우', () => {
             it('ranks: [FIRST, SECOND, THIRD, FOURTH, FIFTH] (6장 구매)', () => {
                 const ranks = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(6));
+                const stats = Statistics.of(ranksFrom(ranks), totalCostFor(6));
                 expect(stats.revenueRate).toBe(338_592.5);
             });
 
             it('ranks: [FIRST, FIFTH] (6장 구매)', () => {
                 const ranks = [Rank.FIRST, Rank.FIFTH];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(6));
+                const stats = Statistics.of(ranksFrom(ranks), totalCostFor(6));
                 expect(stats.revenueRate).toBeCloseTo(333_334.1667, 4);
             });
 
             it('ranks: [FIFTH] (8장 구매)', () => {
                 const ranks = [Rank.FIFTH];
-                const stats = Statistics.from(ranksFrom(ranks), totalCostFor(8));
+                const stats = Statistics.of(ranksFrom(ranks), totalCostFor(8));
                 expect(stats.revenueRate).toBe(0.625);
             });
         });

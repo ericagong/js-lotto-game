@@ -149,7 +149,7 @@ Lottos에서 `issue(budget)`를 제거한 것은, 핵심 관찰 2 — "발행은
 1. `LottoMachine.issue(budget)` — 판매점에 돈을 내고 티켓을 받는다
 2. `LottoBroadcast.announce(numbers, bonusNumber)` — 추첨 방송의 결과를 받는다
 3. `lottos.determineRanks(winningLotto)` — 내 티켓들을 추첨 결과에 대조한다
-4. `Statistics.from(ranks, totalCost)` — 결과를 집계한다
+4. `Statistics.of(ranks, totalCost)` — 결과를 집계한다
 
 ### 문제 2. 도메인 객체가 너무 많다
 

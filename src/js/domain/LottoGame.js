@@ -28,7 +28,7 @@ export default class LottoGame {
     }
 
     #summarize(ranks) {
-        const statistics = Statistics.from(ranks, this.#totalCost);
+        const statistics = Statistics.of(ranks, this.#totalCost);
         return {
             rankSummary: statistics.summary,
             revenueRate: statistics.revenueRate,
