@@ -19,7 +19,7 @@ const convertStringToMatchingDataType = (input) => {
 const SEPARATOR = ',';
 const convertStringToArray = (input) => input.split(SEPARATOR).map(convertStringToMatchingDataType);
 
-async function playConsoleLottoGame() {
+const playConsoleLottoGame = async () => {
     const game = new LottoGame();
 
     // 1. 구입금액 입력
@@ -62,7 +62,7 @@ async function playConsoleLottoGame() {
 
     // 4. 통계 출력
     view.printStatistics(game.getStatistics());
-}
+};
 
 class RetryError extends ConsoleError {
     static #MESSAGE = 'Retry 입력값은 y나 n 중 하나여야합니다.';
@@ -74,14 +74,14 @@ class RetryError extends ConsoleError {
 
 const convertStringToLowerCase = (input) => input.trim().toLowerCase();
 
-function convertStringToRetryAnswer(input) {
+const convertStringToRetryAnswer = (input) => {
     const answer = convertStringToLowerCase(input);
     if (answer === 'y') return true;
     if (answer === 'n') return false;
     throw new RetryError();
-}
+};
 
-async function askShouldRetry() {
+const askShouldRetry = async () => {
     while (true) {
         try {
             const input = await view.askRetry();
@@ -91,14 +91,16 @@ async function askShouldRetry() {
             view.printError(error);
         }
     }
-}
+};
 
 // step1에서는 재시작 없이 한 판만 진행한다.
 // step2에서는 재시작 기능을 추가해 사용자 입력에 따라 반복 진행 여부를 결정한다.
-export default async function runConsoleLottoGame(withRetry = false) {
+const runConsoleLottoGame = async (withRetry = false) => {
     do {
         await playConsoleLottoGame();
     } while (withRetry && (await askShouldRetry()));
 
     view.close();
-}
+};
+
+export default runConsoleLottoGame;
