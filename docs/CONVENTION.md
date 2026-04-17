@@ -10,8 +10,11 @@
     - 함수 선언 규칙
 3. [내보내기와 불러오기](#내보내기와-불러오기)
 4. [class 관련 구현 규칙](#class-관련-구현-규칙)
-    - 변수와 메소드 선언 위치
-    - 메소드 네이밍 규칙
+    - 선언 순서
+    - 팩토리 메서드 네이밍
+    - getter와 메서드 구분
+    - boolean 반환 네이밍
+    - 에러 클래스 네이밍
 
 ---
 
@@ -39,9 +42,10 @@
 -   **일반 함수 사용**: 상태 관리가 필요하지 않을 때
     ```javascript
     // Model > Logger > createLogger.js
-    export default function createLogger(moduleName) {
+    const createLogger = (moduleName) => {
         return (message) => console.log(`[${moduleName}] ${message}`);
-    }
+    };
+    export default createLogger;
     ```
 
 ---
@@ -79,9 +83,8 @@
     -   파일명: `Model > Car > createCar.js`
         ```javascript
         // Model > Car > createCar.js
-        export default function createCar(name) {
-            return new CarModel(name);
-        }
+        const createCar = (name) => new CarModel(name);
+        export default createCar;
         ```
 
 ---
@@ -92,10 +95,10 @@
 
 -   **변수를 사용하는 함수/메소드 근처에 선언**
     ```javascript
-    function calculateTotalDistance(position, laps) {
-        const LAP_DISTANCE = 5; // 각 랩의 거리
+    const calculateTotalDistance = (position, laps) => {
+        const LAP_DISTANCE = 5;
         return position + laps * LAP_DISTANCE;
-    }
+    };
     ```
 -   **Magic Number 지양**: 의미 있는 변수명으로 대체
     ```javascript
@@ -107,18 +110,21 @@
 
 ### 함수 선언 규칙
 
--   **함수 표현식 사용**: hoisting 문제 방지
+-   **`const` 화살표 함수로 통일**: hoisting 없이 define-before-use를 강제하고, 재할당을 방지한다.
 
     ```javascript
     const accelerate = (car) => car.move();
     ```
 
--   **export default 함수 선언**
+-   **export default**: 선언 후 별도로 내보낸다.
     ```javascript
-    export default function stopCar(car) {
+    const stopCar = (car) => {
         car.position = 0;
-    }
+    };
+    export default stopCar;
     ```
+
+-   **코드 배치**: define-before-use 원칙. 의존되는 쪽을 먼저 선언하여 위에서 아래로 읽을 때 아직 모르는 이름이 등장하지 않도록 한다.
 
 ---
 
@@ -166,31 +172,91 @@
 
 ## 4. class 관련 구현 규칙
 
-### 변수와 메소드 선언 위치
+### 선언 순서
 
--   **class 외부 선언**: 독립적인 함수는 외부에 정의
+define-before-use 원칙에 따라, 의존되는 멤버를 먼저 선언한다.
 
+```
+fields → constants → private helpers → #validate → constructor → factory (of/from) → instance methods/getters
+```
+
+-   팩토리 메서드(`of`/`from`)는 `new`를 호출하므로 `constructor` 뒤에 배치
+-   private helper는 그것을 사용하는 메서드 앞에 배치
+
+---
+
+### 팩토리 메서드 네이밍
+
+-   **`of`**: 인자를 그대로 값으로 취급하여 인스턴스를 생성한다. 인자 개수와 무관.
     ```javascript
-    const generateCarId = () => Math.random().toString(36).substring(2);
-
-    class CarModel {
-        constructor(name) {
-            this.id = generateCarId();
-            this.name = name;
-            this.position = 0;
-        }
-    }
+    LottoNumber.of(3);
+    Lotto.of([1, 2, 3, 4, 5, 6]);
+    WinningLotto.of(lotto, bonusNumber);
     ```
 
--   **utils로 분리**: 여러 파일에서 사용하는 경우
+-   **`from`**: 다른 타입/형태로부터 변환한다.
     ```javascript
-    // utils/generateCarId.js
-    export const generateCarId = () => Math.random().toString(36).substring(2);
+    Lottos.from(lottoArray); // Lotto[] → Lottos
+    Ranks.from(rankArray);   // Rank[] → Ranks
+    Rank.from(matchCount, isBonusMatch); // 판정 로직을 통한 변환
     ```
 
 ---
 
-### 메소드 네이밍 규칙
+### getter와 메서드 구분
+
+-   **getter**: 파라미터 없이 값을 반환할 때 (내부 계산 여부 무관)
+    ```javascript
+    get position() {
+        return this.#position;
+    }
+
+    get totalPrize() {
+        return this.#ranks.reduce((acc, rank) => acc + rank.prize, 0);
+    }
+    ```
+
+-   **메서드**: 파라미터가 필요한 경우
+    ```javascript
+    getMatchCount(other) {
+        return this.#numbers.filter((n) => otherSet.has(n)).length;
+    }
+    ```
+
+---
+
+### boolean 반환 네이밍
+
+-   **`is`**: 상태/조건을 판별할 때
+    ```javascript
+    static #isValidLength(target) { return target.length === Lotto.DIGITS; }
+    static #isInRange(value) { return LOWER_BOUND <= value && value <= UPPER_BOUND; }
+    ```
+
+-   **`has`**: 소유/포함 여부를 판별할 때
+    ```javascript
+    hasNumber(lottoNumber) { return this.#numbers.includes(lottoNumber); }
+    ```
+
+---
+
+### 에러 클래스 네이밍
+
+-   **클래스명**: `[Subject][Condition]Error`
+    ```javascript
+    NumbersNotArrayError      // numbers가 배열이 아님
+    NumbersInvalidLengthError // numbers의 길이가 유효하지 않음
+    BudgetBelowMinError       // budget이 최소값 미만
+    ```
+
+-   **에러 메시지**: `~여야 합니다` 패턴으로 통일 (표준 띄어쓰기)
+    ```javascript
+    static #MESSAGE = 'numbers는 배열 형태여야 합니다.';
+    ```
+
+---
+
+### static 메소드와 private 필드
 
 -   **static 메소드 사용**: `this`를 사용하지 않는 코드
 
@@ -210,41 +276,11 @@
 
         constructor(name) {
             this.name = name;
-            this.position = 0;
             this.#engineStatus = 'off';
         }
 
         startEngine() {
             this.#engineStatus = 'on';
-        }
-    }
-    ```
-
--   **getter 사용**: 단순히 상태를 반환할 때
-
-    ```javascript
-    class CarModel {
-        constructor(name) {
-            this.name = name;
-            this.position = 0;
-        }
-
-        get getPosition() {
-            return this.position;
-        }
-    }
-    ```
-
--   **get[상태] 메소드명 사용**: 상태에 작업 수행 후 반환
-
-    ```javascript
-    class Car {
-        constructor() {
-            this.laps = 0;
-        }
-
-        getTotalDistance() {
-            return this.laps * 5; // 각 랩의 거리 = 5
         }
     }
     ```
