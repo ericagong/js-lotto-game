@@ -7,8 +7,8 @@ export default class LottoNumber {
     static LOWER_BOUND = 1;
     static UPPER_BOUND = 45;
 
-    static #isInRange(target) {
-        return LottoNumber.LOWER_BOUND <= target && target <= LottoNumber.UPPER_BOUND;
+    static #isInRange(value) {
+        return LottoNumber.LOWER_BOUND <= value && value <= LottoNumber.UPPER_BOUND;
     }
 
     static #validate(value) {

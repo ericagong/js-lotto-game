@@ -19,7 +19,7 @@ export default class Ranks {
     }
 
     get countByRank() {
-        const counter = new Map(Rank.PRIZE_RANKS.map((rank) => [rank, 0]));
+        const counter = new Map(Rank.VALUES.map((rank) => [rank, 0]));
 
         this.#ranks.forEach((rank) => {
             counter.set(rank, counter.get(rank) + 1);

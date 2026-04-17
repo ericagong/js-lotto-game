@@ -27,7 +27,7 @@ export default class Rank {
     static FOURTH = new Rank(50_000, 4);
     static FIFTH = new Rank(5_000, 3);
 
-    static PRIZE_RANKS = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];
+    static VALUES = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];
 
     static from(matchCount, isBonusMatch) {
         switch (matchCount) {

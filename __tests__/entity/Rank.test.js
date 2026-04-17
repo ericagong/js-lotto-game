@@ -58,19 +58,18 @@ describe('Rank 속성 테스트', () => {
             expect(rank.isBonusMatch).toBe(expected);
         });
 
-        it.each([
-            { rank: Rank.FIRST },
-            { rank: Rank.FOURTH },
-            { rank: Rank.FIFTH },
-        ])('보너스 조건이 없는 등급은 isBonusMatch가 undefined이다.', ({ rank }) => {
-            expect(rank.isBonusMatch).toBeUndefined();
-        });
+        it.each([{ rank: Rank.FIRST }, { rank: Rank.FOURTH }, { rank: Rank.FIFTH }])(
+            '보너스 조건이 없는 등급은 isBonusMatch가 undefined이다.',
+            ({ rank }) => {
+                expect(rank.isBonusMatch).toBeUndefined();
+            },
+        );
     });
 });
 
-describe('PRIZE_RANKS 테스트', () => {
+describe('VALUES 테스트', () => {
     it('5개의 등수를 포함한다.', () => {
-        expect(Rank.PRIZE_RANKS).toHaveLength(5);
-        expect(Rank.PRIZE_RANKS).toEqual([Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH]);
+        expect(Rank.VALUES).toHaveLength(5);
+        expect(Rank.VALUES).toEqual([Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH]);
     });
 });
