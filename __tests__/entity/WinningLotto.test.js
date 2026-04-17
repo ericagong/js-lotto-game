@@ -100,7 +100,7 @@ describe('getRank(targetLotto) 테스트', () => {
                 const bonusLottoNumber = LottoNumber.of(7);
                 const winningLotto = WinningLotto.of(lotto, bonusLottoNumber);
                 const targetLotto = Lotto.of(targetLottoNumbers);
-                expect(winningLotto.getRank(targetLotto, winningLotto)).toEqual(
+                expect(winningLotto.getRank(targetLotto)).toEqual(
                     expected,
                 );
             },
