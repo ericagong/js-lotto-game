@@ -7,16 +7,6 @@ export default class LottoNumber {
     static LOWER_BOUND = 1;
     static UPPER_BOUND = 45;
 
-    static #LOTTO_NUMBERS = Array.from(
-        { length: LottoNumber.UPPER_BOUND - LottoNumber.LOWER_BOUND + 1 },
-        (_, index) => new LottoNumber(index + 1),
-    );
-
-    static of(value) {
-        LottoNumber.#validate(value);
-        return LottoNumber.#LOTTO_NUMBERS[value - 1];
-    }
-
     static #isInRange(target) {
         return LottoNumber.LOWER_BOUND <= target && target <= LottoNumber.UPPER_BOUND;
     }
@@ -31,6 +21,16 @@ export default class LottoNumber {
     constructor(value) {
         LottoNumber.#validate(value);
         this.#value = value;
+    }
+
+    static #LOTTO_NUMBERS = Array.from(
+        { length: LottoNumber.UPPER_BOUND - LottoNumber.LOWER_BOUND + 1 },
+        (_, index) => new LottoNumber(index + 1),
+    );
+
+    static of(value) {
+        LottoNumber.#validate(value);
+        return LottoNumber.#LOTTO_NUMBERS[value - 1];
     }
 
     get value() {

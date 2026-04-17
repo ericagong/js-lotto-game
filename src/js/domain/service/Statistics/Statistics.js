@@ -6,10 +6,6 @@ export default class Statistics {
     #ranks;
     #totalCost;
 
-    static from(ranks, totalCost) {
-        return new Statistics(ranks, totalCost);
-    }
-
     static #validate(ranks, totalCost) {
         if (!(ranks instanceof Ranks)) throw new RanksNotRanksInstanceError();
         if (!isNumber(totalCost) || totalCost <= 0) throw new TotalCostNotPositiveNumberError();
@@ -19,6 +15,10 @@ export default class Statistics {
         Statistics.#validate(ranks, totalCost);
         this.#ranks = ranks;
         this.#totalCost = totalCost;
+    }
+
+    static from(ranks, totalCost) {
+        return new Statistics(ranks, totalCost);
     }
 
     get summary() {

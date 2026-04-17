@@ -4,10 +4,6 @@ import { RanksNotArrayError, RankNotRankInstanceError } from './errors.js';
 export default class Ranks {
     #ranks;
 
-    static from(ranks) {
-        return new Ranks(ranks);
-    }
-
     static #validate(ranks) {
         if (!Array.isArray(ranks)) throw new RanksNotArrayError();
         if (!ranks.every((rank) => rank instanceof Rank)) throw new RankNotRankInstanceError();
@@ -16,6 +12,10 @@ export default class Ranks {
     constructor(ranks) {
         Ranks.#validate(ranks);
         this.#ranks = ranks;
+    }
+
+    static from(ranks) {
+        return new Ranks(ranks);
     }
 
     get countByRank() {

@@ -11,10 +11,6 @@ export default class WinningLotto {
     #lotto;
     #bonusNumber;
 
-    static from(lotto, bonusNumber) {
-        return new WinningLotto(lotto, bonusNumber);
-    }
-
     static #validateLotto(lotto) {
         if (!(lotto instanceof Lotto)) throw new LottoNotLottoInstanceError();
     }
@@ -34,6 +30,10 @@ export default class WinningLotto {
 
         this.#lotto = lotto;
         this.#bonusNumber = bonusNumber;
+    }
+
+    static from(lotto, bonusNumber) {
+        return new WinningLotto(lotto, bonusNumber);
     }
 
     #hasBonusMatch(targetLotto) {

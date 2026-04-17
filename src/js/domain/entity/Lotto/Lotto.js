@@ -14,19 +14,6 @@ export default class Lotto {
     static DIGITS = 6;
     static UNIT_PRICE = 1_000;
 
-    static of(numbers) {
-        return new Lotto(numbers);
-    }
-
-    static random() {
-        const generateRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-        const numbers = new Set();
-        while (numbers.size < Lotto.DIGITS) {
-            numbers.add(generateRandomNumber(LottoNumber.LOWER_BOUND, LottoNumber.UPPER_BOUND));
-        }
-        return new Lotto(Array.from(numbers));
-    }
-
     static #hasValidLength(target) {
         return target.length === Lotto.DIGITS;
     }
@@ -45,6 +32,19 @@ export default class Lotto {
         Lotto.#validate(numbers);
 
         this.#numbers = Lotto.#sortAscending(numbers).map(LottoNumber.of);
+    }
+
+    static of(numbers) {
+        return new Lotto(numbers);
+    }
+
+    static random() {
+        const generateRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const numbers = new Set();
+        while (numbers.size < Lotto.DIGITS) {
+            numbers.add(generateRandomNumber(LottoNumber.LOWER_BOUND, LottoNumber.UPPER_BOUND));
+        }
+        return new Lotto(Array.from(numbers));
     }
 
     hasNumber(lottoNumber) {
