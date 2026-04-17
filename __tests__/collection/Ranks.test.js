@@ -27,10 +27,10 @@ describe('new Ranks(ranks) 유효성 검사 테스트', () => {
     });
 });
 
-describe('countByRank 테스트', () => {
+describe('countByRank() 테스트', () => {
     it('당첨 등수(1~5등)별 개수를 반환한다.', () => {
         const ranks = Ranks.from([Rank.FIRST, Rank.FIFTH]);
-        expect(ranks.countByRank).toEqual([
+        expect(ranks.countByRank()).toEqual([
             { rank: Rank.FIRST, count: 1 },
             { rank: Rank.SECOND, count: 0 },
             { rank: Rank.THIRD, count: 0 },
@@ -41,7 +41,7 @@ describe('countByRank 테스트', () => {
 
     it('빈 배열이면 전부 0이다.', () => {
         const ranks = Ranks.from([]);
-        expect(ranks.countByRank).toEqual([
+        expect(ranks.countByRank()).toEqual([
             { rank: Rank.FIRST, count: 0 },
             { rank: Rank.SECOND, count: 0 },
             { rank: Rank.THIRD, count: 0 },
@@ -51,14 +51,14 @@ describe('countByRank 테스트', () => {
     });
 });
 
-describe('totalPrize 테스트', () => {
+describe('calculateTotalPrize() 테스트', () => {
     it('모든 Rank의 상금을 합산한다.', () => {
         const ranks = Ranks.from([Rank.FIRST, Rank.FIFTH]);
-        expect(ranks.totalPrize).toBe(2_000_005_000);
+        expect(ranks.calculateTotalPrize()).toBe(2_000_005_000);
     });
 
     it('빈 배열이면 0이다.', () => {
         const ranks = Ranks.from([]);
-        expect(ranks.totalPrize).toBe(0);
+        expect(ranks.calculateTotalPrize()).toBe(0);
     });
 });

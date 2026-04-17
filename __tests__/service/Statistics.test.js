@@ -27,7 +27,7 @@ describe('new RankStatistics(ranks, totalCost) 유효성 검사 테스트', () =
     });
 });
 
-describe('Statistics.of(ranks, totalCost).summary 테스트', () => {
+describe('Statistics.of(ranks, totalCost).summarize() 테스트', () => {
     describe('당첨 등수(1~5등)별 개수를 [1등, 2등, 3등, 4등, 5등] 순서의 배열로 반환한다.', () => {
         describe('로또가 1개인 경우', () => {
             it.each([
@@ -67,7 +67,7 @@ describe('Statistics.of(ranks, totalCost).summary 테스트', () => {
             ])('$name', ({ ranks, expected }) => {
                 const lottoCount = Math.max(ranks.length, 1);
                 const stats = Statistics.of(ranksFrom(ranks), totalCostFor(lottoCount));
-                expect(stats.summary).toEqual(expected);
+                expect(stats.summarize()).toEqual(expected);
             });
         });
 
@@ -75,7 +75,7 @@ describe('Statistics.of(ranks, totalCost).summary 테스트', () => {
             it('ranks: [FIRST, SECOND, THIRD, FOURTH, FIFTH]', () => {
                 const ranks = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];
                 const stats = Statistics.of(ranksFrom(ranks), totalCostFor(6));
-                expect(stats.summary).toEqual([
+                expect(stats.summarize()).toEqual([
                     { rank: Rank.FIRST, count: 1 },
                     { rank: Rank.SECOND, count: 1 },
                     { rank: Rank.THIRD, count: 1 },
@@ -87,7 +87,7 @@ describe('Statistics.of(ranks, totalCost).summary 테스트', () => {
             it('ranks: [FIRST, FIFTH] — 꽝은 필터링되어 Ranks에 포함되지 않는다', () => {
                 const ranks = [Rank.FIRST, Rank.FIFTH];
                 const stats = Statistics.of(ranksFrom(ranks), totalCostFor(6));
-                expect(stats.summary).toEqual([
+                expect(stats.summarize()).toEqual([
                     { rank: Rank.FIRST, count: 1 },
                     { rank: Rank.SECOND, count: 0 },
                     { rank: Rank.THIRD, count: 0 },
@@ -99,7 +99,7 @@ describe('Statistics.of(ranks, totalCost).summary 테스트', () => {
     });
 });
 
-describe('Statistics.of(ranks, totalCost).revenueRate 테스트', () => {
+describe('Statistics.of(ranks, totalCost).calculateRevenueRate() 테스트', () => {
     describe('총 당첨금을 총 구매 금액으로 나눈 ratio를 반환한다 (예: 1.05 = 105%).', () => {
         describe('로또가 1개인 경우', () => {
             it.each([
@@ -111,7 +111,7 @@ describe('Statistics.of(ranks, totalCost).revenueRate 테스트', () => {
                 { name: 'ranks: [] (꽝)', ranks: [], expected: 0 },
             ])('$name', ({ ranks, expected }) => {
                 const stats = Statistics.of(ranksFrom(ranks), totalCostFor(1));
-                expect(stats.revenueRate).toBe(expected);
+                expect(stats.calculateRevenueRate()).toBe(expected);
             });
         });
 
@@ -119,19 +119,19 @@ describe('Statistics.of(ranks, totalCost).revenueRate 테스트', () => {
             it('ranks: [FIRST, SECOND, THIRD, FOURTH, FIFTH] (6장 구매)', () => {
                 const ranks = [Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH, Rank.FIFTH];
                 const stats = Statistics.of(ranksFrom(ranks), totalCostFor(6));
-                expect(stats.revenueRate).toBe(338_592.5);
+                expect(stats.calculateRevenueRate()).toBe(338_592.5);
             });
 
             it('ranks: [FIRST, FIFTH] (6장 구매)', () => {
                 const ranks = [Rank.FIRST, Rank.FIFTH];
                 const stats = Statistics.of(ranksFrom(ranks), totalCostFor(6));
-                expect(stats.revenueRate).toBeCloseTo(333_334.1667, 4);
+                expect(stats.calculateRevenueRate()).toBeCloseTo(333_334.1667, 4);
             });
 
             it('ranks: [FIFTH] (8장 구매)', () => {
                 const ranks = [Rank.FIFTH];
                 const stats = Statistics.of(ranksFrom(ranks), totalCostFor(8));
-                expect(stats.revenueRate).toBe(0.625);
+                expect(stats.calculateRevenueRate()).toBe(0.625);
             });
         });
     });

@@ -21,11 +21,11 @@ export default class Statistics {
         return new Statistics(ranks, totalCost);
     }
 
-    get summary() {
-        return this.#ranks.countByRank;
+    summarize() {
+        return this.#ranks.countByRank();
     }
 
-    get revenueRate() {
-        return this.#ranks.totalPrize / this.#totalCost;
+    calculateRevenueRate() {
+        return this.#ranks.calculateTotalPrize() / this.#totalCost;
     }
 }

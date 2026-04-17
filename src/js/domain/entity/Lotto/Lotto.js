@@ -57,7 +57,7 @@ export default class Lotto {
         return this.#numbers.filter((n) => otherSet.has(n)).length;
     }
 
-    get numbers() {
+    toValues() {
         return this.#numbers.map((number) => number.value);
     }
 }

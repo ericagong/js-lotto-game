@@ -15,7 +15,7 @@ export default class LottoGame {
 
         return {
             issuedCount: this.#lottos.count,
-            issuedLottosNumbers: this.#lottos.snapshot,
+            issuedLottosNumbers: this.#lottos.toNumbersList(),
         };
     }
 
@@ -30,8 +30,8 @@ export default class LottoGame {
     #summarize(ranks) {
         const statistics = Statistics.of(ranks, this.#totalCost);
         return {
-            rankSummary: statistics.summary,
-            revenueRate: statistics.revenueRate,
+            rankSummary: statistics.summarize(),
+            revenueRate: statistics.calculateRevenueRate(),
         };
     }
 

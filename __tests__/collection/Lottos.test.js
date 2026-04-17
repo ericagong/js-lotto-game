@@ -10,6 +10,6 @@ describe('static of(numbersList) 테스트', () => {
         const lottos = Lottos.of(numbersList);
         expect(lottos).toBeInstanceOf(Lottos);
         expect(lottos.count).toBe(2);
-        expect(lottos.snapshot).toEqual(numbersList);
+        expect(lottos.toNumbersList()).toEqual(numbersList);
     });
 });

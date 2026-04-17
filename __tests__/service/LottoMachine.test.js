@@ -56,7 +56,7 @@ describe('static issue(budgetAmount) 테스트', () => {
     it('snapshot의 각 lotto는 길이 6의 배열이고, 모든 번호는 [1, 45] 사이의 정수다.', () => {
         const { lottos } = LottoMachine.issue(5_000);
 
-        lottos.snapshot.forEach((numbers) => {
+        lottos.toNumbersList().forEach((numbers) => {
             expect(numbers).toHaveLength(Lotto.DIGITS);
             numbers.forEach((number) => {
                 expect(Number.isInteger(number)).toBe(true);
