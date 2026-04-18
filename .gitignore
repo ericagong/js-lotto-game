@@ -2,3 +2,5 @@ node_modules/
 dist/
 coverage/
 .eslintcache
+docs/images/
+.claude/

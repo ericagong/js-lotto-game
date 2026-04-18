@@ -2,3 +2,5 @@ package.json
 package-lock.json
 webpack.config.js
 yarn.lock
+dist/styles.css
+*.min.*
